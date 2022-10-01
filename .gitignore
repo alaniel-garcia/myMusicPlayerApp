@@ -1,0 +1,8 @@
+#node modules
+node_modules/
+
+#production folder
+build/
+
+#future implementation
+src/components/App.test.jsx
