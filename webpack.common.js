@@ -11,10 +11,11 @@ module.exports = ({mode}) => {
         resolve: {
             extensions: ['.tsx', '.ts', '.jsx', '.js'],
             alias: {
+                '@components': path.resolve(__dirname, 'src/components/'),
+                '@assets': path.resolve(__dirname, 'src/assets/'),
                 /*
                 '@utils': path.resolve(__dirname, 'src/utils/'),
                 '@styles': path.resolve(__dirname, 'src/styles/'),
-                '@components': path.resolve(__dirname, 'src/comp/'),
                 */
             }
         },
