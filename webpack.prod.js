@@ -15,7 +15,7 @@ module.exports = merge(common({mode: 'production'}), {
     },
     plugins: [
         new MiniCssExtractPlugin({
-            filename: './assets/[name].[contenthash].css',
+            filename: './assets/styles/[name].[contenthash].css',
         }),
     ],
     optimization: {

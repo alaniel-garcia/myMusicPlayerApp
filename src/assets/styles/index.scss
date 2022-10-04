@@ -1,4 +1,4 @@
-@import './normalize.css';
+@use './normalize.css';
 
 
 //Fonts
@@ -45,14 +45,23 @@ html {
 }
 
 body {
-  display: grid;
-    place-content: center;
-
   font-family: $font-stack;
     font-size: 1.6rem;
     color: $white;
 
+  padding: 1.6rem;
+
   background: $background;
+}
+
+h1 {
+  font-size: 2.4rem;
+    line-height: 2.6rem;
+}
+
+h2 {
+  font-size: 1.4rem;
+    line-height: 1.8rem;
 }
 
 @media (pointer: fine) {
@@ -76,3 +85,17 @@ body {
   }
 
 }
+
+
+//Exports if necessary in js
+
+/*
+:export{
+  background: $background;
+  main: $main;
+  secondary: $secondary;
+  highlights: $highlights;
+  white: $white;
+  
+}
+*/

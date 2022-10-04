@@ -61,6 +61,14 @@ module.exports = ({mode}) => {
                         filename: 'assets/fonts/[name][ext]'
                     }
                 },
+                {
+                    test: /\.svg$/,
+                    exclude: /node_modules/,
+                    type: 'asset/resource',
+                    generator: {
+                        filename: 'assets/icons/[name][ext]'
+                    }
+                },
                 /*
                 {
                     test: /\.(mp3|flac|opus|ogg|m4a)$/,
