@@ -1,0 +1,59 @@
+$boder-radius: .4rem;
+$icon-cover-size: 5rem;
+
+.TrackCard {
+  display: flex;
+    justify-content: space-between;
+
+  width: 100%;
+    margin: 1.4rem 0;
+    padding-inline-start: 1.6rem;
+
+  outline: 2px solid red;
+
+  .TrackCard--left {
+    display: flex;
+  }
+}
+
+.track-cover {
+  width: $icon-cover-size;
+  height: $icon-cover-size;
+
+
+  border-radius: $boder-radius;
+
+  img {
+    display: block;
+
+    border-radius: $boder-radius;
+  }
+}
+
+.TrackCard--right .TrackCard__section {
+  display: flex;
+  height: 100%;
+}
+
+.TrackCard__section__info {
+  margin-inline-start: 1.2rem;
+
+  h3 {
+    opacity: .6;
+  }
+}
+
+.TrackCard__icon {
+  display: grid;
+    place-content: center;
+
+  width: $icon-cover-size; 
+  height: $icon-cover-size;
+
+  background-color: #121212;
+    border-radius: 50%;
+
+  img {
+    width: 3rem;
+  }
+}
