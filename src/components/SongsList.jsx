@@ -8,13 +8,15 @@ export default function SongsList(props) {
     const [songs, setSongs] = useState([]);
 
     async function handleFile(ev) {
-        const audios = Array.from(ev.target.files);
-        const tracks = await Promise.all(audios.map(async (audio) => {
-            return await handleAudioLoad(audio);
-        }))
+        const files = ev.target.files;
+        if(files.length > 0){
+            const audios = Array.from(files);
+            const tracks = await Promise.all(audios.map(async (audio) => {
+                return await handleAudioLoad(audio);
+            }))
 
-        setSongs([...songs, ...tracks]);
-
+            setSongs([...songs, ...tracks]);
+        }
     }
 
     useEffect(() => {

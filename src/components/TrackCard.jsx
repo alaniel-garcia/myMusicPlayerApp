@@ -1,22 +1,7 @@
 import './TrackCard.scss';
 import icon_more from '@assets/icons/more_wght600.svg';
-import handleAudioLoad from '@services/handleAudioLoad';
-import { useEffect, useRef, useState } from 'react';
 
 export default function TrackCard({ song }) {
-    const [track, setTrack] = useState({});
-
-    const didMounted = useRef(true);
-
-    useEffect(() => {
-        if(didMounted.current){
-            didMounted.current = false;
-        }
-        else {
-            setTrack(handleAudioLoad(song));
-        }
-    }, []);
-
     return (
         <>
             <div className='TrackCard'>
