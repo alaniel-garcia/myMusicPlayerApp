@@ -1,9 +1,9 @@
 import './Navbar.scss';
-import icon_search from '@assets/icons/search_wght400.svg'
-import icon_more from '../assets/icons/more_wght600.svg';
+import icon_search from '@assets/icons/search_wght400.svg';
+import icon_more from '@assets/icons/more_wght600.svg';
 
-export default function Navbar(){
-    return(
+export default function Navbar() {
+    return (
         <>
             <nav className='Navbar'>
                 <div className='Navbar__items'>
@@ -21,5 +21,5 @@ export default function Navbar(){
                 </div>
             </nav>
         </>
-    )
+    );
 }

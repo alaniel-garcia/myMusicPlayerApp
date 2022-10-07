@@ -40,6 +40,9 @@
   $white: #FFFFFF;
 
 //general styles
+
+$general-padding: 1.6rem;
+
 html {
   font-size: $font-size;
 }
@@ -48,8 +51,6 @@ body {
   font-family: $font-stack;
     font-size: 1.6rem;
     color: $white;
-
-  padding: 1.6rem;
 
   background: $background;
 }
@@ -62,6 +63,11 @@ h1 {
 h2 {
   font-size: 1.4rem;
     line-height: 1.8rem;
+}
+
+h3 {
+  font-size: 1.2rem;
+    line-height: 1.6rem;
 }
 
 @media (pointer: fine) {

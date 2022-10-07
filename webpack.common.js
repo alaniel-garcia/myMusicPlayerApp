@@ -13,6 +13,7 @@ module.exports = ({mode}) => {
             alias: {
                 '@components': path.resolve(__dirname, 'src/components/'),
                 '@assets': path.resolve(__dirname, 'src/assets/'),
+                '@services': path.resolve(__dirname, 'src/services/'),
                 /*
                 '@utils': path.resolve(__dirname, 'src/utils/'),
                 '@styles': path.resolve(__dirname, 'src/styles/'),
@@ -69,6 +70,11 @@ module.exports = ({mode}) => {
                         filename: 'assets/icons/[name][ext]'
                     }
                 },
+                //test loaders
+                {
+                    test: /\.(jpg|png)$/,
+                    type: 'asset/resource'
+                }
                 /*
                 {
                     test: /\.(mp3|flac|opus|ogg|m4a)$/,
