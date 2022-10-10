@@ -1,19 +1,6 @@
-import audioMetadata from 'parse-audio-metadata';
 import audioIdGenerator from './audioIdGenerator';
 import defaultCover from '@assets/images/defaultCover.png';
-
-async function getAudioMetadata(audioFile) {
-    try {
-        const metadata = await audioMetadata(audioFile).then(meta => {
-            return meta
-        });
-
-        return metadata;
-    }
-    catch (err){
-        console.log(err.message)
-    }
-}
+import getAudioMetadata from './getAudioMetadata';
 
 export default async function handleAudioLoad(audioFile){
     if(audioFile){
