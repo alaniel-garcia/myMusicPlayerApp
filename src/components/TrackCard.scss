@@ -1,27 +1,22 @@
+@use '@assets/styles/index.scss' as idx;
 $boder-radius: .4rem;
-$icon-cover-size: 5rem;
+$icons-size: 5rem;
+$icons-size-current: calc($icons-size - 1rem); 
 
-.TrackCard {
-  display: flex;
-    justify-content: space-between;
+%trackCard-icons-defaults {
+  display: grid;
+    place-content: center;
 
-  width: 100%;
-    margin: 1.4rem 0;
-    padding-inline-start: 1.6rem;
+  background-color: #121212;
+    border-radius: 50%;
 
-  outline: 2px solid red;
-
-  .TrackCard--left {
-    display: flex;
+  img {
+    width: 3rem;
   }
 }
 
-.track-cover {
-  width: $icon-cover-size;
-  height: $icon-cover-size;
-
-
-  border-radius: $boder-radius;
+%track-cover-defaults {
+    border-radius: $boder-radius;
 
   img {
     display: block;
@@ -30,30 +25,81 @@ $icon-cover-size: 5rem;
   }
 }
 
+.TrackCard {
+  display: flex;
+    justify-content: space-between;
+
+  width: 100%;
+    margin: 1.4rem 0;
+    padding-inline-start: idx.$general-padding;
+
+  outline: 2px solid red;
+
+  .TrackCard--left {
+    display: flex;
+
+    width: calc(100% - ($icons-size * 2) + 1.2rem) ;
+  }
+  .TrackCard--left--current {
+    display: flex;
+    width: calc(100% - ($icons-size * 2.5) + 1.2rem) ;
+  }
+
+  .TrackCard--right {
+    display: flex;
+  }
+}
+
+.track-cover {
+  @extend %track-cover-defaults;
+
+  width: $icons-size;
+    height: $icons-size;
+}
+
+.track-cover--current {
+  @extend %track-cover-defaults;
+
+  width: $icons-size-current;
+    height: $icons-size-current;
+}
+
 .TrackCard--right .TrackCard__section {
   display: flex;
+
   height: 100%;
 }
 
 .TrackCard__section__info {
   margin-inline-start: 1.2rem;
 
+  overflow: hidden;
+
   h3 {
     opacity: .6;
   }
 }
 
+.track-name {
+  display: block;
+
+  overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+  margin-block-end: .4rem;
+}
+
 .TrackCard__icon {
-  display: grid;
-    place-content: center;
+  @extend %trackCard-icons-defaults;
 
-  width: $icon-cover-size; 
-  height: $icon-cover-size;
+  width: $icons-size; 
+    height: $icons-size;
+}
 
-  background-color: #121212;
-    border-radius: 50%;
+.TrackCard__icon--current{
+  @extend %trackCard-icons-defaults;
 
-  img {
-    width: 3rem;
-  }
+  width: $icons-size-current !important;
+    height: $icons-size-current !important;
 }

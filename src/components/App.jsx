@@ -1,6 +1,8 @@
 import './App.scss';
 import Navbar from './Navbar';
 import SongsList from './SongsList';
+import Current from './Current';
+import {CurrentProvider} from '../context/CurrentContext';
 
 export default function App() {
     return (
@@ -9,9 +11,12 @@ export default function App() {
                 <header>
                     <Navbar />
                 </header>
-                <main>
-                    <SongsList />
-                </main>
+                <CurrentProvider>
+                    <main>
+                        <SongsList />
+                        <Current />
+                    </main>
+                </CurrentProvider>
             </div>
         </>
     );

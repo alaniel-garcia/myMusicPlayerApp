@@ -1,0 +1,16 @@
+$active-area: 5rem;
+
+.Button {
+  display: grid;
+    place-content: center;
+
+  width: $active-area;
+    height: $active-area;
+
+  background: black;
+    border-radius: 50%;
+
+  img {
+    width: 3rem;
+  }
+}
