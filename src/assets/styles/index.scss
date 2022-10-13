@@ -45,6 +45,7 @@ $general-padding: 1.6rem;
 
 html {
   font-size: $font-size;
+  min-height: 100%;
 }
 
 body {
@@ -52,7 +53,13 @@ body {
     font-size: 1.6rem;
     color: $white;
 
+  min-height: 100vh;
+
   background: $background;
+}
+
+#root {
+  min-height: 100vh;
 }
 
 h1 {
