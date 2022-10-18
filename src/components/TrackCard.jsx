@@ -45,8 +45,15 @@ export default function TrackCard({ song, cardType, ...props }) {
 
     return (
         <>
-            <div className='TrackCard' onClick={()=> {
-                setCurrent(song)
+            <div 
+                className={cardType ? `TrackCard TrackCard--${cardType}` : 'TrackCard'} 
+                onClick={()=> {
+                    if(cardType && props.onClick){
+                        props.onClick()
+                    }
+                    else{
+                        setCurrent(song)
+                    }
             }}>
                 <div className={cardType ? `TrackCard--left--${cardType}` : 'TrackCard--left'}>
                     <div className='TrackCard__section'>

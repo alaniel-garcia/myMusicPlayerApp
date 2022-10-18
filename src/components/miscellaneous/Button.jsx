@@ -10,7 +10,13 @@ export default function Button({
 
 
     return(
-        <div className={`Button ${className}`} onClick={() => functionality()}>
+        <div
+            className={`Button ${className}`} 
+            onClick={(event) => {
+                event.stopPropagation()
+                functionality()
+            }}
+        >
             <img src={icon} alt={alt} />
         </div>
     )
