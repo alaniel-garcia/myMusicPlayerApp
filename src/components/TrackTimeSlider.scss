@@ -1,0 +1,17 @@
+.TrackTimeSlider {
+  input {
+    width: 100%
+
+  }
+
+  ::-webkit-slider-runnable-track {
+    height: .5rem;
+
+    border-radius: .5rem;
+  }
+  ::-webkit-slider-thumb {
+    position: relative;
+      top: - 0.5rem;
+
+  }
+}

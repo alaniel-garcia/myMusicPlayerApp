@@ -1,0 +1,80 @@
+@use '@assets/styles/index.scss' as idx;
+
+$medium-active-area: 3.5rem;
+
+%default-set-flex {
+  display: flex;
+    justify-content: space-between;
+}
+
+.TrackView {
+  @extend %default-set-flex;
+    flex-flow: column;
+    position: absolute;
+    top: 0;
+
+  width: 100%;
+    min-height: 100%;
+    padding: idx.$general-padding;
+
+  background: #544443;
+}
+
+.TrackView__top {
+  @extend %default-set-flex;
+}
+
+.overview__general {
+  display: flex;
+    flex-flow: column;
+    align-items: center;
+
+}
+
+.overview__general__top {
+  @extend %default-set-flex;
+    align-items: center;
+
+  width: 100%;
+}
+
+.overview__general__track-name {
+  display: block;
+
+  overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+  margin-block-end: .4rem;
+}
+
+.overview__general__track-artist {
+  opacity: .6;
+}
+
+.overview__general__button {
+  width: $medium-active-area;
+    height: $medium-active-area;
+
+  img {
+    width: calc($medium-active-area - 1rem);
+      height: calc($medium-active-area - 1rem);
+  }
+}
+
+.overview__time__timestamps {
+  @extend %default-set-flex;
+}
+
+.Trackview__controls__main {
+  @extend %default-set-flex;
+}
+
+.controls__main__center {
+  display: flex;
+}
+
+.Trackview__controls__secondary {
+  @extend %default-set-flex;
+    align-items: center;
+}

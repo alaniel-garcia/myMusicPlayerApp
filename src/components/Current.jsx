@@ -1,28 +1,35 @@
 import './Current.scss';
-import icon_pause from '@assets/icons/pause_wght400.svg';
-import icon_play from '@assets/icons/play_wght400.svg';
-import icon_queue from '@assets/icons/queue_music_wght400.svg';
 import { useContext, useEffect, useRef, useState } from 'react';
 import CurrentContext from '../context/CurrentContext';
 import TrackCard from './TrackCard';
+import TrackView from './TrackView';
+import useButtonProps from '@hooks/useButtonProps';
 
 export default function Current(props) {
     const { current } = useContext(CurrentContext);
     const [track, setTrack] = useState(null);
     const [isPaused, setIsPaused] = useState(true);
+    const [isOpen, setIsOpen] = useState(false);
 
     const isMounted = useRef(true);
+
+    //setting buttons's props for complete and minimized view
+    const play = useButtonProps('play', togglePlay);
+    const pause = useButtonProps('pause', togglePlay);
+    const queue = useButtonProps('queue',() => 'not assigned yet');
 
     useEffect(() => {
         if (current && !track) {
             setTrack(new Audio(current.url));
-        }
+            setIsOpen(true);
+        } 
         //resetting states when changing to a new track
         else if (current && track) {
             track.pause();
             track.currentTime = 0;
             setTrack(new Audio(current.url));
             setIsPaused(true);
+            setIsOpen(true);
         }
     }, [current]);
 
@@ -33,6 +40,11 @@ export default function Current(props) {
             if (track) {
                 autoPlay();
                 setIsPaused(!isPaused);
+
+                // track.addEventListener('ended', ()=> {
+                //     track.currentTime = 0;
+                //     track.play()
+                // });
             }
         }
     }, [track]);
@@ -57,41 +69,102 @@ export default function Current(props) {
         }
     }
 
-    function loadCurrent() {
+    function minimize() {
+        setIsOpen(false)
+    }
+
+
+    function loadCompleteViewBtnsProps() {
+
+        const btnsPropsToLoad ={
+            minimize: useButtonProps('minimize',()=> minimize()),
+            more: useButtonProps('more', ()=> 'not assigned yet'),
+            queue: useButtonProps('queue', () => 'not assigned yet'),
+            play: useButtonProps('play', togglePlay),
+            pause: useButtonProps('pause', togglePlay),
+            repeat: useButtonProps('repeat', ()=> 'not assigned yet'),
+            repeat_one: useButtonProps('repeat_one', ()=> 'not assigned yet'),
+            repeat_order: useButtonProps('repeat_order', ()=> 'not assigned yet'),
+            skip_prev: useButtonProps('skip_prev', ()=> 'not assigned yet'),
+            skip_next: useButtonProps('skip_next', ()=> 'not assigned yet'),
+            shuffle: useButtonProps('shuffle', ()=> 'not assigned yet'),
+            volume: useButtonProps('volume', () => 'not assigned yet')
+        }
+
+        return btnsPropsToLoad
+
+    }
+
+    function loadCompleteView() {
+        const {
+            minimize,
+            more,
+            queue,
+            play,
+            pause,
+            repeat,
+            repeat_one,
+            repeat_order,
+            skip_prev,
+            skip_next,
+            shuffle,
+            volume
+        } = loadCompleteViewBtnsProps();
+
+        if(current){
+            return(
+                <TrackView 
+                    song={current} 
+                    track= {track}
+                    buttonsProps={{
+                        minimize, 
+                        more,
+                        queue,
+                        play_pause: isPaused ? play : pause,
+                        repeat,
+                        skip_prev,
+                        skip_next,
+                        shuffle,
+                        volume
+                    }}
+                />
+            )
+        }
+    }
+
+
+    function loadMinimizedView() {
         if (current) {
             return (
-                <TrackCard
-                    song={current}
-                    cardType='current'
-                    buttonsProps={[
-                        isPaused
-                            ? {
-                                  icon: icon_play,
-                                  alt: 'play track button',
-                                  functionality: () => {
-                                      togglePlay();
-                                  },
-                              }
-                            : {
-                                  icon: icon_pause,
-                                  alt: 'pause track button',
-                                  functionality: () => {
-                                      togglePlay();
-                                  },
-                              },
-                        {
-                            icon: icon_queue,
-                            alt: 'queue button',
-                        },
-                    ]}
-                />
+                    <TrackCard
+                        onClick={() => setIsOpen(true)}
+                        song={current}
+                        cardType='current'
+                        buttonsProps={[
+                            isPaused ? play : pause,
+                            queue
+                        ]}
+                    />
             );
+        }
+    }
+
+    
+
+    function loadView() {
+        if(isOpen && current) {
+            return loadCompleteView()
+        }
+        else if(!isOpen && current) {
+            return loadMinimizedView()
         }
     }
 
     return (
         <>
-            <div className='Current'>{current && loadCurrent()}</div>
+            <div className='Current'>{
+                loadView()
+            }</div>
         </>
     );
 }
