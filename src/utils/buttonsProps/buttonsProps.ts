@@ -10,6 +10,8 @@ import icon_shuffle from '@assets/icons/shuffle.svg';
 import icon_skip_prev from '@assets/icons/skip_prev_wght400.svg';
 import icon_skip_next from '@assets/icons/skip_next_wght400.svg';
 import icon_volume from '@assets/icons/volume_wght400.svg';
+import icon_volume_off from '@assets/icons/volume_off_wght400.svg';
+import icon_search from '@assets/icons/search_wght400.svg';
 
 
 interface ButtonProps {
@@ -66,6 +68,14 @@ const volume: ButtonProps = {
     icon: icon_volume,
     alt: 'volume button'
 }
+const volume_off: ButtonProps = {
+    icon: icon_volume_off,
+    alt: 'volume off button'
+}
+const search: ButtonProps = {
+    icon: icon_search,
+    alt: 'search button'
+}
 
 const buttonsProps: object = {
     play,
@@ -79,7 +89,9 @@ const buttonsProps: object = {
     shuffle,
     skip_prev,
     skip_next,
-    volume
+    volume,
+    volume_off,
+    search
 };
 
 export default buttonsProps;

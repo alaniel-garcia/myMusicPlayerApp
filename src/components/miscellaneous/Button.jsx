@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import './Button.scss';
 
 export default function Button({
@@ -8,12 +9,22 @@ export default function Button({
      ...props})
 {
 
+    const button = useRef();
+
+    function clickEffect() {
+        button.current?.classList.add('click-wave');
+        setTimeout(()=>{
+            button.current?.classList.remove('click-wave')
+        },300);
+    }
 
     return(
         <div
-            className={`Button ${className}`} 
+            ref={button}
+            className={`Button ` + `${className ? className : ''}`} 
             onClick={(event) => {
                 event.stopPropagation()
+                clickEffect()
                 functionality()
             }}
         >

@@ -1,8 +1,10 @@
 import './Navbar.scss';
-import icon_search from '@assets/icons/search_wght400.svg';
-import icon_more from '@assets/icons/more_wght600.svg';
+import useButtonProps from '@hooks/useButtonProps';
+import Button from './miscellaneous/Button';
 
 export default function Navbar() {
+    const search = useButtonProps('search', ()=>{'not assigned yet'});
+    const more = useButtonProps('more', ()=>{'not assigned yet'});
     return (
         <>
             <nav className='Navbar'>
@@ -12,10 +14,10 @@ export default function Navbar() {
                     </div>
                     <div className='Navbar__items--right'>
                         <div className='Navbar__items__icon'>
-                            <img src={icon_search} alt='search button' />
+                            <Button className={'small-button'} icon={search.icon} alt={search.alt} functionality={search.functionality} />
                         </div>
                         <div className='Navbar__items__icon'>
-                            <img src={icon_more} alt='more options button' />
+                            <Button className={'small-button'} icon={more.icon} alt={more.alt} functionality={more.functionality} />
                         </div>
                     </div>
                 </div>

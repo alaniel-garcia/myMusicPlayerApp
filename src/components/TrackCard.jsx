@@ -1,15 +1,13 @@
 import './TrackCard.scss';
-import icon_more from '@assets/icons/more_wght600.svg';
-import icon_pause from '@assets/icons/pause_wght400.svg'
-import icon_play from '@assets/icons/play_wght400.svg'
-import icon_queue from '@assets/icons/queue_music_wght400.svg'
 import Button from './miscellaneous/Button';
 import CurrentContext from '../context/CurrentContext';
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
+import useButtonProps from '@hooks/useButtonProps';
 
 export default function TrackCard({ song, cardType, ...props }) {
     
     const {setCurrent} = useContext(CurrentContext);
+    const more =  useButtonProps('more',()=>{'function not assigned yet'});
 
     function loadCardButtons() {
         if(cardType){
@@ -37,7 +35,7 @@ export default function TrackCard({ song, cardType, ...props }) {
         else{
             return(
                 <div className='TrackCard__icon'>
-                    <img src={icon_more} alt='more options button' />
+                    <Button icon={more.icon} alt={more.alt} functionality={more.functionality} />
                 </div>
             )
         }
