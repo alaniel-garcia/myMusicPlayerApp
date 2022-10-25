@@ -1,8 +1,12 @@
 import './TrackView.scss';
 import Button from './miscellaneous/Button';
 import TrackTime from './TrackTime';
+import TrackVolume from './TrackVolume';
+import { useState } from 'react';
+import useButtonProps from '@hooks/useButtonProps';
+import PopElement from './miscellaneous/PopElement';
 
-export default function TrackView({song, buttonsProps, ...props}) {
+export default function TrackView({song, track, buttonsProps, ...props}) {
     const {minimize,
         more,
         queue,
@@ -11,23 +15,43 @@ export default function TrackView({song, buttonsProps, ...props}) {
         play_pause,
         skip_next,
         shuffle,
-        volume
     } = buttonsProps;
 
+    const [volumeOpen, setVolumeOpen] = useState(false);
+    
+
+    const volume = useButtonProps('volume',()=>{
+        setVolumeOpen(prevState => !prevState)
+    });
+
+    function volumeWillClose(value){
+        setVolumeOpen(value)
+    }
 
     return(
         <>
             <div className='TrackView'>
                 <div className='TrackView__top'>
-                    <Button icon={minimize.icon} alt={minimize.alt} functionality={minimize.functionality}/>
-                    <Button icon={more.icon} alt={more.alt} functionality={more.functionality}/>
+                    <Button className={'medium-button'} icon={minimize.icon} alt={minimize.alt} functionality={minimize.functionality}/>
+                    <Button className={'medium-button'} icon={more.icon} alt={more.alt} functionality={more.functionality}/>
+                </div>
+                <div className='TrackView__main'>
+                        {volumeOpen && 
+                            <PopElement 
+                                triggerState={volumeWillClose}
+                                showingTime={3500}
+                                showWhileInteracting={true}
+                                >
+                                <TrackVolume track={track} />
+                            </PopElement>
+                        }
                 </div>
                 <div className='TrackView__bottom'>
                     <div className='TrackView__overview'>
                         <div className='overview__general'>
                             <div className='overview__general__top'>
                                 <div>
-                                    <Button className={'overview__general__button'} icon={queue.icon} alt={queue.alt} functionality={queue.functionality}/>
+                                    <Button className={'medium-button'} icon={queue.icon} alt={queue.alt} functionality={queue.functionality}/>
                                 </div>
                                 <div>
                                     <h1 className='overview__general__track-name'>
@@ -35,36 +59,36 @@ export default function TrackView({song, buttonsProps, ...props}) {
                                     </h1>
                                 </div>
                                 <div>
-                                    <Button className={'overview__general__button'} icon={queue.icon} alt={queue.alt} functionality={queue.functionality}/>
+                                    <Button className={'medium-button'} icon={queue.icon} alt={queue.alt} functionality={queue.functionality}/>
                                 </div>
                             </div>
                             <div className='overview__general__bottom'>
-                                <h2 className='overview__general__track-artist'>
+                                <h3 className='overview__general__track-artist'>
                                     {song.metadata.artist}
-                                </h2>
+                                </h3>
                             </div>
                         </div>
                         <div className='overview__time'>
-                            <TrackTime track={props.track} metadata={song.metadata} />
+                            <TrackTime track={track} metadata={song.metadata} />
                         </div>
                     </div>
                     <div className='TrackView__controls'>
                         <div className="Trackview__controls__main">
                             <div className='controls__main__left'>
-                                <Button icon={repeat.icon} alt={repeat.alt} functionality={repeat.functionality} />
+                                <Button className={'medium-button'} icon={repeat.icon} alt={repeat.alt} functionality={repeat.functionality} />
                             </div>
                             <div className='controls__main__center'>
                                 <Button icon={skip_prev.icon} alt={skip_prev.alt} functionality={skip_prev.functionality} />
-                                <Button icon={play_pause.icon} alt={play_pause.alt} functionality={play_pause.functionality} />
+                                <Button className={'play-pause-button'} icon={play_pause.icon} alt={play_pause.alt} functionality={play_pause.functionality} />
                                 <Button icon={skip_next.icon} alt={skip_next.alt} functionality={skip_next.functionality} />
                             </div>
                             <div className='controls__main__right'>
-                                <Button icon={shuffle.icon} alt={shuffle.alt} functionality={shuffle.functionality} />
+                                <Button className={'medium-button'} icon={shuffle.icon} alt={shuffle.alt} functionality={shuffle.functionality} />
                             </div>
                         </div>
                         <div className='Trackview__controls__secondary'>
                             <div className='controls__secondary__left'>
-                                <Button icon={volume.icon} alt={volume.alt} functionality={volume.functionality}/>
+                                <Button className={'small-button'} icon={volume.icon} alt={volume.alt} functionality={volume.functionality}/>
                             </div>
                             <div className='controls__secondary__center'>
                                 <h3 className='Trackview__position'>
@@ -72,7 +96,7 @@ export default function TrackView({song, buttonsProps, ...props}) {
                                 </h3>
                             </div>
                             <div className='controls__secondary__right'>
-                                <Button icon={queue.icon} alt={queue.alt} functionality={queue.functionality}/>
+                                <Button className={'small-button'} icon={queue.icon} alt={queue.alt} functionality={queue.functionality}/>
                             </div>
                         </div>
                     </div>

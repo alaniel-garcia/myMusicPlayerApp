@@ -1,0 +1,20 @@
+@use '@assets/styles/index' as idx;
+ 
+.TrackVolume {
+  display: flex;
+    gap: .8rem;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: idx.$general-padding;
+    margin: auto;
+
+  width: fit-content;
+    padding-inline: 1.6rem;
+    padding-block: .8rem;
+
+  background: white;
+    transform-origin: right bottom;
+    border-radius: .4rem;
+
+}

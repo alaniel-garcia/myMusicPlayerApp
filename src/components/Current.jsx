@@ -1,6 +1,7 @@
 import './Current.scss';
 import { useContext, useEffect, useRef, useState } from 'react';
 import CurrentContext from '../context/CurrentContext';
+import VolumeContext from '../context/VolumeContext';
 import TrackCard from './TrackCard';
 import TrackView from './TrackView';
 import useButtonProps from '@hooks/useButtonProps';
@@ -10,6 +11,7 @@ export default function Current(props) {
     const [track, setTrack] = useState(null);
     const [isPaused, setIsPaused] = useState(true);
     const [isOpen, setIsOpen] = useState(false);
+    const {volume, sound, volumeOff} = useContext(VolumeContext);
 
     const isMounted = useRef(true);
 
@@ -41,17 +43,15 @@ export default function Current(props) {
                 autoPlay();
                 setIsPaused(!isPaused);
 
-                // track.addEventListener('ended', ()=> {
-                //     track.currentTime = 0;
-                //     track.play()
-                // });
+                track.volume = sound ? volume / 100 : volumeOff;
+
+                track.addEventListener('ended', ()=> {
+                    track.currentTime = 0;
+                    track.play()
+                });
             }
         }
     }, [track]);
-
-    useEffect(() => {
-        console.log('isPaused: ', isPaused);
-    }, [isPaused]);
 
     function autoPlay() {
         track.play();
@@ -108,7 +108,6 @@ export default function Current(props) {
             skip_prev,
             skip_next,
             shuffle,
-            volume
         } = loadCompleteViewBtnsProps();
 
         if(current){
@@ -125,7 +124,6 @@ export default function Current(props) {
                         skip_prev,
                         skip_next,
                         shuffle,
-                        volume
                     }}
                 />
             )
