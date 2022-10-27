@@ -27,7 +27,7 @@ export default function PopElement({ triggerState, showingTime, showWhileInterac
         }
     }
 
-    function ChildrenValidationEvent(eventType = '', interval){
+    function ChildrenValidationEvent(eventType = ''){
         popElement.current.addEventListener(eventType,(event)=> {
             const elementChildren = [];
             childrenRoute(popElement.current, elementChildren)
@@ -50,10 +50,10 @@ export default function PopElement({ triggerState, showingTime, showWhileInterac
         closeTimeoutManager(true)
         if(showWhileInteracting){
             if(isTouchDevice){
-                ChildrenValidationEvent('touchstart', closePopElement)
+                ChildrenValidationEvent('touchstart')
             }
             else{
-                ChildrenValidationEvent('mousemove', closePopElement)
+                ChildrenValidationEvent('mousemove')
             }
         }
         return () => {

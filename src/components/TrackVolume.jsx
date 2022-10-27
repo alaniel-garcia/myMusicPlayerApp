@@ -73,7 +73,7 @@ export default function TrackVolume({ track }) {
                 <input
                     onChange={handleVolumeChange}
                     type='range'
-                    defaultValue={sound ? volume : 0}
+                    defaultValue={volume}
                     min={0}
                     max={100}
                 />
