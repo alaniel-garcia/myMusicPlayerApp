@@ -5,31 +5,60 @@ import VolumeContext from '../context/VolumeContext';
 import TrackCard from './TrackCard';
 import TrackView from './TrackView';
 import useButtonProps from '@hooks/useButtonProps';
+import useTrackViewButtonFunctionality from '@hooks/useTrackViewButtonFunctionality'
 
-export default function Current(props) {
+export default function Current() {
     const { current } = useContext(CurrentContext);
     const [track, setTrack] = useState(null);
     const [isPaused, setIsPaused] = useState(true);
     const [isOpen, setIsOpen] = useState(false);
     const {volume, sound, volumeOff} = useContext(VolumeContext);
-
+    const [replayMode, setReplayMode] = useState({
+        repeat : true,
+        repeatOne : false,
+        noRepeat : false,
+    });
     const isMounted = useRef(true);
+    const audioEl = useRef();
+
+    //Calling buttons's functions
+    const { 
+        autoPlay,
+        minimize,
+        togglePlay,
+        handleTrackEnded,
+        handleSkipPrev,
+        handleSkipNext,
+        toggleReplayMode} 
+        = useTrackViewButtonFunctionality({
+            isPaused, 
+            setIsPaused,
+            track,
+            replayMode,
+            setReplayMode,
+            setIsOpen
+        });
 
     //setting buttons's props for complete and minimized view
-    const play = useButtonProps('play', togglePlay);
-    const pause = useButtonProps('pause', togglePlay);
-    const queue = useButtonProps('queue',() => 'not assigned yet');
+    const play_props = useButtonProps('play', togglePlay);
+    const pause_props = useButtonProps('pause', togglePlay);
+    const queue_props = useButtonProps('queue',() => 'not assigned yet');
 
     useEffect(() => {
         if (current && !track) {
-            setTrack(new Audio(current.url));
+            audioEl.current.src = current.url;
+            setTrack(audioEl.current);
             setIsOpen(true);
         } 
         //resetting states when changing to a new track
         else if (current && track) {
-            track.pause();
             track.currentTime = 0;
-            setTrack(new Audio(current.url));
+
+            //Had to set Track to null when there is a track and another 
+            //is going to be added in order to trigger a state change with a 
+            //new src value which will be set in next useEffect when no track 
+            //if track changes
+            setTrack(null)
             setIsPaused(true);
             setIsOpen(true);
         }
@@ -40,75 +69,66 @@ export default function Current(props) {
             isMounted.current = false;
         } else {
             if (track) {
-                autoPlay();
+                autoPlay(track);
                 setIsPaused(!isPaused);
-
                 track.volume = sound ? volume / 100 : volumeOff;
-
-                track.addEventListener('ended', ()=> {
-                    track.currentTime = 0;
-                    track.play()
-                });
+            }
+             if(!track) {
+                audioEl.current.src = current.url;
+                setTrack(audioEl.current);
             }
         }
     }, [track]);
-
-    function autoPlay() {
-        track.play();
-    }
-
-    function togglePlay() {
-        if (track) {
-            if (isPaused) {
-                track.play();
-                setIsPaused(!isPaused);
-            } else {
-                track.pause();
-                setIsPaused(!isPaused);
-            }
-        }
-    }
-
-    function minimize() {
-        setIsOpen(false)
-    }
-
 
     function loadCompleteViewBtnsProps() {
 
         const btnsPropsToLoad ={
             minimize: useButtonProps('minimize',()=> minimize()),
             more: useButtonProps('more', ()=> 'not assigned yet'),
-            queue: useButtonProps('queue', () => 'not assigned yet'),
-            play: useButtonProps('play', togglePlay),
-            pause: useButtonProps('pause', togglePlay),
-            repeat: useButtonProps('repeat', ()=> 'not assigned yet'),
-            repeat_one: useButtonProps('repeat_one', ()=> 'not assigned yet'),
-            repeat_order: useButtonProps('repeat_order', ()=> 'not assigned yet'),
-            skip_prev: useButtonProps('skip_prev', ()=> 'not assigned yet'),
-            skip_next: useButtonProps('skip_next', ()=> 'not assigned yet'),
+            repeat: useButtonProps('repeat', ()=> {
+                toggleReplayMode('repeat')
+            }),
+            repeat_one: useButtonProps('repeat_one', ()=> {
+                toggleReplayMode('repeatOne')
+            }),
+            no_repeat: useButtonProps('no_repeat', ()=> {
+                toggleReplayMode('noRepeat')
+            }),
+            skip_prev: useButtonProps('skip_prev', handleSkipPrev),
+            skip_next: useButtonProps('skip_next', handleSkipNext),
             shuffle: useButtonProps('shuffle', ()=> 'not assigned yet'),
             volume: useButtonProps('volume', () => 'not assigned yet')
         }
 
         return btnsPropsToLoad
-
     }
 
     function loadCompleteView() {
         const {
             minimize,
             more,
-            queue,
-            play,
-            pause,
             repeat,
             repeat_one,
-            repeat_order,
+            no_repeat,
             skip_prev,
             skip_next,
             shuffle,
         } = loadCompleteViewBtnsProps();
+
+        function loadReplayModeButton(){
+            if(replayMode.repeat){
+                return repeat
+            }
+            if(replayMode.repeatOne){
+                return repeat_one
+            }
+            if(replayMode.noRepeat){
+                return no_repeat
+            }
+            else{
+                return repeat
+            }
+        }
 
         if(current){
             return(
@@ -118,9 +138,9 @@ export default function Current(props) {
                     buttonsProps={{
                         minimize, 
                         more,
-                        queue,
-                        play_pause: isPaused ? play : pause,
-                        repeat,
+                        queue_props,
+                        play_pause: isPaused ? play_props : pause_props,
+                        repeat_mode: loadReplayModeButton(),
                         skip_prev,
                         skip_next,
                         shuffle,
@@ -130,7 +150,6 @@ export default function Current(props) {
         }
     }
 
-
     function loadMinimizedView() {
         if (current) {
             return (
@@ -139,15 +158,13 @@ export default function Current(props) {
                         song={current}
                         cardType='current'
                         buttonsProps={[
-                            isPaused ? play : pause,
-                            queue
+                            isPaused ? play_props : pause_props,
+                            queue_props
                         ]}
                     />
             );
         }
     }
-
-    
 
     function loadView() {
         if(isOpen && current) {
@@ -160,6 +177,7 @@ export default function Current(props) {
 
     return (
         <>
+            <audio ref={audioEl} hidden={true} onEnded={handleTrackEnded}></audio>
             <div className='Current'>{
                 loadView()
             }</div>

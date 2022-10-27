@@ -9,8 +9,8 @@ import PopElement from './miscellaneous/PopElement';
 export default function TrackView({song, track, buttonsProps, ...props}) {
     const {minimize,
         more,
-        queue,
-        repeat,
+        queue_props,
+        repeat_mode,
         skip_prev,
         play_pause,
         skip_next,
@@ -51,7 +51,7 @@ export default function TrackView({song, track, buttonsProps, ...props}) {
                         <div className='overview__general'>
                             <div className='overview__general__top'>
                                 <div>
-                                    <Button className={'medium-button'} icon={queue.icon} alt={queue.alt} functionality={queue.functionality}/>
+                                    <Button className={'medium-button'} icon={queue_props.icon} alt={queue_props.alt} functionality={queue_props.functionality}/>
                                 </div>
                                 <div>
                                     <h1 className='overview__general__track-name'>
@@ -59,7 +59,7 @@ export default function TrackView({song, track, buttonsProps, ...props}) {
                                     </h1>
                                 </div>
                                 <div>
-                                    <Button className={'medium-button'} icon={queue.icon} alt={queue.alt} functionality={queue.functionality}/>
+                                    <Button className={'medium-button'} icon={queue_props.icon} alt={queue_props.alt} functionality={queue_props.functionality}/>
                                 </div>
                             </div>
                             <div className='overview__general__bottom'>
@@ -75,7 +75,7 @@ export default function TrackView({song, track, buttonsProps, ...props}) {
                     <div className='TrackView__controls'>
                         <div className="Trackview__controls__main">
                             <div className='controls__main__left'>
-                                <Button className={'medium-button'} icon={repeat.icon} alt={repeat.alt} functionality={repeat.functionality} />
+                                <Button className={'medium-button'} icon={repeat_mode.icon} alt={repeat_mode.alt} functionality={repeat_mode.functionality} />
                             </div>
                             <div className='controls__main__center'>
                                 <Button icon={skip_prev.icon} alt={skip_prev.alt} functionality={skip_prev.functionality} />
@@ -96,7 +96,7 @@ export default function TrackView({song, track, buttonsProps, ...props}) {
                                 </h3>
                             </div>
                             <div className='controls__secondary__right'>
-                                <Button className={'small-button'} icon={queue.icon} alt={queue.alt} functionality={queue.functionality}/>
+                                <Button className={'small-button'} icon={queue_props.icon} alt={queue_props.alt} functionality={queue_props.functionality}/>
                             </div>
                         </div>
                     </div>

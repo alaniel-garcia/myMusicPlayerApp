@@ -4,6 +4,7 @@ import SongsList from './SongsList';
 import Current from './Current';
 import VolumeContext from '../context/VolumeContext';
 import { CurrentProvider } from '../context/CurrentContext';
+import { QueueProvider } from '../context/QueueContext'; 
 import { useContext, useEffect } from 'react';
 
 export default function App() {
@@ -27,10 +28,12 @@ export default function App() {
                             <Navbar />
                         </header>
                         <CurrentProvider>
-                            <main>
-                                <SongsList />
-                                <Current />
-                            </main>
+                            <QueueProvider>
+                                <main>
+                                    <SongsList />
+                                    <Current />
+                                </main>
+                            </QueueProvider>
                         </CurrentProvider>
                 </div>
        </>

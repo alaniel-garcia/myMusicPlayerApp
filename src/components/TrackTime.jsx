@@ -13,13 +13,17 @@ export default function TrackTime({track, metadata}){
 
     useEffect(() => {
         return () => {
-            track.removeEventListener('timeupdate', timeUpdate);
+            if(track){
+                track.removeEventListener('timeupdate', timeUpdate);
+            }
         };
     }, []);
 
     useEffect(() => {
-        track.removeEventListener('timeupdate', timeUpdate);
-        track.addEventListener('timeupdate', timeUpdate);
+        if(track){
+            track.removeEventListener('timeupdate', timeUpdate);
+            track.addEventListener('timeupdate', timeUpdate);
+        }
     }, [track]);
 
 

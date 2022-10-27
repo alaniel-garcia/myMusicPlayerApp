@@ -3,10 +3,12 @@ import Button from './miscellaneous/Button';
 import CurrentContext from '../context/CurrentContext';
 import { useContext } from 'react';
 import useButtonProps from '@hooks/useButtonProps';
+import QueueContext from '../context/QueueContext';
 
-export default function TrackCard({ song, cardType, ...props }) {
+export default function TrackCard({ song, cardType, songsList, ...props }) {
     
     const {setCurrent} = useContext(CurrentContext);
+    const {queue, addToQueue, addWithReset} = useContext(QueueContext);
     const more =  useButtonProps('more',()=>{'function not assigned yet'});
 
     function loadCardButtons() {
@@ -51,6 +53,12 @@ export default function TrackCard({ song, cardType, ...props }) {
                     }
                     else{
                         setCurrent(song)
+                        if(queue.length === 0){
+                            addToQueue(songsList)
+                        }
+                        else if(queue.length !== songsList.length){
+                            addWithReset(songsList)
+                        }
                     }
             }}>
                 <div className={cardType ? `TrackCard--left--${cardType}` : 'TrackCard--left'}>

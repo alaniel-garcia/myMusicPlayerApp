@@ -5,7 +5,7 @@ import icon_minimize from '@assets/icons/minimize_wght600.svg';
 import icon_more from '@assets/icons/more_wght600.svg';
 import icon_repeat from '@assets/icons/repeat_wght500.svg';
 import icon_repeat_one from '@assets/icons/repeat_one_wght500.svg';
-import icon_repeat_order from '@assets/icons/repeat_order_wght500.svg';
+import icon_no_repeat from '@assets/icons/no_repeat_wght500.svg';
 import icon_shuffle from '@assets/icons/shuffle.svg';
 import icon_skip_prev from '@assets/icons/skip_prev_wght400.svg';
 import icon_skip_next from '@assets/icons/skip_next_wght400.svg';
@@ -48,8 +48,8 @@ const repeat_one: ButtonProps = {
     icon: icon_repeat_one,
     alt: 'repeat one button'
 }
-const repeat_order: ButtonProps = {
-    icon: icon_repeat_order,
+const no_repeat: ButtonProps = {
+    icon: icon_no_repeat,
     alt: 'repeat order button'
 }
 const shuffle: ButtonProps = {
@@ -85,7 +85,7 @@ const buttonsProps: object = {
     more,
     repeat,
     repeat_one,
-    repeat_order,
+    no_repeat,
     shuffle,
     skip_prev,
     skip_next,

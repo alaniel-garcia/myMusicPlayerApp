@@ -46,7 +46,7 @@ export default function SongsList(props) {
                 <div className='SongsList__songs-container'>
                     {songs &&
                         songs.map((song, i) => {
-                            return <TrackCard key={i} song={song} />;
+                            return <TrackCard key={i} song={song} songsList={songs} />;
                         })}
                 </div>
             </div>
