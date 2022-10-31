@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import CurrentContext from '../context/CurrentContext';
 import QueueContext from '../context/QueueContext';
 
@@ -8,10 +8,25 @@ export default function useTrackViewButtonFunctionality({
     track,
     replayMode,
     setReplayMode,
-    setIsOpen}){
+    setIsOpen,
+    shuffleOn,
+    setShuffleOn
+}){
 
     const {current, setCurrent} = useContext(CurrentContext);
-    const {queue, getCurrentIndex} = useContext(QueueContext)
+    const {queue, getCurrentIndex, addWithReset} = useContext(QueueContext);
+    const [queueInitialState, setQueueInitialState] = useState([]); 
+    const currentIndex = getCurrentIndex(current?.id);
+
+    useEffect(()=>{
+        handleShuffleMode()
+    },[shuffleOn]);
+
+    useEffect(()=>{
+        if(shuffleOn && queue.length !== queueInitialState.length){
+            handleShuffleMode()
+        }
+    },[queue]);
 
     const handleTrackEnded= ()=>{
 
@@ -26,9 +41,75 @@ export default function useTrackViewButtonFunctionality({
         }
     }
 
+    //basic functionalities
+    function playFirstInQueue(){
+        setCurrent(queue[0])
+    }
+
+    function playLastInQueue(){
+        const lastTrackindex = queue.length - 1;
+        setCurrent(queue[lastTrackindex])
+    }
+
+    function playNext(){
+        setCurrent(queue[currentIndex + 1])
+    }
+
+    function playPrev(){
+        setCurrent(queue[currentIndex - 1])
+    }
+
+    function minimize() {
+        setIsOpen(false)
+    }
+
+    function autoPlay() {
+        track.play();
+    }
+
+    function repeatTrack(){
+        track.currentTime = 0;
+        track.play();
+    }
+
+    //basic compound functionalities
+    function handleSkipNext(){
+
+        if(currentIndex === queue.length - 1){
+            playFirstInQueue()
+
+            return
+        }
+        else {
+            playNext()
+        }
+    }
+
+    function handleSkipPrev(){
+
+        if(currentIndex === 0){
+            playLastInQueue()
+        }
+        else {
+            playPrev()
+        }
+    }
+
+    function togglePlay() {
+        if (track) {
+            if (isPaused) {
+                track.play();
+                setIsPaused(!isPaused);
+            } else {
+                track.pause();
+                setIsPaused(!isPaused);
+            }
+        }
+    }
+
+    //replayMode functionalities
     function handleRepeatMode() {
 
-        const currentIndex = getCurrentIndex(current.id);
 
         if(queue.length === 1){
             repeatTrack()
@@ -42,7 +123,6 @@ export default function useTrackViewButtonFunctionality({
     }
 
     function handleNoRepeatMode() {
-        const currentIndex = getCurrentIndex(current.id);
 
         if(currentIndex === queue.length - 1){
             setIsPaused(true)
@@ -74,71 +154,59 @@ export default function useTrackViewButtonFunctionality({
         }})
     }
 
-    function handleSkipNext(){
-        const currentIndex = getCurrentIndex(current.id);
-
-        if(currentIndex === queue.length - 1){
-            playFirstInQueue()
-
-            return
-        }
-        else {
-            playNext()
-        }
+    //Shuffle functionalities
+    function handleShuffleClick () {
+        setShuffleOn((prevState)=> !prevState)
     }
 
-    function handleSkipPrev(){
-        const currentIndex = getCurrentIndex(current.id);
+    function handleShuffleMode (){
+        if(shuffleOn){
+            setQueueInitialState([...queue]);
 
-        if(currentIndex === 0){
-            playLastInQueue()
+            const shuffled = shuffleArray([...queue]);
+
+            onShuffleSwapCurrentToTop(shuffled);
+
+            addWithReset(shuffled);
         }
-        else {
-            playPrev()
+        else{
+            addWithReset([...queueInitialState])
         }
     }
 
-    function togglePlay() {
-        if (track) {
-            if (isPaused) {
-                track.play();
-                setIsPaused(!isPaused);
-            } else {
-                track.pause();
-                setIsPaused(!isPaused);
-            }
+    function shuffleArray(array) {
+        let currentIndex = array.length,  randomIndex;
+
+        // While there remain elements to shuffle.
+        while (currentIndex !== 0) {
+
+            // Pick a remaining element.
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+
+            // And swap it with the current element.
+            [array[currentIndex], array[randomIndex]] = [
+            array[randomIndex], array[currentIndex]];
         }
+
+        return array;
     }
 
-    function playFirstInQueue(){
-        setCurrent(queue[0])
-    }
-    function playLastInQueue(){
-        const lastTrackindex = queue.length - 1;
-        setCurrent(queue[lastTrackindex])
-    }
+    function onShuffleSwapCurrentToTop(shuffledArray) {
 
-    function playNext(){
-        const currentIndex = getCurrentIndex(current.id);
-        setCurrent(queue[currentIndex + 1])
-    }
 
-    function playPrev(){
-        const currentIndex = getCurrentIndex(current.id);
-        setCurrent(queue[currentIndex - 1])
-    }
+            // find index of queue current track in shuffled array
+            let newCurrentIndex; 
 
-    function minimize() {
-        setIsOpen(false)
-    }
+            shuffledArray.forEach((element, i) => {
+                if(element.id === queue[currentIndex].id){
+                    newCurrentIndex = i;
+                } 
+            });
 
-    function autoPlay() {
-        track.play();
-    }
-
-    function repeatTrack(){
-        track.currentTime = 0;
-        track.play();
+            //move the queue current track to the beginning
+            [shuffledArray[0], shuffledArray[newCurrentIndex]] = [
+            shuffledArray[newCurrentIndex], shuffledArray[0]];
     }
 
     return {
@@ -151,6 +219,7 @@ export default function useTrackViewButtonFunctionality({
         handleNoRepeatMode,
         handleSkipNext,
         handleSkipPrev,
+        handleShuffleClick,
         toggleReplayMode
     }
 }

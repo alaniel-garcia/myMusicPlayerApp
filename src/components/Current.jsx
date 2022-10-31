@@ -12,6 +12,7 @@ export default function Current() {
     const [track, setTrack] = useState(null);
     const [isPaused, setIsPaused] = useState(true);
     const [isOpen, setIsOpen] = useState(false);
+    const [shuffleOn, setShuffleOn] = useState(false);
     const {volume, sound, volumeOff} = useContext(VolumeContext);
     const [replayMode, setReplayMode] = useState({
         repeat : true,
@@ -29,6 +30,7 @@ export default function Current() {
         handleTrackEnded,
         handleSkipPrev,
         handleSkipNext,
+        handleShuffleClick,
         toggleReplayMode} 
         = useTrackViewButtonFunctionality({
             isPaused, 
@@ -36,7 +38,9 @@ export default function Current() {
             track,
             replayMode,
             setReplayMode,
-            setIsOpen
+            setIsOpen,
+            shuffleOn,
+            setShuffleOn
         });
 
     //setting buttons's props for complete and minimized view
@@ -83,7 +87,7 @@ export default function Current() {
     function loadCompleteViewBtnsProps() {
 
         const btnsPropsToLoad ={
-            minimize: useButtonProps('minimize',()=> minimize()),
+            minimize: useButtonProps('minimize', minimize),
             more: useButtonProps('more', ()=> 'not assigned yet'),
             repeat: useButtonProps('repeat', ()=> {
                 toggleReplayMode('repeat')
@@ -96,7 +100,7 @@ export default function Current() {
             }),
             skip_prev: useButtonProps('skip_prev', handleSkipPrev),
             skip_next: useButtonProps('skip_next', handleSkipNext),
-            shuffle: useButtonProps('shuffle', ()=> 'not assigned yet'),
+            shuffle: useButtonProps('shuffle', handleShuffleClick),
             volume: useButtonProps('volume', () => 'not assigned yet')
         }
 
@@ -144,6 +148,9 @@ export default function Current() {
                         skip_prev,
                         skip_next,
                         shuffle,
+                    }}
+                    referenceStates={{
+                        shuffleOn
                     }}
                 />
             )

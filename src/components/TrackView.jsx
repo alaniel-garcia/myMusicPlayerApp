@@ -2,11 +2,12 @@ import './TrackView.scss';
 import Button from './miscellaneous/Button';
 import TrackTime from './TrackTime';
 import TrackVolume from './TrackVolume';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useButtonProps from '@hooks/useButtonProps';
 import PopElement from './miscellaneous/PopElement';
+import useTrackViewButtonFunctionality from '../hooks/useTrackViewButtonFunctionality';
 
-export default function TrackView({song, track, buttonsProps, ...props}) {
+export default function TrackView({song, track, buttonsProps, referenceStates, ...props}) {
     const {minimize,
         more,
         queue_props,
@@ -14,11 +15,10 @@ export default function TrackView({song, track, buttonsProps, ...props}) {
         skip_prev,
         play_pause,
         skip_next,
-        shuffle,
+        shuffle
     } = buttonsProps;
 
     const [volumeOpen, setVolumeOpen] = useState(false);
-    
 
     const volume = useButtonProps('volume',()=>{
         setVolumeOpen(prevState => !prevState)
@@ -83,7 +83,7 @@ export default function TrackView({song, track, buttonsProps, ...props}) {
                                 <Button icon={skip_next.icon} alt={skip_next.alt} functionality={skip_next.functionality} />
                             </div>
                             <div className='controls__main__right'>
-                                <Button className={'medium-button'} icon={shuffle.icon} alt={shuffle.alt} functionality={shuffle.functionality} />
+                                <Button className={'medium-button'} icon={shuffle.icon} alt={shuffle.alt} functionality={shuffle.functionality} activeMode={referenceStates.shuffleOn} />
                             </div>
                         </div>
                         <div className='Trackview__controls__secondary'>
