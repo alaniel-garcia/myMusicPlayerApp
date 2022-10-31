@@ -6,10 +6,16 @@ export default function Button({
     className,
     alt,
     functionality,
+    activeMode = true,
      ...props})
 {
 
     const button = useRef();
+
+    const inactiveStyle = {
+        filter: 'invert(40%) sepia(0%) saturate(0%) hue-rotate(247deg) brightness(96%) contrast(94%)',
+        opacity: '0.6'
+    }
 
     function clickEffect() {
         button.current?.classList.add('click-wave');
@@ -28,7 +34,7 @@ export default function Button({
                 functionality()
             }}
         >
-            <img src={icon} alt={alt} />
+            <img className='Button-icon' src={icon} alt={alt} style={!activeMode ? inactiveStyle : null}/>
         </div>
     )
 
