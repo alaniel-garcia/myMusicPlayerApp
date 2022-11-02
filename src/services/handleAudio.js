@@ -2,7 +2,7 @@ import audioIdGenerator from './audioIdGenerator';
 import defaultCover from '@assets/images/defaultCover.png';
 import getAudioMetadata from './getAudioMetadata';
 
-export default async function handleAudioLoad(audioFile){
+export default async function handleAudio(audioFile){
     if(audioFile){
         if(audioFile.type && !audioFile.type.startsWith('audio/')){
             throw new Error('File type doesn´t match audio type');  
