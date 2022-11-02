@@ -5,7 +5,7 @@ export default function Button({
     icon, 
     className,
     alt,
-    functionality,
+    functionality = ()=>{},
     activeMode = true,
      ...props})
 {

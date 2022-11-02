@@ -15,9 +15,14 @@ function searchTarget(
     return result;
 }
 
-function useButtonProps( targetProps: string, buttonFunctionality: () => any): object | undefined {
+function useButtonProps( targetProps: string, buttonFunctionality: () => any | boolean): object | undefined {
 
-    if(typeof(buttonFunctionality) !== 'function'){
+    if(typeof(buttonFunctionality) === 'boolean'){
+        if(buttonFunctionality !== false){
+            throw new Error('Only false value is accepted for boolean');
+        } 
+    }
+    else if(typeof(buttonFunctionality) !== 'function'){
         throw new Error('Second argument must be a function');
     }
 

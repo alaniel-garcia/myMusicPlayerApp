@@ -12,6 +12,8 @@ import icon_skip_next from '@assets/icons/skip_next_wght400.svg';
 import icon_volume from '@assets/icons/volume_wght400.svg';
 import icon_volume_off from '@assets/icons/volume_off_wght400.svg';
 import icon_search from '@assets/icons/search_wght400.svg';
+import icon_go_back from '@assets/icons/arrow_back_wght400.svg';
+import icon_add from '@assets/icons/add_wght400.svg';
 
 
 interface ButtonProps {
@@ -76,6 +78,14 @@ const search: ButtonProps = {
     icon: icon_search,
     alt: 'search button'
 }
+const go_back: ButtonProps = {
+    icon: icon_go_back,
+    alt: 'go back button'
+}
+const add: ButtonProps = {
+    icon: icon_add,
+    alt: 'add button'
+}
 
 const buttonsProps: object = {
     play,
@@ -91,7 +101,9 @@ const buttonsProps: object = {
     skip_next,
     volume,
     volume_off,
-    search
+    search,
+    go_back,
+    add
 };
 
 export default buttonsProps;

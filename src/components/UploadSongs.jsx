@@ -1,5 +1,7 @@
-import icon_add from '@assets/icons/add_wght400.svg';
+import './UploadSongs.scss'
 import handleFilesUpload from '@services/handleFilesUpload';
+import useButtonProps from '@hooks/useButtonProps';
+import Button from './miscellaneous/Button';
 
 export default function UploadSongs({container, content}){
 
@@ -8,9 +10,11 @@ export default function UploadSongs({container, content}){
         container([...content, ...tracks])
     }
 
+    const add = useButtonProps('add', false)
+
     return (
         <>
-            <div className='UploadSongs'>
+            <div className='UploadSongs' >
                 <input
                     onInputCapture={(event) => onInputCapture(event)}
                     multiple
@@ -20,8 +24,8 @@ export default function UploadSongs({container, content}){
                     accept='audio/mp3, audio/flac, audio/opus, audio/ogg, audio/m4a'
                     hidden
                 />
-                <label htmlFor='fileReader'>
-                    <img src={icon_add} alt='add button' />
+                <label htmlFor='fileReader' >
+                    <Button icon={add.icon} alt={add.alt} />
                 </label>
             </div>
         </>
