@@ -1,0 +1,26 @@
+@use '@assets/styles/index.scss' as idx;
+
+.Songs {
+  position: relative;
+}
+
+.Songs__header {
+  height: 5rem;
+}
+
+.Songs__header-info {
+  position: fixed;
+    z-index: 100;
+    top: 6.5rem;
+
+  display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+  width: 100%;
+  height: 5.5rem;
+
+  padding-inline-start: idx.$general-padding;
+
+  background: idx.$background;
+}

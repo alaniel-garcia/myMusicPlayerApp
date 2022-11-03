@@ -1,11 +1,11 @@
 import './App.scss';
 import Navbar from './Navbar';
-import SongsList from './SongsList';
 import Current from './Current';
 import VolumeContext from '../context/VolumeContext';
 import { CurrentProvider } from '../context/CurrentContext';
 import { QueueProvider } from '../context/QueueContext'; 
 import { useContext, useEffect } from 'react';
+import Songs from './Songs';
 
 export default function App() {
     const {volume, onSetVolume} = useContext(VolumeContext);
@@ -30,9 +30,9 @@ export default function App() {
                         <CurrentProvider>
                             <QueueProvider>
                                 <main>
-                                    <SongsList />
-                                    <Current />
+                                    <Songs />
                                 </main>
+                                <Current />
                             </QueueProvider>
                         </CurrentProvider>
                 </div>
