@@ -1,0 +1,6 @@
+@use '@assets/styles/index.scss' as idx;
+
+.SongsList {
+  height: 100%;
+  overflow: scroll;
+}
