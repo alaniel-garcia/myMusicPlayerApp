@@ -2,12 +2,12 @@ import './TrackView.scss';
 import Button from './miscellaneous/Button';
 import TrackTime from './TrackTime';
 import TrackVolume from './TrackVolume';
-import { useEffect, useState } from 'react';
+import Queue from './Queue';
+import { useState } from 'react';
 import useButtonProps from '@hooks/useButtonProps';
 import PopElement from './miscellaneous/PopElement';
-import useTrackViewButtonFunctionality from '../hooks/useTrackViewButtonFunctionality';
 
-export default function TrackView({song, track, buttonsProps, referenceStates, ...props}) {
+export default function TrackView({song, track, buttonsProps, referenceStates, openStateHandler, ...props}) {
     const {minimize,
         more,
         queue_props,
@@ -30,6 +30,7 @@ export default function TrackView({song, track, buttonsProps, referenceStates, .
 
     return(
         <>
+            {referenceStates.queueIsOpen && <Queue openStateHandler={openStateHandler} />}
             <div className='TrackView'>
                 <div className='TrackView__top'>
                     <Button className={'medium-button'} icon={minimize.icon} alt={minimize.alt} functionality={minimize.functionality}/>

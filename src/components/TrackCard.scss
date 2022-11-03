@@ -50,11 +50,6 @@ $icons-size-current: calc($icons-size - 1rem);
   }
 }
 
-.TrackCard--current {
-  position: fixed;
-    bottom: 0;
-}
-
 .track-cover {
   @extend %track-cover-defaults;
 

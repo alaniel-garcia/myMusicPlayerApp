@@ -5,7 +5,8 @@ import VolumeContext from '../context/VolumeContext';
 import TrackCard from './TrackCard';
 import TrackView from './TrackView';
 import useButtonProps from '@hooks/useButtonProps';
-import useTrackViewButtonFunctionality from '@hooks/useTrackViewButtonFunctionality'
+import useTrackViewButtonFunctionality from '@hooks/useTrackViewButtonFunctionality';
+import useHandleBooleanState from '../hooks/useHandleBooleanState';
 
 export default function Current() {
     const { current } = useContext(CurrentContext);
@@ -14,6 +15,7 @@ export default function Current() {
     const [isOpen, setIsOpen] = useState(false);
     const [shuffleOn, setShuffleOn] = useState(false);
     const {volume, sound, volumeOff} = useContext(VolumeContext);
+    const [queueIsOpen, setQueueIsOpen] = useState(false);
     const [replayMode, setReplayMode] = useState({
         repeat : true,
         repeatOne : false,
@@ -25,28 +27,25 @@ export default function Current() {
     //Calling buttons's functions
     const { 
         autoPlay,
-        minimize,
         togglePlay,
         handleTrackEnded,
         handleSkipPrev,
         handleSkipNext,
-        handleShuffleClick,
-        toggleReplayMode} 
+        toggleReplayMode,
+    } 
         = useTrackViewButtonFunctionality({
             isPaused, 
             setIsPaused,
             track,
             replayMode,
             setReplayMode,
-            setIsOpen,
             shuffleOn,
-            setShuffleOn
         });
 
     //setting buttons's props for complete and minimized view
     const play_props = useButtonProps('play', togglePlay);
     const pause_props = useButtonProps('pause', togglePlay);
-    const queue_props = useButtonProps('queue',() => 'not assigned yet');
+    const queue_props = useButtonProps('queue', ()=>{ useHandleBooleanState(setQueueIsOpen)});
 
     useEffect(() => {
         if (current && !track) {
@@ -87,7 +86,7 @@ export default function Current() {
     function loadCompleteViewBtnsProps() {
 
         const btnsPropsToLoad ={
-            minimize: useButtonProps('minimize', minimize),
+            minimize: useButtonProps('minimize', ()=> useHandleBooleanState(setIsOpen)),
             more: useButtonProps('more', ()=> 'not assigned yet'),
             repeat: useButtonProps('repeat', ()=> {
                 toggleReplayMode('repeat')
@@ -100,7 +99,7 @@ export default function Current() {
             }),
             skip_prev: useButtonProps('skip_prev', handleSkipPrev),
             skip_next: useButtonProps('skip_next', handleSkipNext),
-            shuffle: useButtonProps('shuffle', handleShuffleClick),
+            shuffle: useButtonProps('shuffle', ()=> useHandleBooleanState(setShuffleOn)),
             volume: useButtonProps('volume', () => 'not assigned yet')
         }
 
@@ -150,8 +149,12 @@ export default function Current() {
                         shuffle,
                     }}
                     referenceStates={{
-                        shuffleOn
+                        shuffleOn,
+                        queueIsOpen
                     }}
+                    openStateHandler={
+                        setQueueIsOpen
+                    }
                 />
             )
         }

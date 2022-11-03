@@ -8,9 +8,7 @@ export default function useTrackViewButtonFunctionality({
     track,
     replayMode,
     setReplayMode,
-    setIsOpen,
     shuffleOn,
-    setShuffleOn
 }){
 
     const {current, setCurrent} = useContext(CurrentContext);
@@ -57,10 +55,6 @@ export default function useTrackViewButtonFunctionality({
 
     function playPrev(){
         setCurrent(queue[currentIndex - 1])
-    }
-
-    function minimize() {
-        setIsOpen(false)
     }
 
     function autoPlay() {
@@ -110,7 +104,6 @@ export default function useTrackViewButtonFunctionality({
     //replayMode functionalities
     function handleRepeatMode() {
 
-
         if(queue.length === 1){
             repeatTrack()
         }
@@ -155,10 +148,6 @@ export default function useTrackViewButtonFunctionality({
     }
 
     //Shuffle functionalities
-    function handleShuffleClick () {
-        setShuffleOn((prevState)=> !prevState)
-    }
-
     function handleShuffleMode (){
         if(shuffleOn){
             setQueueInitialState([...queue]);
@@ -211,7 +200,6 @@ export default function useTrackViewButtonFunctionality({
 
     return {
         autoPlay,
-        minimize,
         togglePlay,
         repeatTrack,
         handleTrackEnded,
@@ -219,7 +207,6 @@ export default function useTrackViewButtonFunctionality({
         handleNoRepeatMode,
         handleSkipNext,
         handleSkipPrev,
-        handleShuffleClick,
-        toggleReplayMode
+        toggleReplayMode,
     }
 }
