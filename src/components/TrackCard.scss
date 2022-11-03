@@ -51,7 +51,7 @@ $icons-size-current: calc($icons-size - 1rem);
 }
 
 .TrackCard--current {
-  position: absolute;
+  position: fixed;
     bottom: 0;
 }
 
