@@ -6,7 +6,6 @@ import { CurrentProvider } from '../context/CurrentContext';
 import { QueueProvider } from '../context/QueueContext'; 
 import { useContext, useEffect } from 'react';
 import Songs from './Songs';
-import { HashRouter, Route, Routes } from 'react-router-dom';
 
 export default function App() {
     const {volume, onSetVolume} = useContext(VolumeContext);
@@ -24,7 +23,6 @@ export default function App() {
 
     return (
         <>
-            <HashRouter>
                 <div className='App'>
                         <header>
                             <Navbar />
@@ -32,15 +30,12 @@ export default function App() {
                         <CurrentProvider>
                             <QueueProvider>
                                 <main>
-                                    <Routes>
-                                        <Route path='/' element={<Songs/>}/>
-                                    </Routes>
+                                    <Songs />
                                 </main>
                                 <Current />
                             </QueueProvider>
                         </CurrentProvider>
-               </div>
-            </HashRouter>
+                </div>
        </>
     );
 }
