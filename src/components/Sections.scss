@@ -1,0 +1,45 @@
+@use '@assets/styles/index.scss' as idx;
+
+.Sections {
+  position: relative;
+    z-index: 200;
+
+  border-bottom: 1px solid white;
+
+  ul {
+    display: flex;
+      justify-content: space-around;
+
+    margin-block: .8rem;
+
+    list-style-type: none;
+      text-decoration: none;
+  }
+}
+
+.Sections__section {
+  li{
+    padding: .4rem;
+    opacity: .5;
+  }
+
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.section--selected {
+
+  li {
+    opacity: 1;
+  }
+
+  div {
+    width: 100%;
+    height: 4px;
+
+    background: idx.$highlights;
+      border-radius: 4px;
+  }
+}

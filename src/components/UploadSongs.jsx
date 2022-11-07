@@ -25,7 +25,7 @@ export default function UploadSongs({container, content}){
                     hidden
                 />
                 <label htmlFor='fileReader' >
-                    <Button icon={add.icon} alt={add.alt} />
+                    <Button className={'medium-button'} icon={add.icon} alt={add.alt} />
                 </label>
             </div>
         </>

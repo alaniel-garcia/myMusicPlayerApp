@@ -6,9 +6,12 @@ import { CurrentProvider } from '../context/CurrentContext';
 import { QueueProvider } from '../context/QueueContext'; 
 import { useContext, useEffect } from 'react';
 import Songs from './Songs';
+import Sections from './Sections';
+import SectionContext from '../context/SectionContext';
 
 export default function App() {
     const {volume, onSetVolume} = useContext(VolumeContext);
+    const {section} = useContext(SectionContext);
 
     useEffect(()=>{
         window.addEventListener('beforeunload', ()=>{
@@ -26,16 +29,19 @@ export default function App() {
                 <div className='App'>
                         <header>
                             <Navbar />
+                            <Sections />
                         </header>
                         <CurrentProvider>
                             <QueueProvider>
                                 <main>
-                                    <Songs />
+                                    <Songs className={!section.songs ? 'hidden': ''} />
+                                    <h1 className={!section.playlists ? 'hidden': ''}>Playlists</h1>
+                                    <h1 className={!section.artists ? 'hidden': ''}>Artists</h1>
                                 </main>
                                 <Current />
                             </QueueProvider>
                         </CurrentProvider>
-                </div>
+               </div>
        </>
     );
 }
