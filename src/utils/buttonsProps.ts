@@ -14,12 +14,7 @@ import icon_volume_off from '@assets/icons/volume_off_wght400.svg';
 import icon_search from '@assets/icons/search_wght400.svg';
 import icon_go_back from '@assets/icons/arrow_back_wght400.svg';
 import icon_add from '@assets/icons/add_wght400.svg';
-
-
-interface ButtonProps {
-    icon: string;
-    alt: string;
-}
+import { ButtonProps, ButtonPropsContainer } from 'src/types';
 
 // defining props
 const play: ButtonProps = {
@@ -87,23 +82,23 @@ const add: ButtonProps = {
     alt: 'add button'
 }
 
-const buttonsProps: object = {
-    play,
-    pause,
-    queue,
-    minimize,
-    more,
-    repeat,
-    repeat_one,
-    no_repeat,
-    shuffle,
-    skip_prev,
-    skip_next,
-    volume,
-    volume_off,
-    search,
-    go_back,
-    add
-};
+const buttonsProps: Array<ButtonPropsContainer> = [
+    {name: 'play', props: play},
+    {name: 'pause', props: pause},
+    {name: 'queue', props: queue},
+    {name: 'minimize', props: minimize},
+    {name: 'more', props: more},
+    {name: 'repeat', props: repeat},
+    {name: 'repeat_one', props: repeat_one},
+    {name: 'no_repeat', props: no_repeat},
+    {name: 'shuffle', props: shuffle},
+    {name: 'skip_prev', props: skip_prev},
+    {name: 'skip_next', props: skip_next},
+    {name: 'volume', props: volume},
+    {name: 'volume_off', props: volume_off},
+    {name: 'search', props: search},
+    {name: 'go_back', props: go_back},
+    {name: 'add', props: add}
+];
 
 export default buttonsProps;

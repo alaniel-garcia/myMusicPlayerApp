@@ -1,21 +1,21 @@
-import buttonsProps from '@utils/buttonsProps/buttonsProps';
+import buttonsProps from '@utils/buttonsProps';
+import { ButtonProps, ButtonPropsContainer, Icon } from "src/types";
 
-function searchTarget(
+function searchTarget (
     target: string,
-    object: object
-): [key: string, value: object] | undefined {
-    const objectEntries = Object.entries(object);
-
-    const result = objectEntries.filter((entry) => {
-        if (entry[0] === target) {
-            return entry[1];
+    array: Array<ButtonPropsContainer>
+): ButtonPropsContainer | undefined{
+    let result;
+    array.forEach((btnProps)=>{
+        if(btnProps.name === target){
+            result = btnProps
         }
-    })[0];
+    })
 
-    return result;
+    return result
 }
 
-function useButtonProps( targetProps: string, buttonFunctionality: () => any | boolean): object | undefined {
+function useButtonProps( targetProps: string, buttonFunctionality: Function | boolean): Icon {
 
     if(typeof(buttonFunctionality) === 'boolean'){
         if(buttonFunctionality !== false){
@@ -28,16 +28,17 @@ function useButtonProps( targetProps: string, buttonFunctionality: () => any | b
 
     const target = searchTarget(targetProps, buttonsProps);
 
-    const props: object | undefined = target ? target[1] : undefined;
-
     if (!target) {
         throw new Error(`${targetProps} not found in buttonsProps`);
-    } else if (props) {
-        return {
-            ...props,
-            ['functionality']: buttonFunctionality,
-        };
-    }
+    } 
+
+    const props: ButtonProps = target.props;
+
+    return {
+        icon: props.icon,
+        alt: props.alt,
+        functionality: buttonFunctionality ? buttonFunctionality : undefined,
+    };
 }
 
 export default useButtonProps;
