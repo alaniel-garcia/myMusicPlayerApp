@@ -1,0 +1,86 @@
+@use '@assets/styles/index.scss' as idx;
+
+.AddPlaylist {
+  display: flex;
+    justify-content: center;
+    align-items: center;
+
+  position: fixed;
+    top: 0;
+    z-index: 400;
+
+  width: 100vw;
+    height: 100vh;
+
+  background: rgba(0,0,0,.7);
+}
+
+.AddPlaylist__form {
+  width: 80%;
+    max-width: 500px;
+    padding: 1.6rem;
+
+
+  background: idx.$background;
+    border-radius: .4rem;
+}
+
+.form__content {
+  display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+
+  height: 100%;
+}
+
+.form__content__main {
+  display: flex;
+    align-items: flex-end;
+
+  margin-block-start: calc(idx.$general-padding * 1);
+  margin-block-end: calc(idx.$general-padding * 2);
+}
+
+.content__main__img{
+  width: 6rem;
+
+  border-radius: .4rem;
+
+  img {
+    display: block;
+    border-radius: .4rem;
+  }
+}
+
+.content__main__input {
+  width: 100%;
+    margin-inline-start: .8rem;
+
+  input {
+    width: 100%;
+
+    border: none;
+      outline: none;
+      border-bottom: 2px solid white;
+      background: transparent;
+      color: white;
+  }
+}
+
+.form__content__options {
+  display: flex;
+    justify-content: space-between;
+}
+
+.content__options__button {
+  padding-block: .8rem;
+    padding-inline: 1.6rem;
+
+  background: idx.$highlights;
+    border-radius: .2rem;
+
+  &:hover {
+    cursor: pointer;
+  }
+}

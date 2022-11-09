@@ -1,0 +1,32 @@
+.PlaylistCard {
+  display: flex;
+    justify-content: space-between; 
+
+  // outline: 2px solid red;
+}
+
+.PlaylistCard__left {
+  display: flex;
+    column-gap: .8rem;
+}
+
+.PlaylistCard__info {
+
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  h2 {
+    opacity: .5;
+  }
+}
+
+.PlaylistCard__cover {
+  width: 5rem;
+    border-radius: .4rem;
+
+  img {
+    display: block;
+    border-radius: .4rem;
+  }
+}

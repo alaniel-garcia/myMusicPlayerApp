@@ -8,6 +8,7 @@ import { useContext, useEffect } from 'react';
 import Songs from './Songs';
 import Sections from './Sections';
 import SectionContext from '../context/SectionContext';
+import Playlists from './Playlists';
 
 export default function App() {
     const {volume, onSetVolume} = useContext(VolumeContext);
@@ -35,7 +36,7 @@ export default function App() {
                             <QueueProvider>
                                 <main>
                                     <Songs className={!section.songs ? 'hidden': ''} />
-                                    <h1 className={!section.playlists ? 'hidden': ''}>Playlists</h1>
+                                    <Playlists className={!section.playlists ? 'hidden': ''} />
                                     <h1 className={!section.artists ? 'hidden': ''}>Artists</h1>
                                 </main>
                                 <Current />

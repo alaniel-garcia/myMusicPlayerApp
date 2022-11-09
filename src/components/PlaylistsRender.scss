@@ -1,0 +1,9 @@
+@use '@assets/styles/index.scss' as idx;
+
+.PlaylistsRender {
+  display: flex;
+    flex-direction: column;
+    row-gap: 2rem;
+
+  margin-inline-start: idx.$general-padding;
+}

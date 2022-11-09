@@ -1,0 +1,73 @@
+@use '@assets/styles/index.scss' as idx;
+
+.PlaylistView {
+  position: fixed;
+    top: 0;
+    z-index: 200;
+  
+  width: 100vw;
+    height: 100vh;
+
+  background: idx.$background;
+}
+
+.PlaylistView__header {
+  display: flex;
+    justify-content: space-between;
+
+  margin: idx.$general-padding;
+}
+
+.PlaylistView__header__right {
+  display: flex;
+}
+
+.PlaylistView__banner {
+  display: grid;
+    grid-template-columns: 50% 50%;
+
+  margin-inline: idx.$general-padding;
+}
+
+.banner__cover {
+  border-radius: .8rem;
+
+  img {
+    border-radius: .8rem;
+  }
+}
+
+.banner__info {
+  margin-inline-start: 1.2rem;
+
+  h2 {
+    margin-block-start: .4rem;
+
+    opacity: .6;
+  }
+}
+
+.PlaylistView__play-options {
+  display: grid;
+    grid-template-columns: 50% 50%;
+
+  margin: idx.$general-padding;
+}
+
+.play-options__button {
+  display: flex;
+    justify-content: center;
+
+  padding-block: .8rem;
+
+  background: idx.$highlights;
+    border-radius: .4rem;
+  
+    &:hover {
+      cursor: pointer;
+    }
+}
+
+.play-options__button--right {
+  margin-inline-start: 1.2rem;
+}

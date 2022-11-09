@@ -1,0 +1,9 @@
+@use '@assets/styles/index.scss' as idx;
+
+.Playlists__header {
+  display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: idx.$general-padding;
+}
