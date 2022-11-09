@@ -1,16 +1,24 @@
 import { useRef } from 'react';
 import './Button.scss';
 
+interface Props {
+    icon: string
+    className?:string
+    alt: string
+    functionality?: Function
+    activeMode?: boolean
+}
+
 export default function Button({
     icon, 
     className,
     alt,
-    functionality = ()=>{},
+    functionality,
     activeMode = true,
-     ...props})
+    } : Props)
 {
 
-    const button = useRef();
+    const button = useRef<HTMLDivElement>(null);
 
     const inactiveStyle = {
         filter: 'invert(40%) sepia(0%) saturate(0%) hue-rotate(247deg) brightness(96%) contrast(94%)',
@@ -31,10 +39,12 @@ export default function Button({
             onClick={(event) => {
                 event.stopPropagation()
                 clickEffect()
-                functionality()
+                if(functionality){
+                    functionality()
+                }
             }}
         >
-            <img className='Button-icon' src={icon} alt={alt} style={!activeMode ? inactiveStyle : null}/>
+            <img className='Button-icon' src={icon} alt={alt} style={!activeMode ? inactiveStyle : {}}/>
         </div>
     )
 

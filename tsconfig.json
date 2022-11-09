@@ -24,7 +24,8 @@
         "baseUrl": "./",
         "paths": {
             "@utils/*": ["src/utils/*"],
-            "@assets/*": ["src/assets/*"]
+            "@assets/*": ["src/assets/*"],
+            "@hooks/*": ["src/hooks/*"]
         }
     },
     "include": ["src/**/*.ts", "src/**/*.tsx"],
