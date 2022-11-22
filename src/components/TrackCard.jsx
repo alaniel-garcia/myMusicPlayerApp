@@ -1,57 +1,108 @@
 import './TrackCard.scss';
 import Button from './miscellaneous/Button';
 import CurrentContext from '../context/CurrentContext';
-import { useContext } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import useButtonProps from '@hooks/useButtonProps';
 import QueueContext from '../context/QueueContext';
+import useHandleBooleanState from '@hooks/useHandleBooleanState';
+import useSelectionContext from '@hooks/useSelectionContext';
 
-export default function TrackCard({ song, cardType, songsList, ...props }) {
+export default function TrackCard({ song, cardType, songsList, hidden, areAllSelected, ...props }) {
     
     const {setCurrent} = useContext(CurrentContext);
-    const {queue, addToQueue, addWithReset} = useContext(QueueContext);
+    const {queue, addToQueue, addWithReset, removeFromQueue} = useContext(QueueContext);
+    const [isSelected, setIsSelected] = useState(false);
+    const { updateSelected,removeSelected, resetSelected} = useSelectionContext();
+    const didmount = useRef(true);
+
     const more =  useButtonProps('more',()=>{'function not assigned yet'});
+    const delete_ = useButtonProps('delete', ()=> removeFromQueue(song.id));
+    const drag = useButtonProps('drag',()=> {'function not assigned yet'});
+    const check = useButtonProps('check', ()=> handleClick());
 
-    function loadCardButtons() {
-        if(cardType){
-            const buttons = [];
+    useEffect(()=>{
+        if(didmount.current){
+        }
+        else {
+            if(areAllSelected){
+                if(!isSelected){
+                    setIsSelected(true)
+                }
+            }
+            else {
+                if(isSelected){
+                    setIsSelected(false)
+                }
+            }
 
-            //creating buttons with elemental props
-            props.buttonsProps.map((btnProps, i) => {
-                buttons.push(
-                    <Button 
-                        key={i}
-                        icon={btnProps.icon} 
-                        className={`TrackCard__icon--${cardType}`}
-                        alt={btnProps.alt}
-                        functionality={btnProps.functionality}
-                    />
-                )
-            })
+        }
+    },[areAllSelected]);
 
-            return(
-                <>
-                    {buttons.map(button => button)}
-                </>
-            )
+    useEffect(()=>{
+        if(didmount.current){
+            didmount.current = false;
         }
         else{
+            if(isSelected){
+                updateSelected(song)
+            }
+            else{
+                if(areAllSelected === false){
+                    resetSelected();
+                }
+                else{
+                    removeSelected(song.id);
+                }
+            }
+        }
+    },[isSelected]);
+
+    const handleClick = ()=>{
+        useHandleBooleanState(setIsSelected)
+    }
+
+    function loadCardButtons() {
+        if(cardType === 'default' || cardType === 'playlist'){
             return(
                 <div className='TrackCard__icon'>
                     <Button icon={more.icon} alt={more.alt} functionality={more.functionality} />
                 </div>
             )
         }
+        else if(cardType === 'current'){
+            //creating buttons with  buttonsProps passed by current component
+            return props.buttonsProps.map((btnProps, i) => {
+                return  <Button 
+                        key={i}
+                        icon={btnProps.icon} 
+                        className={`TrackCard__icon--${cardType}`}
+                        alt={btnProps.alt}
+                        functionality={btnProps.functionality}
+                    />
+            })
+        }
+        else if(cardType === 'queue'){
+            return <>
+                <Button className='medium-button' icon={delete_.icon} alt={delete_.alt} functionality={delete_.functionality} />
+                <Button className='medium-button' icon={drag.icon} alt={drag.alt} functionality={drag.functionality} />
+            </>
+        }
+        else if(cardType === 'addPlaylist'){
+            return <>
+                <Button className='medium-button' icon={check.icon} alt={check.alt} functionality={check.functionality} selectedMode= {true} selectedState={isSelected} />
+            </>
+        }
     }
 
     return (
         <>
             <div 
-                className={cardType ? `TrackCard TrackCard--${cardType}` : 'TrackCard'} 
-                onClick={()=> {
-                    if(cardType && props.onClick){
-                        props.onClick()
-                    }
-                    else{
+                className={`TrackCard TrackCard--${cardType}`} 
+                hidden={hidden}
+                onClick={(event)=> {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    if(cardType === 'default' || cardType === 'playlist'){
                         setCurrent(song)
                         if(queue.length === 0){
                             addToQueue(songsList)
@@ -60,10 +111,19 @@ export default function TrackCard({ song, cardType, songsList, ...props }) {
                             addWithReset(songsList)
                         }
                     }
+                    else if(cardType === 'queue'){
+                        setCurrent(song)
+                    }
+                    else if(cardType === 'addPlaylist'){
+                        handleClick()
+                    }
+                    else{
+                        props.onClick()
+                    }
             }}>
-                <div className={cardType ? `TrackCard--left--${cardType}` : 'TrackCard--left'}>
+                <div className={`TrackCard--left--${cardType}`}>
                     <div className='TrackCard__section'>
-                        <div className={cardType ? `track-cover--${cardType}` : 'track-cover'}>
+                        <div className={`track-cover--${cardType}`}>
                             <img src={song.cover} /*alt="song´s album cover"*/ />
                         </div>
                     </div>

@@ -35,7 +35,7 @@ $icons-size-current: calc($icons-size - 1rem);
 
   outline: 2px solid red;
 
-  .TrackCard--left {
+  .TrackCard--left--default, .TrackCard--left--queue, .TrackCard--left--addPlaylist, .TrackCard--left--playlist {
     display: flex;
 
     width: calc(100% - ($icons-size * 2) + 1.2rem) ;
@@ -47,10 +47,19 @@ $icons-size-current: calc($icons-size - 1rem);
 
   .TrackCard--right {
     display: flex;
+
+    .TrackCard__section {
+      align-items: center;
+    }
   }
 }
 
-.track-cover {
+.TrackCard--current {
+  position: relative;
+    z-index: 250;
+}
+
+.track-cover--default, .track-cover--queue, .track-cover--addPlaylist, .track-cover--playlist {
   @extend %track-cover-defaults;
 
   width: $icons-size;
