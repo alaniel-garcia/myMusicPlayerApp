@@ -14,6 +14,9 @@ import icon_volume_off from '@assets/icons/volume_off_wght400.svg';
 import icon_search from '@assets/icons/search_wght400.svg';
 import icon_go_back from '@assets/icons/arrow_back_wght400.svg';
 import icon_add from '@assets/icons/add_wght400.svg';
+import icon_close_delete from '@assets/icons/close_wght500.svg';
+import icon_drag_handle from '@assets/icons/drag_handle_wght500.svg'
+import icon_check from '@assets/icons/check_wght400.svg'
 import { ButtonProps, ButtonPropsContainer } from 'src/types';
 
 // defining props
@@ -81,6 +84,22 @@ const add: ButtonProps = {
     icon: icon_add,
     alt: 'add button'
 }
+const close: ButtonProps = {
+    icon: icon_close_delete,
+    alt: 'close button'
+}
+const delete_: ButtonProps = {
+    icon: icon_close_delete,
+    alt: 'delete button'
+}
+const drag: ButtonProps = {
+    icon: icon_drag_handle,
+    alt: 'drag button'
+}
+const check: ButtonProps = {
+    icon: icon_check,
+    alt: 'selection button'
+}
 
 const buttonsProps: Array<ButtonPropsContainer> = [
     {name: 'play', props: play},
@@ -98,7 +117,11 @@ const buttonsProps: Array<ButtonPropsContainer> = [
     {name: 'volume_off', props: volume_off},
     {name: 'search', props: search},
     {name: 'go_back', props: go_back},
-    {name: 'add', props: add}
+    {name: 'add', props: add},
+    {name: 'close', props: close},
+    {name: 'delete', props: delete_},
+    {name: 'drag', props: drag},
+    {name: 'check', props: check}
 ];
 
 export default buttonsProps;
