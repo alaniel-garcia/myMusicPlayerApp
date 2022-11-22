@@ -7,6 +7,8 @@ interface Props {
     alt: string
     functionality?: Function
     activeMode?: boolean
+    selectedMode?: boolean
+    selectedState?: boolean
 }
 
 export default function Button({
@@ -15,6 +17,8 @@ export default function Button({
     alt,
     functionality,
     activeMode = true,
+    selectedMode = false,
+    selectedState = false
     } : Props)
 {
 
@@ -23,6 +27,27 @@ export default function Button({
     const inactiveStyle = {
         filter: 'invert(40%) sepia(0%) saturate(0%) hue-rotate(247deg) brightness(96%) contrast(94%)',
         opacity: '0.6'
+    }
+
+    const selectedStyle = {
+        display: 'none'
+    }
+
+    function handleExtraModes(): object{
+        if(!activeMode){
+            return inactiveStyle
+        }
+        else if(selectedMode){
+            if(selectedState){
+                return {}
+            }
+            else {
+                return selectedStyle
+            }
+        }
+        else{
+            return {}
+        }
     }
 
     function clickEffect() {
@@ -36,6 +61,7 @@ export default function Button({
         <div
             ref={button}
             className={`Button ` + `${className ? className : ''}`} 
+            style={selectedMode ? {border: '2px solid white'} : {}}
             onClick={(event) => {
                 event.stopPropagation()
                 clickEffect()
@@ -44,7 +70,7 @@ export default function Button({
                 }
             }}
         >
-            <img className='Button-icon' src={icon} alt={alt} style={!activeMode ? inactiveStyle : {}}/>
+            <img className='Button-icon' src={icon} alt={alt} style={handleExtraModes()}/>
         </div>
     )
 
