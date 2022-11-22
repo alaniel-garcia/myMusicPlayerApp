@@ -1,11 +1,17 @@
 import './Songs.scss';
-import { useState } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import SongsList from './SongsList';
 import UploadSongs from './UploadSongs';
+import LibraryContext from '../context/LibraryContext';
 
 export default function Songs({className}){
 
     const [songs, setSongs] = useState([]);
+    const {updateLibrary} = useContext(LibraryContext);
+
+    useEffect(()=>{
+        updateLibrary(songs)
+    },[songs]);
 
     return (
         <>
@@ -18,7 +24,7 @@ export default function Songs({className}){
                         <UploadSongs container={setSongs} content={songs}/>
                     </div>
                 </div>
-                <SongsList songs={songs} songsSetter={setSongs}/>
+                <SongsList songs={songs} songsSetter={setSongs} cardType='default'/>
             </div>
         </>
     )
