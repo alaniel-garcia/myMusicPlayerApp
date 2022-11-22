@@ -3,13 +3,22 @@ import useButtonProps from '@hooks/useButtonProps';
 import { Playlist, OpenPlaylist } from 'src/types';
 import Button from './miscellaneous/Button';
 import SongsList from './SongsList';
+import { useContext, useState } from 'react';
+import AddPlaylistSong from './AddPlaylistSong';
+import CurrentContext from '../context/CurrentContext';
+import QueueContext from '../context/QueueContext';
 
 interface Props {
     playlist: Playlist
     openPlaylistHandler: React.Dispatch<React.SetStateAction<OpenPlaylist>>
+    playlistsUpdater: React.Dispatch<React.SetStateAction<Playlist[]>>
 }
 
-export default function PlaylistView({playlist, openPlaylistHandler}: Props) {
+export default function PlaylistView({playlist, openPlaylistHandler, playlistsUpdater}: Props) {
+    const [addSongsIsOpen, setAddSongsIsOpen] = useState<boolean>(false);
+    const {setCurrent} = useContext(CurrentContext);
+    const {addWithReset, shuffleOnPlay, setShuffleOnPlay, handleShuffleModeFromPlaylist} = useContext(QueueContext);
+
     const handlePlaylistClose = ()=> {
         openPlaylistHandler(prevState => {
             return {
@@ -19,8 +28,28 @@ export default function PlaylistView({playlist, openPlaylistHandler}: Props) {
         })
     };
 
+    const handlePlaylistOpen = ()=>{
+        setAddSongsIsOpen(true)
+    }
+
+    const handlePlayAll= ()=>{
+        if(playlist.songs.length > 0){
+            setCurrent(playlist.songs[0])
+            addWithReset(playlist.songs)
+            if(shuffleOnPlay){
+                setShuffleOnPlay(false)
+            }
+        }
+    }
+
+    const handleShuffle = ()=>{
+        if(playlist.songs.length > 0){
+            handleShuffleModeFromPlaylist(playlist.songs)
+        }
+    }
+
     const go_back = useButtonProps('go_back', handlePlaylistClose);
-    const add = useButtonProps('add', ()=> 'not assigned yet');
+    const add = useButtonProps('add', handlePlaylistOpen);
     const more = useButtonProps('more', ()=> 'not assigned yet');
 
     return(
@@ -49,18 +78,22 @@ export default function PlaylistView({playlist, openPlaylistHandler}: Props) {
                     </div>
                 </div>
                 <div className='PlaylistView__play-options'>
-                    <div className="play-options__button">
+                    <div className="play-options__button" onClick={handlePlayAll}>
                         <h1>
                             Play all
                         </h1>
                     </div>
-                    <div className="play-options__button play-options__button--right">
+                    <div className="play-options__button play-options__button--right" onClick={handleShuffle} >
                         <h1>
-                        Shuffle
+                            Shuffle
                         </h1>
                     </div>
                 </div>
+                <SongsList songs={playlist.songs} cardType={'playlist'} />
             </div>
+            {
+                addSongsIsOpen && <AddPlaylistSong playlist={playlist} closeHandler={setAddSongsIsOpen} playlistsUpdater={playlistsUpdater}/>
+            }
         </>
     )
 }

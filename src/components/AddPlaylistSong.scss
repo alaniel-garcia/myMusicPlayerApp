@@ -1,0 +1,31 @@
+@use '@assets/styles/index.scss' as idx;
+
+.AddPlaylistSong {
+  display: grid;
+    grid-template-columns: 100vw;
+    grid-template-rows: min-content calc(100% - 3.5rem);
+
+  position: fixed;
+    top: 0;
+    z-index: 300;
+
+    height: 100vh;
+
+  background: idx.$background;
+}
+
+.AddPlaylistSong__header{
+  display: flex;
+    column-gap: idx.$general-padding;
+    align-items: center;
+
+  margin: idx.$general-padding;
+}
+
+.AddPlaylistSong__search{
+  // display: grid;
+  //   grid-template-columns: 100%;
+  //   grid-auto-rows: 100%;
+
+  margin-inline: idx.$general-padding;
+}

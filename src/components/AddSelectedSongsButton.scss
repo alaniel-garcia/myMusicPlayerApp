@@ -1,0 +1,23 @@
+@use '@assets/styles/index.scss' as idx;
+
+.AddSelectedSongsButton {
+  position: fixed;
+    bottom: idx.$general-padding;
+    left: 0;
+    right: 0;
+    margin-inline: auto;
+
+  display: flex;
+    justify-content: center;
+    align-items: center;
+
+  width: 90%;
+    height: 5rem;
+
+  background: idx.$highlights;
+    border-radius: .8rem;
+
+  h1 {
+    font-size: 2rem;
+  }
+}

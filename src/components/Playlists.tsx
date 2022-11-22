@@ -14,7 +14,6 @@ interface Props {
     className : string
 }
 
-
 export default function Playlists({className} : Props){
 
     const [playlists, setPlaylists] = useState<Array<Playlist>>([]);
@@ -35,6 +34,29 @@ export default function Playlists({className} : Props){
         })
     }
 
+    function openPlaylistProvider(): Playlist {
+        let playlistProvided;
+
+        for(let pl of playlists){
+            if(pl.name === openPlaylist.playlist?.name){
+                playlistProvided = pl;
+                break
+            }
+        }
+
+        if(playlistProvided){
+            return playlistProvided
+        }
+        //this else will never happen, cause condition to render playlist view is that openPlaylist.playlist exists
+        else {
+            return {
+                name: '',
+                cover:'',
+                songs: []
+            }
+        }
+    }
+
     return (
         <>
             <div className={className ? `Playlists ${className}` : 'Playlists'}>
@@ -48,7 +70,7 @@ export default function Playlists({className} : Props){
                 {
                     openPlaylist.isOpen 
                     && openPlaylist.playlist 
-                    && <PlaylistView playlist={openPlaylist.playlist} openPlaylistHandler={setOpenPlaylist} />
+                    && <PlaylistView playlist={openPlaylistProvider()} openPlaylistHandler={setOpenPlaylist} playlistsUpdater={setPlaylists} />
                 }
             </div>
         </>

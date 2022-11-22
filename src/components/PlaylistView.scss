@@ -1,6 +1,16 @@
 @use '@assets/styles/index.scss' as idx;
 
 .PlaylistView {
+  display: grid;
+    grid-template-columns: 100vw;
+    grid-template-rows: repeat(3, min-content) 1fr;
+    grid-template-areas: 
+      "header"
+      "banner"
+      "options"
+      "songs"
+    ;
+
   position: fixed;
     top: 0;
     z-index: 200;
@@ -9,9 +19,17 @@
     height: 100vh;
 
   background: idx.$background;
+
+  .SongsList {
+    grid-area: songs;
+
+    padding-block-end: 6.2rem;
+  }
 }
 
 .PlaylistView__header {
+  grid-area: header;
+
   display: flex;
     justify-content: space-between;
 
@@ -25,6 +43,7 @@
 .PlaylistView__banner {
   display: grid;
     grid-template-columns: 50% 50%;
+    grid-area: banner;
 
   margin-inline: idx.$general-padding;
 }
@@ -50,6 +69,7 @@
 .PlaylistView__play-options {
   display: grid;
     grid-template-columns: 50% 50%;
+    grid-area: options;
 
   margin: idx.$general-padding;
 }
