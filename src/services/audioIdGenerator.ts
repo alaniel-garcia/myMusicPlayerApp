@@ -1,13 +1,4 @@
-interface Metadata {
-    title: string
-    name: string
-    artist: string
-    duration: number
-    bitrate?: number 
-    picture?: {
-        size: number
-    };
-}
+import { Metadata } from 'src/types';
 
 function takeFirstLetterPerWord(string: string): string {
     return string
