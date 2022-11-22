@@ -2,12 +2,13 @@ import './TrackView.scss';
 import Button from './miscellaneous/Button';
 import TrackTime from './TrackTime';
 import TrackVolume from './TrackVolume';
-import Queue from './Queue';
 import { useState } from 'react';
 import useButtonProps from '@hooks/useButtonProps';
 import PopElement from './miscellaneous/PopElement';
+import { useContext } from 'react';
+import QueueContext from '../context/QueueContext';
 
-export default function TrackView({song, track, buttonsProps, referenceStates, openStateHandler, ...props}) {
+export default function TrackView({song, track, buttonsProps, ...props}) {
     const {minimize,
         more,
         queue_props,
@@ -19,6 +20,7 @@ export default function TrackView({song, track, buttonsProps, referenceStates, o
     } = buttonsProps;
 
     const [volumeOpen, setVolumeOpen] = useState(false);
+    const {shuffleOnPlay} = useContext(QueueContext)
 
     const volume = useButtonProps('volume',()=>{
         setVolumeOpen(prevState => !prevState)
@@ -30,7 +32,6 @@ export default function TrackView({song, track, buttonsProps, referenceStates, o
 
     return(
         <>
-            {referenceStates.queueIsOpen && <Queue openStateHandler={openStateHandler} />}
             <div className='TrackView'>
                 <div className='TrackView__top'>
                     <Button className={'medium-button'} icon={minimize.icon} alt={minimize.alt} functionality={minimize.functionality}/>
@@ -84,7 +85,7 @@ export default function TrackView({song, track, buttonsProps, referenceStates, o
                                 <Button icon={skip_next.icon} alt={skip_next.alt} functionality={skip_next.functionality} />
                             </div>
                             <div className='controls__main__right'>
-                                <Button className={'medium-button'} icon={shuffle.icon} alt={shuffle.alt} functionality={shuffle.functionality} activeMode={referenceStates.shuffleOn} />
+                                <Button className={'medium-button'} icon={shuffle.icon} alt={shuffle.alt} functionality={shuffle.functionality} activeMode={shuffleOnPlay} />
                             </div>
                         </div>
                         <div className='Trackview__controls__secondary'>

@@ -7,8 +7,6 @@ import { useContext } from 'react';
 import useHandleBooleanState from '../hooks/useHandleBooleanState';
 import SongsList from './SongsList';
 
-
-
 export default function Queue({openStateHandler}){
     const {queue, getCurrentIndex} = useContext(QueueContext);
     const {current} = useContext(CurrentContext);
@@ -31,15 +29,12 @@ export default function Queue({openStateHandler}){
                 <div className="Queue__info">
                     <div className="Queue__info__position">
                         <h2>
-                            {getCurrentIndex(current.id) + 1}/{queue.length}
+                            {current ? getCurrentIndex(current.id) + 1 : 0}/{queue.length}
                         </h2>
-                    </div>
-                    <div className="Queue__info__time">
-
                     </div>
                 </div>
             </div>
-            <SongsList songs={queue} />
+            <SongsList songs={queue} cardType='queue' />
         </div>
     </>
 }

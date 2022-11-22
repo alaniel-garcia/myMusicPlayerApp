@@ -1,7 +1,23 @@
+//Songs logic
+export interface Song {
+    id: string
+    url: string
+    metadata: Metadata
+    cover: string
+}
+
+export interface Metadata {
+    title: string
+    artist: string
+    duration: number
+    bitrate?: number 
+    picture?: Blob 
+}
+
 //Playlist
 export interface Playlist {
     name : string
-    songs: Array<Object>
+    songs: Array<Song>
     cover : string
 }
 
