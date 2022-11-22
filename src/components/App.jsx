@@ -9,6 +9,8 @@ import Songs from './Songs';
 import Sections from './Sections';
 import SectionContext from '../context/SectionContext';
 import Playlists from './Playlists';
+import { LibraryProvider } from '../context/LibraryContext';
+import { SelectionProvider } from '../context/SelectionContext';
 
 export default function App() {
     const {volume, onSetVolume} = useContext(VolumeContext);
@@ -32,16 +34,20 @@ export default function App() {
                             <Navbar />
                             <Sections />
                         </header>
-                        <CurrentProvider>
-                            <QueueProvider>
-                                <main>
-                                    <Songs className={!section.songs ? 'hidden': ''} />
-                                    <Playlists className={!section.playlists ? 'hidden': ''} />
-                                    <h1 className={!section.artists ? 'hidden': ''}>Artists</h1>
-                                </main>
-                                <Current />
-                            </QueueProvider>
-                        </CurrentProvider>
+                        <LibraryProvider>
+                            <CurrentProvider>
+                                <QueueProvider>
+                                    <SelectionProvider>
+                                        <main>
+                                            <Songs className={!section.songs ? 'hidden': ''} />
+                                            <Playlists className={!section.playlists ? 'hidden': ''} />
+                                            <h1 className={!section.artists ? 'hidden': ''}>Artists</h1>
+                                        </main>
+                                        <Current />
+                                    </SelectionProvider>
+                                </QueueProvider>
+                            </CurrentProvider>
+                        </LibraryProvider>
                </div>
        </>
     );
