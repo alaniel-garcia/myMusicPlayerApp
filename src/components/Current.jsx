@@ -4,16 +4,18 @@ import CurrentContext from '../context/CurrentContext';
 import VolumeContext from '../context/VolumeContext';
 import TrackCard from './TrackCard';
 import TrackView from './TrackView';
+import Queue from './Queue';
 import useButtonProps from '@hooks/useButtonProps';
 import useTrackViewButtonFunctionality from '@hooks/useTrackViewButtonFunctionality';
 import useHandleBooleanState from '../hooks/useHandleBooleanState';
+import QueueContext from '../context/QueueContext';
 
 export default function Current() {
     const { current } = useContext(CurrentContext);
     const [track, setTrack] = useState(null);
     const [isPaused, setIsPaused] = useState(true);
     const [isOpen, setIsOpen] = useState(false);
-    const [shuffleOn, setShuffleOn] = useState(false);
+    const {setShuffleOnPlay} = useContext(QueueContext);
     const {volume, sound, volumeOff} = useContext(VolumeContext);
     const [queueIsOpen, setQueueIsOpen] = useState(false);
     const [replayMode, setReplayMode] = useState({
@@ -39,7 +41,6 @@ export default function Current() {
             track,
             replayMode,
             setReplayMode,
-            shuffleOn,
         });
 
     //setting buttons's props for complete and minimized view
@@ -65,6 +66,10 @@ export default function Current() {
             setIsPaused(true);
             setIsOpen(true);
         }
+        //pause track in case queue has been emptied
+        else if(!current && track){
+            track.pause()
+        }
     }, [current]);
 
     useEffect(() => {
@@ -83,6 +88,10 @@ export default function Current() {
         }
     }, [track]);
 
+    function handleShuffleClick(){
+        useHandleBooleanState(setShuffleOnPlay)
+    }
+
     function loadCompleteViewBtnsProps() {
 
         const btnsPropsToLoad ={
@@ -99,7 +108,7 @@ export default function Current() {
             }),
             skip_prev: useButtonProps('skip_prev', handleSkipPrev),
             skip_next: useButtonProps('skip_next', handleSkipNext),
-            shuffle: useButtonProps('shuffle', ()=> useHandleBooleanState(setShuffleOn)),
+            shuffle: useButtonProps('shuffle', handleShuffleClick),
             volume: useButtonProps('volume', () => 'not assigned yet')
         }
 
@@ -148,13 +157,6 @@ export default function Current() {
                         skip_next,
                         shuffle,
                     }}
-                    referenceStates={{
-                        shuffleOn,
-                        queueIsOpen
-                    }}
-                    openStateHandler={
-                        setQueueIsOpen
-                    }
                 />
             )
         }
@@ -191,6 +193,7 @@ export default function Current() {
             <div className='Current'>{
                 loadView()
             }</div>
+            {queueIsOpen && <Queue openStateHandler={setQueueIsOpen} />}
         </>
     );
 }
