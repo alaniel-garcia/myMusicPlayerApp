@@ -28,10 +28,6 @@ export function SectionProvider({children}) {
         }
     }
 
-    useEffect(()=>{
-        console.log('section', section)
-    },[section])
-
     return(
         <SectionContext.Provider value={{section, toggleSection}}>
             {children}

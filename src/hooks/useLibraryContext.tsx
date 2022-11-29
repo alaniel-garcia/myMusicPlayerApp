@@ -4,7 +4,7 @@ import LibraryContext from '../context/LibraryContext'
 export default function useLibraryContext() {
   const context = useContext(LibraryContext)
   if (context === undefined) {
-    throw new Error("useLibraryContext must be within TodoProvider")
+    throw new Error("useLibraryContext must be within LibraryProvider")
   }
 
   return context
