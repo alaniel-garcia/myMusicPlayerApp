@@ -7,6 +7,8 @@ interface SelectContext {
     resetSelected: Function
     isIncluded: Function
     removeSelected: Function
+    selectMode: boolean
+    setSelectMode: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 interface Props {
@@ -16,7 +18,8 @@ interface Props {
 const SelectionContext = createContext<SelectContext | undefined>(undefined);
 
 export function SelectionProvider({children}: Props){
-    const [selected, setSelected]= useState<Array<Song>>([]);
+    const [selected, setSelected] = useState<Array<Song>>([]);
+    const [selectMode, setSelectMode] = useState(false);
 
     function updateSelected(selectedSong: Song):void{
         setSelected(prevState=>{
@@ -50,7 +53,7 @@ export function SelectionProvider({children}: Props){
     }
 
     return(
-        <SelectionContext.Provider value={{selected, updateSelected, resetSelected, isIncluded, removeSelected}}>
+        <SelectionContext.Provider value={{selected, updateSelected, resetSelected, isIncluded, removeSelected, selectMode, setSelectMode}}>
             {children}
         </SelectionContext.Provider>
     )

@@ -10,11 +10,13 @@ import Sections from './Sections';
 import SectionContext from '../context/SectionContext';
 import Playlists from './Playlists';
 import { LibraryProvider } from '../context/LibraryContext';
-import { SelectionProvider } from '../context/SelectionContext';
+import useSelectionContext from '@hooks/useSelectionContext';
+import SelectMode from './SelectMode';
 
 export default function App() {
     const {volume, onSetVolume} = useContext(VolumeContext);
     const {section} = useContext(SectionContext);
+    const {selectMode} = useSelectionContext();
 
     useEffect(()=>{
         window.addEventListener('beforeunload', ()=>{
@@ -30,24 +32,26 @@ export default function App() {
     return (
         <>
                 <div className='App'>
-                        <header>
-                            <Navbar />
-                            <Sections />
-                        </header>
-                        <LibraryProvider>
-                            <CurrentProvider>
-                                <QueueProvider>
-                                    <SelectionProvider>
-                                        <main>
-                                            <Songs className={!section.songs ? 'hidden': ''} />
-                                            <Playlists className={!section.playlists ? 'hidden': ''} />
-                                            <h1 className={!section.artists ? 'hidden': ''}>Artists</h1>
-                                        </main>
-                                        <Current />
-                                    </SelectionProvider>
-                                </QueueProvider>
-                            </CurrentProvider>
-                        </LibraryProvider>
+                    <LibraryProvider>
+                        <CurrentProvider>
+                            <QueueProvider>
+                                    {
+                                        selectMode && 
+                                        <SelectMode />
+                                    }
+                                    <header>
+                                        <Navbar />
+                                        <Sections />
+                                    </header>
+                                    <main>
+                                        <Songs className={!section.songs ? 'hidden': ''} />
+                                        <Playlists className={!section.playlists ? 'hidden': ''} />
+                                        <h1 className={!section.artists ? 'hidden': ''}>Artists</h1>
+                                    </main>
+                                    <Current />
+                            </QueueProvider>
+                        </CurrentProvider>
+                    </LibraryProvider>
                </div>
        </>
     );
