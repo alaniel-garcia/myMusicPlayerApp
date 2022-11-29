@@ -12,13 +12,18 @@ export default function TrackCard({ song, cardType, songsList, hidden, areAllSel
     const {setCurrent} = useContext(CurrentContext);
     const {queue, addToQueue, addWithReset, removeFromQueue} = useContext(QueueContext);
     const [isSelected, setIsSelected] = useState(false);
-    const { updateSelected,removeSelected, resetSelected} = useSelectionContext();
+    const { selected, updateSelected,removeSelected, resetSelected, selectMode, setSelectMode} = useSelectionContext();
     const didmount = useRef(true);
+    let selectTimer;
 
     const more =  useButtonProps('more',()=>{'function not assigned yet'});
     const delete_ = useButtonProps('delete', ()=> removeFromQueue(song.id));
     const drag = useButtonProps('drag',()=> {'function not assigned yet'});
     const check = useButtonProps('check', ()=> handleClick());
+
+    const selectedStyle = {
+        background: '#4f4d57'
+    };
 
     useEffect(()=>{
         if(didmount.current){
@@ -47,7 +52,7 @@ export default function TrackCard({ song, cardType, songsList, hidden, areAllSel
                 updateSelected(song)
             }
             else{
-                if(areAllSelected === false){
+                if(areAllSelected === false && cardType === 'addPlaylist'){
                     resetSelected();
                 }
                 else{
@@ -57,12 +62,25 @@ export default function TrackCard({ song, cardType, songsList, hidden, areAllSel
         }
     },[isSelected]);
 
+    useEffect(()=>{
+        if(!didmount.current){
+            if((cardType === 'default' || cardType === 'search') && selected.length !== 0 && !selectMode){
+            }
+        }
+    },[isSelected]);
+
+    useEffect(()=>{
+        if(!selectMode && isSelected){
+            setIsSelected(false)
+        }
+    },[selectMode])
+
     const handleClick = ()=>{
         useHandleBooleanState(setIsSelected)
     }
 
     function loadCardButtons() {
-        if(cardType === 'default' || cardType === 'playlist'){
+        if(cardType === 'default' || cardType === 'playlist' || cardType === 'search'){
             return(
                 <div className='TrackCard__icon'>
                     <Button icon={more.icon} alt={more.alt} functionality={more.functionality} />
@@ -99,16 +117,42 @@ export default function TrackCard({ song, cardType, songsList, hidden, areAllSel
             <div 
                 className={`TrackCard TrackCard--${cardType}`} 
                 hidden={hidden}
+                style={isSelected && selectMode ? selectedStyle : {}}
+                onPointerDown={()=>{
+                        if(cardType === 'default' || cardType === 'search'){
+                            selectTimer = setTimeout(()=>{
+                                useHandleBooleanState(setIsSelected);
+                                if(!selectMode){
+                                    setSelectMode(true)
+                                }
+                            },2000);
+                        }
+                        else{
+                            return
+                        }
+                    }
+                }
+                onPointerOut={()=>{
+                        if(cardType === 'default' || cardType === 'search'){
+                            clearTimeout(selectTimer);
+                        }
+                    }
+                }
                 onClick={(event)=> {
                     event.preventDefault();
                     event.stopPropagation();
                     if(cardType === 'default' || cardType === 'playlist'){
-                        setCurrent(song)
-                        if(queue.length === 0){
-                            addToQueue(songsList)
+                        if(selectMode){
+                            useHandleBooleanState(setIsSelected)
                         }
-                        else if(queue.length !== songsList.length){
-                            addWithReset(songsList)
+                        else{
+                            setCurrent(song)
+                            if(queue.length === 0){
+                                addToQueue(songsList)
+                            }
+                            else if(queue.length !== songsList.length){
+                                addWithReset(songsList)
+                            }
                         }
                     }
                     else if(cardType === 'queue'){
@@ -116,6 +160,15 @@ export default function TrackCard({ song, cardType, songsList, hidden, areAllSel
                     }
                     else if(cardType === 'addPlaylist'){
                         handleClick()
+                    }
+                    else if(cardType === 'search'){
+                        if(selectMode){
+                            useHandleBooleanState(setIsSelected)
+                        }
+                        else{
+                            setCurrent(song)
+                            addWithReset([song])
+                        }
                     }
                     else{
                         props.onClick()

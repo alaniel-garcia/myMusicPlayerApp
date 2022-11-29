@@ -6,14 +6,26 @@
     grid-template-rows: min-content min-content 100%;
 
   margin-inline: idx.$general-padding; 
+  height: calc(100vh - 5.1rem);
+}
 
-  .Search__results {
-    height: calc(100% - 15.3rem);
-
-    .SongsList {
-          padding-block-end: 6.2rem;
-    }
+.Search--navbar {
+  margin-inline: 0;
+  .Search__input {
+    padding-inline: idx.$general-padding; 
   }
+}
+
+.Search__results--playlist {
+  height: calc(100% - 14.2rem);
+
+  .SongsList {
+        padding-block-end: 6.2rem;
+  }
+}
+
+.Search__results {
+  max-height: calc(100vh - 12.3rem);
 }
 
 .Search__input {

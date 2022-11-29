@@ -1,10 +1,13 @@
+import useSelectionContext from '@hooks/useSelectionContext';
 import { createContext, useContext, useEffect, useState } from 'react';
 import CurrentContext from './CurrentContext';
+import SelectionContext from './SelectionContext';
 
 const QueueContext = createContext();
 
 export function QueueProvider({children}) {
     const { current, setCurrent } = useContext(CurrentContext);
+    const { selectMode, setSelectMode } = useSelectionContext();
     const [queue, setQueue] = useState([]);
     const [queueInitialState, setQueueInitialState] = useState([]); 
     const [shuffleOnPlay, setShuffleOnPlay] = useState(false);
@@ -12,8 +15,11 @@ export function QueueProvider({children}) {
     const currentIndex = getCurrentIndex(current?.id);
 
     useEffect(()=>{
-        if(shuffleOnPlay || playlistView){
+        if(shuffleOnPlay || playlistView || selectMode){
             setCurrent(queue[0])
+            if(selectMode){
+                setSelectMode(false)
+            }
         }
     },[queue]);
 

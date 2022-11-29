@@ -28,7 +28,7 @@ export default function Search({section}: Props){
             const source = song.metadata.title.toLowerCase();
             const input = songName.toLowerCase();
 
-            if(section === 'search' && input !== '' && source.includes(input)){
+            if(section === 'navbar' && input !== '' && source.includes(input)){
                 return song
             }
             else if( section === 'playlist' && source.includes(input)){
@@ -43,13 +43,19 @@ export default function Search({section}: Props){
         useHandleBooleanState(setSelectAll);
     }
 
+    function handleSectionCardType(): string{
+        if(section === 'playlist') return 'addPlaylist'
+        if(section === 'navbar') return 'search'
+        else return ''
+    }
+
     useEffect(()=>{
         setResults(searchSong(search))
     },[search]);
 
     return(
         <>
-            <div className='Search'>
+            <div className={section === 'navbar' ? 'Search Search--navbar' : 'Search'}>
                 <div className='Search__input'>
                     <input type='text' onChange={(e)=>handleSearchChange(e)} placeholder='Search' />
                 </div>
@@ -60,8 +66,8 @@ export default function Search({section}: Props){
                         <Button className='medium-button' icon={check.icon} alt={check.alt} functionality={check.functionality} selectedMode= {true} selectedState={selectAll} />
                     </div>
                 }
-                <div className='Search__results'>
-                    <SongsList songs={library} display={results} cardType={'addPlaylist'} searchSection={section} areAllSelected={selectAll}/>
+                <div className={section === 'playlist' ? 'Search__results--playlist' : 'Search__results'}>
+                    <SongsList songs={library} display={results} cardType={handleSectionCardType()} searchSection={section} areAllSelected={selectAll}/>
                 </div>
             </div>
         </>

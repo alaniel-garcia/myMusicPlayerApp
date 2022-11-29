@@ -1,10 +1,18 @@
 import './Navbar.scss';
 import useButtonProps from '@hooks/useButtonProps';
 import Button from './miscellaneous/Button';
+import { useState } from 'react';
+import SearchSongs from './SearchSongs';
 
 export default function Navbar() {
-    const search = useButtonProps('search', ()=>{'not assigned yet'});
+    const search = useButtonProps('search', ()=>{setSearchIsOpen(true)});
     const more = useButtonProps('more', ()=>{'not assigned yet'});
+    const [searchIsOpen, setSearchIsOpen] = useState(false);
+
+    function handleSearchClose(){
+        setSearchIsOpen(false)
+    }
+
     return (
         <>
             <nav className='Navbar'>
@@ -22,6 +30,9 @@ export default function Navbar() {
                     </div>
                 </div>
             </nav>
+            {
+                searchIsOpen && <SearchSongs handleClose={handleSearchClose} />
+            }
         </>
     );
 }

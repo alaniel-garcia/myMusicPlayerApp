@@ -30,12 +30,12 @@ $icons-size-current: calc($icons-size - 1rem);
     justify-content: space-between;
 
   width: 100%;
-    margin: 1.4rem 0;
+    padding-block: .7rem;
     padding-inline-start: idx.$general-padding;
 
-  outline: 2px solid red;
+  // outline: 2px solid red;
 
-  .TrackCard--left--default, .TrackCard--left--queue, .TrackCard--left--addPlaylist, .TrackCard--left--playlist {
+  .TrackCard--left--default, .TrackCard--left--queue, .TrackCard--left--addPlaylist, .TrackCard--left--playlist, .TrackCard--left--search {
     display: flex;
 
     width: calc(100% - ($icons-size * 2) + 1.2rem) ;
@@ -59,7 +59,7 @@ $icons-size-current: calc($icons-size - 1rem);
     z-index: 250;
 }
 
-.track-cover--default, .track-cover--queue, .track-cover--addPlaylist, .track-cover--playlist {
+.track-cover--default, .track-cover--queue, .track-cover--addPlaylist, .track-cover--playlist, .track-cover--search {
   @extend %track-cover-defaults;
 
   width: $icons-size;
