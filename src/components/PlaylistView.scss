@@ -91,3 +91,20 @@
 .play-options__button--right {
   margin-inline-start: 1.2rem;
 }
+
+.PlaylistView__no-song-container {
+  display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.PlaylistView__add-custom-button {
+  display: flex;
+    align-items: center;
+    column-gap: idx.$general-padding;
+
+  padding-inline: idx.$general-padding;
+
+  background: idx.$contrast-hl;
+    border-radius: .4rem;
+}

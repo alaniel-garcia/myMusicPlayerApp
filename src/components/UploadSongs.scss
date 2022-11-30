@@ -1,3 +1,5 @@
+@use '@assets/styles/index.scss' as idx;
+
 .UploadSongs {
   position: relative;
     width: fit-content;
@@ -8,4 +10,15 @@
       display: block;
     }
   }
+}
+
+.UploadSongs__customButton{
+  display: flex;
+    align-items: center;
+    column-gap: 1.6rem;
+
+  padding-inline: idx.$general-padding;
+
+  background-color: idx.$contrast-hl;
+    border-radius: .4rem;
 }

@@ -3,7 +3,7 @@ import handleFilesUpload from '@services/handleFilesUpload';
 import useButtonProps from '@hooks/useButtonProps';
 import Button from './miscellaneous/Button';
 
-export default function UploadSongs({container, content}){
+export default function UploadSongs({container, content, anySong = false}){
 
     async function onInputCapture (event){
         const tracks = await handleFilesUpload(event);
@@ -11,6 +11,8 @@ export default function UploadSongs({container, content}){
     }
 
     const add = useButtonProps('add', false)
+
+    const addButton = <Button className={'medium-button'} icon={add.icon} alt={add.alt} />;
 
     return (
         <>
@@ -24,9 +26,19 @@ export default function UploadSongs({container, content}){
                     accept='audio/mp3, audio/flac, audio/opus, audio/ogg, audio/m4a'
                     hidden
                 />
-                <label htmlFor='fileReader' >
-                    <Button className={'medium-button'} icon={add.icon} alt={add.alt} />
-                </label>
+                {
+                    anySong &&
+                        <label htmlFor='fileReader' >
+                            <div className='UploadSongs__customButton'>
+                                {addButton}
+                                <h2>Add Songs</h2>
+                            </div>
+                        </label>
+                    ||
+                        <label htmlFor='fileReader' >
+                            {addButton}
+                        </label>
+                }
             </div>
         </>
     )

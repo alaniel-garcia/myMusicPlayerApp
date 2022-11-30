@@ -7,6 +7,7 @@ import { useContext, useState } from 'react';
 import AddPlaylistSong from './AddPlaylistSong';
 import CurrentContext from '../context/CurrentContext';
 import QueueContext from '../context/QueueContext';
+import AddWhenNoSongs from './AddWhenNoSongs';
 
 interface Props {
     playlist: Playlist
@@ -46,6 +47,25 @@ export default function PlaylistView({playlist, openPlaylistHandler, playlistsUp
         if(playlist.songs.length > 0){
             handleShuffleModeFromPlaylist(playlist.songs)
         }
+    }
+
+    const renderPlaylistContent = ()=>{
+        if(playlist.songs.length === 0){
+            return(
+                <div className='PlaylistView__no-song-container'>
+                    <AddWhenNoSongs>
+                        <div className='PlaylistView__add-custom-button' onClick={handlePlaylistOpen}>
+                            <Button className='medium-button' icon={add.icon} alt={add.alt}  />
+                            <h2 className='add-custom-button__message'>Add Songs</h2>
+                        </div>
+                    </AddWhenNoSongs>
+                </div>
+            )
+        }
+
+        return(
+            <SongsList songs={playlist.songs} cardType={'playlist'} />
+        )
     }
 
     const go_back = useButtonProps('go_back', handlePlaylistClose);
@@ -89,7 +109,9 @@ export default function PlaylistView({playlist, openPlaylistHandler, playlistsUp
                         </h1>
                     </div>
                 </div>
-                <SongsList songs={playlist.songs} cardType={'playlist'} />
+                {
+                    renderPlaylistContent()
+                }
             </div>
             {
                 addSongsIsOpen && <AddPlaylistSong playlist={playlist} closeHandler={setAddSongsIsOpen} playlistsUpdater={playlistsUpdater}/>

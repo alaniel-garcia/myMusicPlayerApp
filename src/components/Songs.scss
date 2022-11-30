@@ -2,6 +2,11 @@
 
 .Songs {
   position: relative;
+  height: 100%;
+
+  .SongsList {
+    height: calc(100% - 6.7rem);
+  }
 }
 
 .Songs__header {
@@ -20,4 +25,13 @@
   padding: idx.$general-padding;
 
   background: idx.$background;
+}
+
+.Songs__no-songs {
+  display: flex;
+    justify-content: center;
+    align-items: center;
+
+  height: calc(100% - 13.4rem);
+
 }

@@ -3,6 +3,7 @@ import { useState, useContext, useEffect } from 'react';
 import SongsList from './SongsList';
 import UploadSongs from './UploadSongs';
 import LibraryContext from '../context/LibraryContext';
+import AddWhenNoSongs from './AddWhenNoSongs';
 
 export default function Songs({className}){
 
@@ -12,6 +13,21 @@ export default function Songs({className}){
     useEffect(()=>{
         updateLibrary(songs)
     },[songs]);
+
+    function renderSongsContent(){
+        if(songs.length > 0){
+            return <SongsList songs={songs} songsSetter={setSongs} cardType='default'/>
+        }
+        else{
+            return(
+                <div className='Songs__no-songs'>
+                    <AddWhenNoSongs>
+                        <UploadSongs container={setSongs} content={songs} anySong={true}/>
+                    </AddWhenNoSongs>
+                </div>
+            )
+        }
+    }
 
     return (
         <>
@@ -24,7 +40,7 @@ export default function Songs({className}){
                         <UploadSongs container={setSongs} content={songs}/>
                     </div>
                 </div>
-                <SongsList songs={songs} songsSetter={setSongs} cardType='default'/>
+                {renderSongsContent()}
             </div>
         </>
     )
