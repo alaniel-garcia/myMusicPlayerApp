@@ -57,6 +57,9 @@ $icons-size-current: calc($icons-size - 1rem);
 .TrackCard--current {
   position: relative;
     z-index: 250;
+
+  background: idx.$background;
+  box-shadow: 0px -2px idx.$highlights;
 }
 
 .track-cover--default, .track-cover--queue, .track-cover--addPlaylist, .track-cover--playlist, .track-cover--search {
