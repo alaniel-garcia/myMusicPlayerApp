@@ -39,6 +39,14 @@ module.exports = merge(common({mode: 'production'}), {
                     filename: 'assets/fonts/[hash][name][ext]'
                 }
             },
+            {
+                test: /\.(png|jpge|jpg)$/,
+                exclude: /node_modules/,
+                type: 'asset/resource',
+                generator: {
+                    filename: 'assets/images/[hash][name][ext]'
+                }
+            },
         ]
     }
 })
