@@ -1,9 +1,11 @@
 import React, { useEffect, useRef } from 'react';
-var isTouchDevice = 'ontouchstart' in document.documentElement;
+import useDeviceContext from '@hooks/useDeviceContext';
 
 export default function PopElement({ triggerState, showingTime, showWhileInteracting, children }) {
+    const {isTouch} = useDeviceContext();
     const popElement = useRef();
     let closePopElement = null;
+    
     function closeTimeoutManager(flag){
         if(flag){
             closePopElement = setInterval(()=>{
@@ -49,7 +51,7 @@ export default function PopElement({ triggerState, showingTime, showWhileInterac
     useEffect(() => {
         closeTimeoutManager(true)
         if(showWhileInteracting){
-            if(isTouchDevice){
+            if(isTouch){
                 ChildrenValidationEvent('touchstart')
             }
             else{
