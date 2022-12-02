@@ -6,14 +6,17 @@ import useButtonProps from '@hooks/useButtonProps';
 import QueueContext from '../context/QueueContext';
 import useHandleBooleanState from '@hooks/useHandleBooleanState';
 import useSelectionContext from '@hooks/useSelectionContext';
+import useDeviceContext from '@hooks/useDeviceContext';
 
 export default function TrackCard({ song, cardType, songsList, hidden, areAllSelected, ...props }) {
     
     const {setCurrent} = useContext(CurrentContext);
     const {queue, addToQueue, addWithReset, removeFromQueue} = useContext(QueueContext);
     const [isSelected, setIsSelected] = useState(false);
-    const { selected, updateSelected,removeSelected, resetSelected, selectMode, setSelectMode} = useSelectionContext();
+    const { selected, updateSelected,removeSelected, resetSelected, selectMode, setSelectMode, onClickAvailable, setOnClickAvailable} = useSelectionContext();
+    const {isTouch} = useDeviceContext();
     const didmount = useRef(true);
+    const sharedCardTypeFunctionalities = cardType === 'default' || cardType === 'playlist' || cardType === 'playlist';
     let selectTimer;
 
     const more =  useButtonProps('more',()=>{'function not assigned yet'});
@@ -79,8 +82,14 @@ export default function TrackCard({ song, cardType, songsList, hidden, areAllSel
         useHandleBooleanState(setIsSelected)
     }
 
+    function handleSelectTimer(){
+        if(sharedCardTypeFunctionalities){
+            clearTimeout(selectTimer);
+        }
+    }
+
     function loadCardButtons() {
-        if(cardType === 'default' || cardType === 'playlist' || cardType === 'search'){
+        if(sharedCardTypeFunctionalities){
             return(
                 <div className='TrackCard__icon'>
                     <Button icon={more.icon} alt={more.alt} functionality={more.functionality} />
@@ -115,15 +124,18 @@ export default function TrackCard({ song, cardType, songsList, hidden, areAllSel
     return (
         <>
             <div 
-                className={`TrackCard TrackCard--${cardType}`} 
+                className={isTouch ? `TrackCard TrackCard--${cardType}` : `TrackCard TrackCard--${cardType} TrackCard--${cardType}-hover`} 
                 hidden={hidden}
                 style={isSelected && selectMode ? selectedStyle : {}}
                 onPointerDown={()=>{
-                        if(cardType === 'default' || cardType === 'search'){
+                        if(sharedCardTypeFunctionalities){
                             selectTimer = setTimeout(()=>{
                                 useHandleBooleanState(setIsSelected);
                                 if(!selectMode){
                                     setSelectMode(true)
+                                }
+                                if(!isTouch){
+                                    setOnClickAvailable(false)
                                 }
                             },2000);
                         }
@@ -132,46 +144,54 @@ export default function TrackCard({ song, cardType, songsList, hidden, areAllSel
                         }
                     }
                 }
+                onPointerUp={()=>{
+                    handleSelectTimer()
+                    if(!isTouch){
+                        setTimeout(()=>{
+                            setOnClickAvailable(true)
+                        },0)
+                    }
+                }}
                 onPointerOut={()=>{
-                        if(cardType === 'default' || cardType === 'search'){
-                            clearTimeout(selectTimer);
-                        }
-                    }
-                }
-                onClick={(event)=> {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    if(cardType === 'default' || cardType === 'playlist'){
-                        if(selectMode){
-                            useHandleBooleanState(setIsSelected)
-                        }
-                        else{
-                            setCurrent(song)
-                            if(queue.length === 0){
-                                addToQueue(songsList)
+                    handleSelectTimer()
+                    }}
+                    onClick={(event)=> {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        if(onClickAvailable){
+                            if(cardType === 'default' || cardType === 'playlist'){
+                                if(selectMode){
+                                    useHandleBooleanState(setIsSelected)
+                                }
+                                else{
+                                    setCurrent(song)
+                                    if(queue.length === 0){
+                                        addToQueue(songsList)
+                                    }
+                                    else if(queue.length !== songsList.length){
+                                        addWithReset(songsList)
+                                    }
+                                }
                             }
-                            else if(queue.length !== songsList.length){
-                                addWithReset(songsList)
+                            else if(cardType === 'queue'){
+                                setCurrent(song)
                             }
-                        }
-                    }
-                    else if(cardType === 'queue'){
-                        setCurrent(song)
-                    }
-                    else if(cardType === 'addPlaylist'){
-                        handleClick()
-                    }
-                    else if(cardType === 'search'){
-                        if(selectMode){
-                            useHandleBooleanState(setIsSelected)
-                        }
-                        else{
-                            setCurrent(song)
-                            addWithReset([song])
-                        }
-                    }
-                    else{
-                        props.onClick()
+                            else if(cardType === 'addPlaylist'){
+                                handleClick()
+                            }
+                            else if(cardType === 'search'){
+                                if(selectMode){
+                                    useHandleBooleanState(setIsSelected)
+                                }
+                                else{
+                                    setCurrent(song)
+                                    addWithReset([song])
+                                }
+                            }
+                            else{
+                                props.onClick()
+                            }
+
                     }
             }}>
                 <div className={`TrackCard--left--${cardType}`}>

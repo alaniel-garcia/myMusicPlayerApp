@@ -9,6 +9,8 @@ interface SelectContext {
     removeSelected: Function
     selectMode: boolean
     setSelectMode: React.Dispatch<React.SetStateAction<boolean>>
+    onClickAvailable: boolean
+    setOnClickAvailable: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 interface Props {
@@ -20,6 +22,7 @@ const SelectionContext = createContext<SelectContext | undefined>(undefined);
 export function SelectionProvider({children}: Props){
     const [selected, setSelected] = useState<Array<Song>>([]);
     const [selectMode, setSelectMode] = useState(false);
+    const [onClickAvailable, setOnClickAvailable] = useState(true);
 
     function updateSelected(selectedSong: Song):void{
         setSelected(prevState=>{
@@ -53,7 +56,7 @@ export function SelectionProvider({children}: Props){
     }
 
     return(
-        <SelectionContext.Provider value={{selected, updateSelected, resetSelected, isIncluded, removeSelected, selectMode, setSelectMode}}>
+        <SelectionContext.Provider value={{selected, updateSelected, resetSelected, isIncluded, removeSelected, selectMode, setSelectMode, onClickAvailable, setOnClickAvailable}}>
             {children}
         </SelectionContext.Provider>
     )
