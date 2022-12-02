@@ -2,6 +2,7 @@ import './PlaylistCard.scss';
 import { Icon, Playlist, OpenPlaylist } from 'src/types';
 import Button from './miscellaneous/Button';
 import useButtonProps from '@hooks/useButtonProps';
+import useDeviceContext from '@hooks/useDeviceContext';
 
 interface Props {
     playlist: Playlist
@@ -9,6 +10,8 @@ interface Props {
 }
 
 export default function PlaylistCard({playlist, openPlaylistHandler}: Props){
+    const {isTouch} = useDeviceContext();
+
     const handlePlaylistOpen = ()=> {
         openPlaylistHandler({
                 playlist,
@@ -20,7 +23,7 @@ export default function PlaylistCard({playlist, openPlaylistHandler}: Props){
 
     return(
         <>
-            <div className='PlaylistCard' onClick={handlePlaylistOpen}>
+            <div className={isTouch ? 'PlaylistCard' : 'PlaylistCard PlaylistCard--hover'} onClick={handlePlaylistOpen}>
                 <div className="PlaylistCard__left">
                     <div className='PlaylistCard__cover'>
                         <img src={playlist.cover} alt='playlist cover' />

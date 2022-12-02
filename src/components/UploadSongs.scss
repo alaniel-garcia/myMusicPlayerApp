@@ -12,7 +12,7 @@
   }
 }
 
-.UploadSongs__customButton{
+.UploadSongs__custom-button{
   display: flex;
     align-items: center;
     column-gap: 1.6rem;
@@ -21,4 +21,5 @@
 
   background-color: idx.$contrast-hl;
     border-radius: .4rem;
+    cursor: pointer;
 }

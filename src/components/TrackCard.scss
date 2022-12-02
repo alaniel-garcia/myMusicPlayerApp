@@ -30,10 +30,12 @@ $icons-size-current: calc($icons-size - 1rem);
     justify-content: space-between;
 
   width: 100%;
-    padding-block: .7rem;
+    margin-block: 1.4rem;
     padding-inline-start: idx.$general-padding;
 
   // outline: 2px solid red;
+  cursor: pointer;
+    border-radius: .4rem;
 
   .TrackCard--left--default, .TrackCard--left--queue, .TrackCard--left--addPlaylist, .TrackCard--left--playlist, .TrackCard--left--search {
     display: flex;
@@ -54,9 +56,19 @@ $icons-size-current: calc($icons-size - 1rem);
   }
 }
 
+.TrackCard--default-hover, .TrackCard--playlist-hover, .TrackCard--search-hover {
+
+  &:hover {
+    background: idx.$contrast-hl;
+  }
+}
+
 .TrackCard--current {
   position: relative;
     z-index: 250;
+
+  padding-block: .7rem;
+  margin-block: 0;
 
   background: idx.$background;
   box-shadow: 0px -2px idx.$highlights;

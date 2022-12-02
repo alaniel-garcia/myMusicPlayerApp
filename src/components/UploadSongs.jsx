@@ -29,7 +29,7 @@ export default function UploadSongs({container, content, anySong = false}){
                 {
                     anySong &&
                         <label htmlFor='fileReader' >
-                            <div className='UploadSongs__customButton'>
+                            <div className='UploadSongs__custom-button'>
                                 {addButton}
                                 <h2>Add Songs</h2>
                             </div>

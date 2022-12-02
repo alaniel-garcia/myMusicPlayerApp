@@ -1,8 +1,18 @@
+@use '@assets/styles/index.scss' as idx;
+
 .PlaylistCard {
   display: flex;
     justify-content: space-between; 
 
   // outline: 2px solid red;
+  cursor: pointer;
+    border-radius: .4rem;
+}
+
+.PlaylistCard--hover {
+  &:hover {
+    background: idx.$contrast-hl;
+  }
 }
 
 .PlaylistCard__left {
