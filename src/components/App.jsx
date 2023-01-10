@@ -9,9 +9,11 @@ import Songs from './Songs';
 import Sections from './Sections';
 import SectionContext from '../context/SectionContext';
 import Playlists from './Playlists';
+import Favorites from './Favorites';
 import { LibraryProvider } from '../context/LibraryContext';
 import useSelectionContext from '@hooks/useSelectionContext';
 import SelectMode from './SelectMode';
+import {FavoritesProvider} from '../context/FavoritesContext';
 
 export default function App() {
     const {volume, onSetVolume} = useContext(VolumeContext);
@@ -35,6 +37,7 @@ export default function App() {
                     <LibraryProvider>
                         <CurrentProvider>
                             <QueueProvider>
+                                <FavoritesProvider>
                                     {
                                         selectMode && 
                                         <SelectMode />
@@ -46,9 +49,10 @@ export default function App() {
                                     <main>
                                         <Songs className={!section.songs ? 'hidden': ''} />
                                         <Playlists className={!section.playlists ? 'hidden': ''} />
-                                        <h1 className={!section.favorites ? 'hidden': ''}>Favorites</h1>
+                                        <Favorites className={!section.favorites ? 'hidden' : ''} />
                                     </main>
                                     <Current />
+                                </FavoritesProvider>
                             </QueueProvider>
                         </CurrentProvider>
                     </LibraryProvider>

@@ -7,6 +7,7 @@ import useButtonProps from '@hooks/useButtonProps';
 import PopElement from './miscellaneous/PopElement';
 import { useContext } from 'react';
 import QueueContext from '../context/QueueContext';
+import useFavoritesContext from '@hooks/useFavoritesContext';
 
 export default function TrackView({song, track, buttonsProps, ...props}) {
     const {minimize,
@@ -21,9 +22,16 @@ export default function TrackView({song, track, buttonsProps, ...props}) {
 
     const [volumeOpen, setVolumeOpen] = useState(false);
     const {shuffleOnPlay} = useContext(QueueContext)
+    const {toggleFavorite, isInFavorites} = useFavoritesContext();
 
     const volume = useButtonProps('volume',()=>{
         setVolumeOpen(prevState => !prevState)
+    });
+    const favorite = useButtonProps('favorite',()=>{
+        toggleFavorite(song)
+    });
+    const unfavorite = useButtonProps('unfavorite',()=>{
+        toggleFavorite(song)
     });
 
     function volumeWillClose(value){
@@ -53,7 +61,12 @@ export default function TrackView({song, track, buttonsProps, ...props}) {
                         <div className='overview__general'>
                             <div className='overview__general__top'>
                                 <div>
-                                    <Button className={'medium-button'} icon={queue_props.icon} alt={queue_props.alt} functionality={queue_props.functionality}/>
+                                    {/* <Button className={'medium-button'} icon={queue_props.icon} alt={queue_props.alt} functionality={queue_props.functionality}/> */}
+                                    {
+                                        isInFavorites(song.id)
+                                            ? <Button className={'medium-button'} icon={favorite.icon} alt={favorite.alt} functionality={favorite.functionality} />
+                                            : <Button className={'medium-button'} icon={unfavorite.icon} alt={unfavorite.alt} functionality={unfavorite.functionality} />
+                                    }
                                 </div>
                                 <div>
                                     <h1 className='overview__general__track-name'>
