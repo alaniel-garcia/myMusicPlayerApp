@@ -18,6 +18,8 @@ import icon_close_delete from '@assets/icons/close_wght500.svg';
 import icon_drag_handle from '@assets/icons/drag_handle_wght500.svg';
 import icon_check from '@assets/icons/check_wght400.svg';
 import icon_play_next from '@assets/icons/play_next_48dp.svg';
+import icon_favorite from '@assets/icons/favorite_wght500.svg';
+import icon_unfavorite from '@assets/icons/unfavorite_wght500.svg';
 import { ButtonProps, ButtonPropsContainer } from 'src/types';
 
 // defining props
@@ -105,6 +107,14 @@ const play_next: ButtonProps = {
     icon: icon_play_next,
     alt: 'play next button'
 }
+const favorite: ButtonProps = {
+    icon: icon_favorite,
+    alt: 'favorite button'
+}
+const unfavorite: ButtonProps = {
+    icon: icon_unfavorite,
+    alt: 'unfavorite button'
+}
 
 const buttonsProps: Array<ButtonPropsContainer> = [
     {name: 'play', props: play},
@@ -127,7 +137,9 @@ const buttonsProps: Array<ButtonPropsContainer> = [
     {name: 'delete', props: delete_},
     {name: 'drag', props: drag},
     {name: 'check', props: check},
-    {name: 'play_next', props: play_next}
+    {name: 'play_next', props: play_next},
+    {name: 'favorite', props: favorite},
+    {name: 'unfavorite', props: unfavorite},
 ];
 
 export default buttonsProps;
