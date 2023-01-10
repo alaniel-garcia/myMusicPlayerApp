@@ -26,10 +26,10 @@ export default function Sections() {
                         </li>
                         <div></div>
                     </div>
-                    <div className={section.artists ? 'Sections__section section--selected' : 'Sections__section' }>
-                        <li onClick={()=> toggleSection('artists')}>
+                    <div className={section.favorites ? 'Sections__section section--selected' : 'Sections__section' }>
+                        <li onClick={()=> toggleSection('favorites')}>
                             <h2>
-                                Artists?
+                                Favorites
                             </h2>
                         </li>
                         <div></div>

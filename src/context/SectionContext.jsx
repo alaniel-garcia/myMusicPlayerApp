@@ -6,21 +6,21 @@ export function SectionProvider({children}) {
     const [section, setSection] = useState({
         songs: true,
         playlists: false,
-        artists: false
+        favorites: false
     });
 
     function toggleSection(section){
         if(section === 'songs'){
             setSection((prevState) => {
-                return {[section] : true, ['playlists']: false, ['artists']: false}
+                return {[section] : true, ['playlists']: false, ['favorites']: false}
             })
         }
         else if(section === 'playlists'){
             setSection((prevState) => {
-                return {[section] : true, ['songs']: false, ['artists']: false}
+                return {[section] : true, ['songs']: false, ['favorites']: false}
             })
         }
-        else if(section === 'artists'){
+        else if(section === 'favorites'){
             setSection((prevState) => {
                 return {[section] : true, ['songs']: false, ['playlists']: false}
             })

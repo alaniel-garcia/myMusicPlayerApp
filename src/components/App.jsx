@@ -46,7 +46,7 @@ export default function App() {
                                     <main>
                                         <Songs className={!section.songs ? 'hidden': ''} />
                                         <Playlists className={!section.playlists ? 'hidden': ''} />
-                                        <h1 className={!section.artists ? 'hidden': ''}>Artists</h1>
+                                        <h1 className={!section.favorites ? 'hidden': ''}>Favorites</h1>
                                     </main>
                                     <Current />
                             </QueueProvider>
