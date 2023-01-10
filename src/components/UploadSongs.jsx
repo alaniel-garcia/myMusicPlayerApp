@@ -7,7 +7,13 @@ export default function UploadSongs({container, content, anySong = false}){
 
     async function onInputCapture (event){
         const tracks = await handleFilesUpload(event);
-        container([...content, ...tracks])
+
+        if(tracks){
+            container([...content, ...tracks])
+        }
+        else{
+            return
+        }
     }
 
     const add = useButtonProps('add', false)
