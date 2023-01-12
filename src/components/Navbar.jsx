@@ -6,7 +6,6 @@ import SearchSongs from './SearchSongs';
 
 export default function Navbar() {
     const search = useButtonProps('search', ()=>{setSearchIsOpen(true)});
-    const more = useButtonProps('more', ()=>{'not assigned yet'});
     const [searchIsOpen, setSearchIsOpen] = useState(false);
 
     function handleSearchClose(){
@@ -23,9 +22,6 @@ export default function Navbar() {
                     <div className='Navbar__items--right'>
                         <div className='Navbar__items__icon'>
                             <Button className={'small-button'} icon={search.icon} alt={search.alt} functionality={search.functionality} />
-                        </div>
-                        <div className='Navbar__items__icon'>
-                            <Button className={'small-button'} icon={more.icon} alt={more.alt} functionality={more.functionality} />
                         </div>
                     </div>
                 </div>

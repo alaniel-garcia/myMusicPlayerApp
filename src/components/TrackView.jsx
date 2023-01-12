@@ -43,7 +43,6 @@ export default function TrackView({song, track, buttonsProps, ...props}) {
             <div className='TrackView'>
                 <div className='TrackView__top'>
                     <Button className={'medium-button'} icon={minimize.icon} alt={minimize.alt} functionality={minimize.functionality}/>
-                    <Button className={'medium-button'} icon={more.icon} alt={more.alt} functionality={more.functionality}/>
                 </div>
                 <div className='TrackView__main'>
                         {volumeOpen && 
