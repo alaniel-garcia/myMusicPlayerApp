@@ -25,7 +25,8 @@
         "paths": {
             "@utils/*": ["src/utils/*"],
             "@assets/*": ["src/assets/*"],
-            "@hooks/*": ["src/hooks/*"]
+            "@hooks/*": ["src/hooks/*"],
+            "@services/*": ["src/services/*"]
         }
     },
     "include": ["src/**/*.ts", "src/**/*.tsx"],
