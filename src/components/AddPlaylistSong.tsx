@@ -28,7 +28,8 @@ export default function AddPlaylistSong({ playlist, playlistsUpdater, closeHandl
         playlistsUpdater(prevState =>{
             const newState = prevState.map(pl=>{
                 if(pl.name === playlist.name){
-                    return {...pl,['songs']: [...pl['songs'], ...selected]}
+                    const filteredSelected = selected.filter( track => !pl.songs.some(plSong => plSong.id === track.id))
+                    return {...pl,['songs']: [...pl['songs'], ...filteredSelected]}
                 }
                 else {
                     return pl
