@@ -43,3 +43,29 @@ export interface Icon {
     alt: string
     functionality?: Function
 }
+
+
+//Options logic
+export interface OptionsContent{
+    contentType: string
+    songType?: {
+        song: Song
+        container: Array<Song>
+    } | undefined
+    selectedSongsType?: {
+        songs: Array<Song>
+        container: Array<Song>
+    }
+    playlistType?: {
+        playlist: Playlist
+        container: Array<Playlist>
+        setter: React.Dispatch<React.SetStateAction<Playlist[]>>
+        closer: Function
+    }
+}
+
+export interface Option {
+    option: string
+    inputRequire: boolean
+    functionality: Function
+}

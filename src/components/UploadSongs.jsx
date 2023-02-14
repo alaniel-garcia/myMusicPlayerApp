@@ -1,15 +1,20 @@
-import './UploadSongs.scss'
+import './UploadSongs.scss';
+import { useContext } from 'react';
 import handleFilesUpload from '@services/handleFilesUpload';
+import noRepeatSongsHandler from '@services/noRepeatSongsHandler';
 import useButtonProps from '@hooks/useButtonProps';
 import Button from './miscellaneous/Button';
+import useLibraryContext from '@hooks/useLibraryContext';
 
-export default function UploadSongs({container, content, anySong = false}){
+export default function UploadSongs({ anySong = false}){
+    const { library, updateLibrary} = useLibraryContext();
 
     async function onInputCapture (event){
         const tracks = await handleFilesUpload(event);
 
         if(tracks){
-            container([...content, ...tracks])
+            const newArray = noRepeatSongsHandler(library, tracks);
+            updateLibrary(newArray)
         }
         else{
             return

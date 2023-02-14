@@ -10,9 +10,9 @@ export default function useTrackViewButtonFunctionality({
     setReplayMode,
 }){
 
-    const {current, setCurrent} = useContext(CurrentContext);
+    const {current, changeCurrent} = useContext(CurrentContext);
     const {queue, getCurrentIndex} = useContext(QueueContext);
-    const currentIndex = getCurrentIndex(current?.id);
+    const currentIndex = getCurrentIndex(current?.song?.id);
 
     const handleTrackEnded= ()=>{
 
@@ -29,20 +29,20 @@ export default function useTrackViewButtonFunctionality({
 
     //basic functionalities
     function playFirstInQueue(){
-        setCurrent(queue[0])
+        changeCurrent(queue[0], queue)
     }
 
     function playLastInQueue(){
         const lastTrackindex = queue.length - 1;
-        setCurrent(queue[lastTrackindex])
+        changeCurrent(queue[lastTrackindex], queue)
     }
 
     function playNext(){
-        setCurrent(queue[currentIndex + 1])
+        changeCurrent(queue[currentIndex + 1], queue)
     }
 
     function playPrev(){
-        setCurrent(queue[currentIndex - 1])
+        changeCurrent(queue[currentIndex - 1], queue)
     }
 
     function autoPlay() {

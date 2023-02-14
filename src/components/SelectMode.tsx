@@ -2,22 +2,26 @@ import './SelectMode.scss';
 import useSelectionContext from '@hooks/useSelectionContext';
 import useButtonProps from '@hooks/useButtonProps';
 import Button from './miscellaneous/Button';
-import { useContext, useEffect, useRef } from 'react';
-import QueueContext from '../context/QueueContext';
+import { useEffect, useRef } from 'react';
+import useOptionsContext from '@hooks/useOptionsContext';
+import useOptions from '@hooks/useOptions';
 
 export default function selectMode(){
     const {setSelectMode, selected, resetSelected} = useSelectionContext();
-    const {addToQueue, addWithReset} = useContext(QueueContext);
+    const {openOptions,loadContent} = useOptionsContext();
+    const options = useOptions();
     const didMount = useRef(true);
 
     const close = useButtonProps('close', ()=> setSelectMode(false));
     const play = useButtonProps('play', ()=> {
-        addWithReset(selected);
+        options.play.functionality();
     });
     const play_next = useButtonProps('play_next', ()=>{
-        addToQueue(selected)
+        options.playNext.functionality()
     });
-    const more = useButtonProps('more',()=>'not assigned yet');
+    const more = useButtonProps('more',()=>{
+        openOptions();
+    });
 
     useEffect(()=>{
         if(didMount.current){
@@ -29,6 +33,18 @@ export default function selectMode(){
             }
         }
     },[selected]);
+
+    useEffect(() => {
+        if(selected){
+            loadContent({
+                contentType: 'selectedSongs',
+                selectedSongsType: {
+                    songs: selected,
+                    container: selected,
+                }
+            })
+        }
+    }, [selected]);
 
     useEffect(()=>{
         return ()=>{

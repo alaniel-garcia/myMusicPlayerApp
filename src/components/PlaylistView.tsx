@@ -8,17 +8,20 @@ import AddPlaylistSong from './AddPlaylistSong';
 import CurrentContext from '../context/CurrentContext';
 import QueueContext from '../context/QueueContext';
 import AddWhenNoSongs from './AddWhenNoSongs';
+import useOptionsContext from '@hooks/useOptionsContext';
 
 interface Props {
     playlist: Playlist
     openPlaylistHandler: React.Dispatch<React.SetStateAction<OpenPlaylist>>
     playlistsUpdater: React.Dispatch<React.SetStateAction<Playlist[]>>
+    playlistContainer: Array<Playlist>
 }
 
-export default function PlaylistView({playlist, openPlaylistHandler, playlistsUpdater}: Props) {
+export default function PlaylistView({playlist, openPlaylistHandler, playlistsUpdater, playlistContainer}: Props) {
     const [addSongsIsOpen, setAddSongsIsOpen] = useState<boolean>(false);
-    const {setCurrent} = useContext(CurrentContext);
-    const {addWithReset, shuffleOnPlay, setShuffleOnPlay, handleShuffleModeFromPlaylist} = useContext(QueueContext);
+    const {changeCurrent} = useContext(CurrentContext);
+    const {addWithReset, shuffleOnPlay, setShuffleOnPlay, handleShuffleModeFromPlaylist, addNext} = useContext(QueueContext);
+    const {openOptions, loadContent} = useOptionsContext();
 
     const handlePlaylistClose = ()=> {
         openPlaylistHandler(prevState => {
@@ -35,7 +38,7 @@ export default function PlaylistView({playlist, openPlaylistHandler, playlistsUp
 
     const handlePlayAll= ()=>{
         if(playlist.songs.length > 0){
-            setCurrent(playlist.songs[0])
+            changeCurrent(playlist.songs[0], playlist)
             addWithReset(playlist.songs)
             if(shuffleOnPlay){
                 setShuffleOnPlay(false)
@@ -70,7 +73,18 @@ export default function PlaylistView({playlist, openPlaylistHandler, playlistsUp
 
     const go_back = useButtonProps('go_back', handlePlaylistClose);
     const add = useButtonProps('add', handlePlaylistOpen);
-    const more = useButtonProps('more', ()=> 'not assigned yet');
+    const more = useButtonProps('more', ()=>{
+        loadContent({
+            contentType: 'playlist-no-rename',
+            playlistType: {
+                playlist,
+                container: playlistContainer,
+                setter: playlistsUpdater,
+                closer: handlePlaylistClose
+            }
+        });
+        openOptions()
+    });
 
     return(
         <>

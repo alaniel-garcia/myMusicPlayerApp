@@ -29,7 +29,7 @@ export default function Queue({openStateHandler}){
                 <div className="Queue__info">
                     <div className="Queue__info__position">
                         <h2>
-                            {current ? getCurrentIndex(current.id) + 1 : 0}/{queue.length}
+                            {current.song ? getCurrentIndex(current.song.id) + 1 : 0}/{queue.length}
                         </h2>
                     </div>
                 </div>

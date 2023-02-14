@@ -7,19 +7,30 @@ import QueueContext from '../context/QueueContext';
 import useHandleBooleanState from '@hooks/useHandleBooleanState';
 import useSelectionContext from '@hooks/useSelectionContext';
 import useDeviceContext from '@hooks/useDeviceContext';
+import useOptionsContext from '@hooks/useOptionsContext';
 
 export default function TrackCard({ song, cardType, songsList, hidden, areAllSelected, ...props }) {
     
-    const {setCurrent} = useContext(CurrentContext);
+    const {changeCurrent} = useContext(CurrentContext);
     const {queue, addToQueue, addWithReset, removeFromQueue} = useContext(QueueContext);
     const [isSelected, setIsSelected] = useState(false);
     const { selected, updateSelected,removeSelected, resetSelected, selectMode, setSelectMode, onClickAvailable, setOnClickAvailable} = useSelectionContext();
     const {isTouch} = useDeviceContext();
     const didmount = useRef(true);
     const sharedCardTypeFunctionalities = cardType === 'default' || cardType === 'playlist' || cardType === 'playlist';
+    const {openOptions, loadContent} = useOptionsContext();
     let selectTimer;
 
-    const more =  useButtonProps('more',()=>{'function not assigned yet'});
+    const more =  useButtonProps('more',()=>{
+        loadContent({
+            contentType: 'song',
+            songType: {
+                song,
+                container: songsList
+            }
+        });
+        openOptions();
+    });
     const delete_ = useButtonProps('delete', ()=> removeFromQueue(song.id));
     const drag = useButtonProps('drag',()=> {'function not assigned yet'});
     const check = useButtonProps('check', ()=> handleClick());
@@ -155,45 +166,44 @@ export default function TrackCard({ song, cardType, songsList, hidden, areAllSel
                 onPointerOut={()=>{
                     handleSelectTimer()
                     }}
-                    onClick={(event)=> {
-                        event.preventDefault();
-                        event.stopPropagation();
-                        if(onClickAvailable){
-                            if(cardType === 'default' || cardType === 'playlist'){
-                                if(selectMode){
-                                    useHandleBooleanState(setIsSelected)
-                                }
-                                else{
-                                    setCurrent(song)
-                                    if(queue.length === 0){
-                                        addToQueue(songsList)
-                                    }
-                                    else if(queue.length !== songsList.length){
-                                        addWithReset(songsList)
-                                    }
-                                }
-                            }
-                            else if(cardType === 'queue'){
-                                setCurrent(song)
-                            }
-                            else if(cardType === 'addPlaylist'){
-                                handleClick()
-                            }
-                            else if(cardType === 'search'){
-                                if(selectMode){
-                                    useHandleBooleanState(setIsSelected)
-                                }
-                                else{
-                                    setCurrent(song)
-                                    addWithReset([song])
-                                }
+                onClick={(event)=> {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    if(onClickAvailable){
+                        if(cardType === 'default' || cardType === 'playlist'){
+                            if(selectMode){
+                                useHandleBooleanState(setIsSelected)
                             }
                             else{
-                                props.onClick()
+                                changeCurrent(song, songsList)
+                                if(queue.length === 0){
+                                    addToQueue(songsList)
+                                }
+                                else{
+                                    addWithReset(songsList)
+                                }
                             }
-
+                        }
+                        else if(cardType === 'queue'){
+                            changeCurrent(song, songsList)
+                        }
+                        else if(cardType === 'addPlaylist'){
+                            handleClick()
+                        }
+                        else if(cardType === 'search'){
+                            if(selectMode){
+                                useHandleBooleanState(setIsSelected)
+                            }
+                            else{
+                                changeCurrent(song, songsList)
+                                addWithReset([song])
+                            }
+                        }
+                        else{
+                            props.onClick()
+                        }
                     }
-            }}>
+                }}>
                 <div className={`TrackCard--left--${cardType}`}>
                     <div className='TrackCard__section'>
                         <div className={`track-cover--${cardType}`}>

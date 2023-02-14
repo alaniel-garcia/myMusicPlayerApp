@@ -13,12 +13,15 @@ import Favorites from './Favorites';
 import { LibraryProvider } from '../context/LibraryContext';
 import useSelectionContext from '@hooks/useSelectionContext';
 import SelectMode from './SelectMode';
-import {FavoritesProvider} from '../context/FavoritesContext';
+import { FavoritesProvider } from '../context/FavoritesContext';
+import OptionsMenu from './OptionsMenu';
+import useOptionsContext from '@hooks/useOptionsContext';
 
 export default function App() {
     const {volume, onSetVolume} = useContext(VolumeContext);
     const {section} = useContext(SectionContext);
     const {selectMode} = useSelectionContext();
+    const {isOptionsOpen} = useOptionsContext();
 
     useEffect(()=>{
         window.addEventListener('beforeunload', ()=>{
@@ -50,6 +53,7 @@ export default function App() {
                                         <Songs className={!section.songs ? 'hidden': ''} />
                                         <Playlists className={!section.playlists ? 'hidden': ''} />
                                         <Favorites className={!section.favorites ? 'hidden' : ''} />
+                                        {isOptionsOpen && <OptionsMenu />}
                                     </main>
                                     <Current />
                                 </FavoritesProvider>

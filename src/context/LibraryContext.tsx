@@ -16,6 +16,7 @@ const LibraryContext = createContext<LibContext | undefined>(undefined);
 interface LibContext {
     library: Array<Song>
     updateLibrary: Function
+    removeFromLibrary: Function
 }
 
 interface Props {
@@ -29,8 +30,22 @@ export function LibraryProvider({children}: Props){
         setLibrary(songs)
     }
 
+    function removeFromLibrary(song?: Song, songs?: Array<Song> ):void {
+        let newArray;
+        if(song){
+            newArray = library.filter(el => el.id !== song.id);
+        }
+        else if(songs && songs?.length > 0){
+            newArray = library.filter(el => !songs?.some(track => track.id === el.id));
+        }
+
+        if(newArray){
+            setLibrary(newArray)
+        }
+    }
+
     return(
-        <LibraryContext.Provider value={{library, updateLibrary}}>
+        <LibraryContext.Provider value={{library, updateLibrary, removeFromLibrary}}>
             {children}
         </LibraryContext.Provider>
     )

@@ -49,13 +49,13 @@ export default function Current() {
     const queue_props = useButtonProps('queue', ()=>{ useHandleBooleanState(setQueueIsOpen)});
 
     useEffect(() => {
-        if (current && !track) {
-            audioEl.current.src = current.url;
+        if (current.song && !track) {
+            audioEl.current.src = current.song.url;
             setTrack(audioEl.current);
             setIsOpen(true);
         } 
         //resetting states when changing to a new track
-        else if (current && track) {
+        else if (current.song && track) {
             track.currentTime = 0;
 
             //Had to set Track to null when there is a track and another 
@@ -67,7 +67,7 @@ export default function Current() {
             setIsOpen(true);
         }
         //pause track in case queue has been emptied
-        else if(!current && track){
+        else if(!current.song && track){
             track.pause()
         }
     }, [current]);
@@ -82,7 +82,7 @@ export default function Current() {
                 track.volume = sound ? volume / 100 : volumeOff;
             }
              if(!track) {
-                audioEl.current.src = current.url;
+                audioEl.current.src = current.song.url;
                 setTrack(audioEl.current);
             }
         }
@@ -142,10 +142,10 @@ export default function Current() {
             }
         }
 
-        if(current){
+        if(current.song){
             return(
                 <TrackView 
-                    song={current} 
+                    song={current.song} 
                     track= {track}
                     buttonsProps={{
                         minimize, 
@@ -163,11 +163,11 @@ export default function Current() {
     }
 
     function loadMinimizedView() {
-        if (current) {
+        if (current.song) {
             return (
                     <TrackCard
                         onClick={() => setIsOpen(true)}
-                        song={current}
+                        song={current.song}
                         cardType='current'
                         buttonsProps={[
                             isPaused ? play_props : pause_props,
@@ -179,10 +179,10 @@ export default function Current() {
     }
 
     function loadView() {
-        if(isOpen && current) {
+        if(isOpen && current.song) {
             return loadCompleteView()
         }
-        else if(!isOpen && current) {
+        else if(!isOpen && current.song) {
             return loadMinimizedView()
         }
     }

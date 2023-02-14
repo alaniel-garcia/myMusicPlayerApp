@@ -3,14 +3,18 @@ import { Icon, Playlist, OpenPlaylist } from 'src/types';
 import Button from './miscellaneous/Button';
 import useButtonProps from '@hooks/useButtonProps';
 import useDeviceContext from '@hooks/useDeviceContext';
+import useOptionsContext from '@hooks/useOptionsContext';
 
 interface Props {
     playlist: Playlist
     openPlaylistHandler: React.Dispatch<React.SetStateAction<OpenPlaylist>>
+    playlistContainer: Array<Playlist>
+    playlistUpdater: React.Dispatch<React.SetStateAction<Playlist[]>>
 }
 
-export default function PlaylistCard({playlist, openPlaylistHandler}: Props){
+export default function PlaylistCard({playlist, openPlaylistHandler, playlistContainer, playlistUpdater}: Props){
     const {isTouch} = useDeviceContext();
+    const {loadContent,openOptions} = useOptionsContext();
 
     const handlePlaylistOpen = ()=> {
         openPlaylistHandler({
@@ -19,7 +23,17 @@ export default function PlaylistCard({playlist, openPlaylistHandler}: Props){
         })
     };
 
-    const more: Icon = useButtonProps('more', ()=> 'not assigned yet');
+    const more: Icon = useButtonProps('more', ()=> {
+        loadContent({
+            contentType: 'playlist',
+            playlistType: {
+                playlist,
+                container: playlistContainer,
+                setter: playlistUpdater
+            }
+        });
+        openOptions();
+    });
 
     return(
         <>

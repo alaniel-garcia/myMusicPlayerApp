@@ -1,25 +1,21 @@
-import useSelectionContext from '@hooks/useSelectionContext';
+import useLibraryContext from '@hooks/useLibraryContext';
 import { createContext, useContext, useEffect, useState } from 'react';
 import CurrentContext from './CurrentContext';
-import SelectionContext from './SelectionContext';
 
 const QueueContext = createContext();
 
 export function QueueProvider({children}) {
-    const { current, setCurrent } = useContext(CurrentContext);
-    const { selectMode, setSelectMode } = useSelectionContext();
+    const { current, changeCurrent } = useContext(CurrentContext);
+    const {library} = useLibraryContext();
     const [queue, setQueue] = useState([]);
     const [queueInitialState, setQueueInitialState] = useState([]); 
     const [shuffleOnPlay, setShuffleOnPlay] = useState(false);
     const [playlistView, setPlaylistView] = useState(false);
-    const currentIndex = getCurrentIndex(current?.id);
+    const currentIndex = getCurrentIndex(current?.song?.id);
 
     useEffect(()=>{
-        if(shuffleOnPlay || playlistView || selectMode){
-            setCurrent(queue[0])
-            if(selectMode){
-                setSelectMode(false)
-            }
+        if(shuffleOnPlay || playlistView){
+            changeCurrent(queue[0], queue)
         }
     },[queue]);
 
@@ -38,12 +34,58 @@ export function QueueProvider({children}) {
         }
     },[playlistView]);
 
+    useEffect(()=>{
+        if(queue.length > 0){
+            for(let queueSong of queue){
+                if(library.some(librarySong => librarySong.id === queueSong.id)){
+                    continue
+                }
+                else {
+                    removeFromQueue(queueSong.id)
+                }
+            }
+        }
+    },[library]);
+
     function addToQueue(newAddition){
         if(Array.isArray(newAddition)){
+            if(queue.length > 0){
+                newAddition = notRepeatCleaning(newAddition, 'addition')
+            }
             setQueue([...queue, ...newAddition])
         }
         else{
-            setQueue([...queue, newAddition])
+            if(queue.some(song => song.id === newAddition.id)){
+                return
+            }
+            else {
+                setQueue([...queue, newAddition])
+            }
+        }
+    }
+
+    function addNext(newAddition){
+        let newCurrentindex; 
+
+        if(Array.isArray(newAddition)){
+            newAddition = takeOutCurrent(newAddition);
+            let newArray = notRepeatCleaning(newAddition, 'queue');
+            newCurrentindex = findNewCurrentIndex(newArray);
+
+            newArray.splice(newCurrentindex + 1, 0, ...newAddition)
+
+            setQueue(newArray)
+        }
+        else {
+            if(newAddition.id !== current.song.id){
+                const newArray = queue.filter(song => song.id !== newAddition.id);
+
+                newCurrentindex = findNewCurrentIndex(newArray);
+
+                newArray.splice(newCurrentindex + 1, 0, newAddition);
+
+                setQueue(newArray);
+            }
         }
     }
 
@@ -72,15 +114,15 @@ export function QueueProvider({children}) {
                 return song
             }
         });
-        if(songId === current.id){
+        if(songId === current.song.id){
             if(queue[currentIndex + 1]){
-                setCurrent(queue[currentIndex + 1])
+                changeCurrent(queue[currentIndex + 1], queue)
             }
             else if(queue[currentIndex - 1]){
-                setCurrent(queue[currentIndex - 1])
+                changeCurrent(queue[currentIndex - 1], queue)
             }
             else {
-                setCurrent(null)
+                changeCurrent(null, queue)
             }
         }
 
@@ -146,8 +188,42 @@ export function QueueProvider({children}) {
         }
     }
 
+    function notRepeatCleaning(array=[], removeFrom = ''){
+        let filteredArray;
+
+        if(removeFrom === 'addition'){
+            filteredArray = array.filter(song => !queue.some(el => el.id === song.id));
+        }
+        else if(removeFrom === 'queue'){
+            filteredArray = queue.filter(song => !array.some(el => el.id === song.id));
+        }
+        else {
+            throw new Error('second argument does not match any valid value');
+        }
+
+        return filteredArray;
+    }
+
+    function findNewCurrentIndex(array=[]){
+        let index = 0;
+
+        array.map((song, i) => {
+            if(song.id === queue[currentIndex].id){
+                index = i
+            }
+        })
+
+        return index
+    }
+
+    function takeOutCurrent(array=[]){
+        const filteredArray = array.filter(song => song.id !== current.song.id);
+
+        return filteredArray;
+    }
+
     return(
-        <QueueContext.Provider value={{queue, addToQueue, addWithReset, getCurrentIndex, removeFromQueue, shuffleOnPlay, setShuffleOnPlay, handleShuffleMode, handleShuffleModeFromPlaylist, setQueueInitialState}}>
+        <QueueContext.Provider value={{queue, addToQueue, addWithReset, getCurrentIndex, removeFromQueue, shuffleOnPlay, setShuffleOnPlay, handleShuffleMode, handleShuffleModeFromPlaylist, setQueueInitialState, addNext}}>
             {children}
         </QueueContext.Provider>
     )

@@ -1,0 +1,42 @@
+@use '@assets/styles/index.scss' as idx;
+
+.InputRenameOption {
+  display: flex;
+    flex-direction: column;
+    row-gap: 1.6rem;
+    align-items: center;
+
+  max-width: 300px;
+    margin-inline: 1.6rem;
+    padding: 1.6rem 2.6rem;
+
+  background: white;
+    border-radius: .4rem;
+
+  .InputRenameOption__title {
+    color: black;
+  }
+}
+
+.InputRenameOption__input {
+  outline: none;
+  border: none;
+  border-bottom: solid 1px idx.$highlights;
+}
+
+.InputRenameOption__buttons {
+  display: flex;
+  column-gap: 1.6rem;
+}
+
+.InputRenameOption__button {
+  padding-block: .8rem;
+    padding-inline: 1.6rem;
+
+  background: idx.$highlights;
+    border-radius: .2rem;
+
+  &:hover {
+    cursor: pointer;
+  }
+}

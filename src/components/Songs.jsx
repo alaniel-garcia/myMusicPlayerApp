@@ -1,28 +1,22 @@
 import './Songs.scss';
-import { useState, useContext, useEffect } from 'react';
 import SongsList from './SongsList';
 import UploadSongs from './UploadSongs';
-import LibraryContext from '../context/LibraryContext';
 import AddWhenNoSongs from './AddWhenNoSongs';
+import useLibraryContext from '@hooks/useLibraryContext';
 
 export default function Songs({className}){
 
-    const [songs, setSongs] = useState([]);
-    const {updateLibrary} = useContext(LibraryContext);
-
-    useEffect(()=>{
-        updateLibrary(songs)
-    },[songs]);
+    const {library} = useLibraryContext();
 
     function renderSongsContent(){
-        if(songs.length > 0){
-            return <SongsList songs={songs} songsSetter={setSongs} cardType='default'/>
+        if(library.length > 0){
+            return <SongsList songs={library} cardType='default'/>
         }
         else{
             return(
                 <div className='Songs__no-songs'>
                     <AddWhenNoSongs>
-                        <UploadSongs container={setSongs} content={songs} anySong={true}/>
+                        <UploadSongs anySong={true}/>
                     </AddWhenNoSongs>
                 </div>
             )
@@ -35,9 +29,9 @@ export default function Songs({className}){
                 <div className='Songs__header'>
                     <div className="Songs__header-info">
                         <h2>
-                            {songs.length} Songs
+                            {library.length} Songs
                         </h2>
-                        <UploadSongs container={setSongs} content={songs}/>
+                        <UploadSongs />
                     </div>
                 </div>
                 {renderSongsContent()}
