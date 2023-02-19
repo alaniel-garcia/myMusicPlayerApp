@@ -18,7 +18,6 @@ export default function Songs({className}){
             async function handleIDBData(){
                 const IDBData = await IDBSongs.readDataFromUserMusic()
 
-                console.log(98)
                 if(IDBData && IDBData.length > 0){
                     const result = await Promise.all(IDBData.map( async (song) => {
                         return await handleAudio(song)
