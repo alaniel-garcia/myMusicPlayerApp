@@ -1,5 +1,4 @@
 import './UploadSongs.scss';
-import { useContext } from 'react';
 import handleFilesUpload from '@services/handleFilesUpload';
 import noRepeatSongsHandler from '@services/noRepeatSongsHandler';
 import useButtonProps from '@hooks/useButtonProps';
@@ -12,7 +11,7 @@ export default function UploadSongs({ anySong = false}){
     async function onInputCapture (event){
         const tracks = await handleFilesUpload(event);
 
-        if(tracks){
+        if(tracks && tracks.length > 0){
             const newArray = noRepeatSongsHandler(library, tracks);
             updateLibrary(newArray)
         }

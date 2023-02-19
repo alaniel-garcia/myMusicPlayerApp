@@ -2,14 +2,14 @@ import { useContext } from 'react';
 import QueueContext from '../context/QueueContext';
 import CurrentContext from '../context/CurrentContext';
 import useOptionsContext from './useOptionsContext';
-import { Option } from 'src/types';
+import { Option, Song } from 'src/types';
 import useLibraryContext from './useLibraryContext';
 import useSelectionContext from './useSelectionContext';
 
 export default function useOptions(){
     const {changeCurrent} = useContext(CurrentContext);
     const {setSelectMode} = useSelectionContext();
-    const {addWithReset, addNext, addToQueue} = useContext(QueueContext);
+    const {queue, addWithReset, addNext, addToQueue, removeSeveralFromQueue, removeFromQueue} = useContext(QueueContext);
     const {content} = useOptionsContext();
     const {removeFromLibrary} = useLibraryContext();
     const {closeOptions} = useOptionsContext();
@@ -83,9 +83,15 @@ export default function useOptions(){
         functionality: () => {
             if(content.contentType === 'song' && song){
                 removeFromLibrary(song)
+                if(queue.some((el: Song) => el.id === song.id)){
+                    removeFromQueue(song.id)
+                }
             }
             else if(content.contentType === 'selectedSongs' && songs){
                 removeFromLibrary(songs)
+                if(queue.length > 0){
+                    removeSeveralFromQueue(songs)
+                }
                 setSelectMode(false);
             }
             closeOptions()

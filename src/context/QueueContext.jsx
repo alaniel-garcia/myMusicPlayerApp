@@ -1,4 +1,3 @@
-import useLibraryContext from '@hooks/useLibraryContext';
 import { createContext, useContext, useEffect, useState } from 'react';
 import CurrentContext from './CurrentContext';
 
@@ -6,7 +5,6 @@ const QueueContext = createContext();
 
 export function QueueProvider({children}) {
     const { current, changeCurrent } = useContext(CurrentContext);
-    const {library} = useLibraryContext();
     const [queue, setQueue] = useState([]);
     const [queueInitialState, setQueueInitialState] = useState([]); 
     const [shuffleOnPlay, setShuffleOnPlay] = useState(false);
@@ -33,19 +31,6 @@ export function QueueProvider({children}) {
             },0)
         }
     },[playlistView]);
-
-    useEffect(()=>{
-        if(queue.length > 0){
-            for(let queueSong of queue){
-                if(library.some(librarySong => librarySong.id === queueSong.id)){
-                    continue
-                }
-                else {
-                    removeFromQueue(queueSong.id)
-                }
-            }
-        }
-    },[library]);
 
     function addToQueue(newAddition){
         if(Array.isArray(newAddition)){
@@ -109,7 +94,7 @@ export function QueueProvider({children}) {
     function removeFromQueue (songId){
         let currentIndex = getCurrentIndex(songId);
 
-        const filtered = queue.filter((song, i)=> {
+        const filtered = queue.filter((song)=> {
             if(song.id !== songId){
                 return song
             }
@@ -127,6 +112,48 @@ export function QueueProvider({children}) {
         }
 
         setQueue(filtered)
+    }
+
+    function removeSeveralFromQueue (array = []) {
+        let currentWasDeleted = [false, ''];
+        let newCurrentIndex;
+        let newCurrentId;
+        const filtered = queue.filter((song) => {
+            let hasToBeReturned = !array.some(el => el.id === song.id)
+            if(hasToBeReturned === false && song.id === current.song.id){
+                hasToBeReturned = true
+                currentWasDeleted[0] = true
+                currentWasDeleted[1] = song.id
+            }
+            return hasToBeReturned 
+        });
+
+        if(currentWasDeleted[0] === true){
+            if(filtered.length === 1){
+                setQueue([])
+                changeCurrent(null, queue)
+            }
+            else {
+                filtered.map((song, i) => {
+                    if(song.id === currentWasDeleted[1]) newCurrentIndex = i
+                })
+
+                if(filtered[newCurrentIndex + 1]){
+                    newCurrentId = filtered[newCurrentIndex + 1].id
+                    changeCurrent(queue.find(song => song.id === newCurrentId), queue)
+                }
+                else {
+                    newCurrentId = filtered[newCurrentIndex - 1].id
+                    changeCurrent(queue.find(song => song.id === newCurrentId), queue)
+                }
+
+                // map for finally removing current index
+                setQueue(filtered.filter(song => song.id !== currentWasDeleted[1]))
+            }
+        }
+        else{
+            setQueue(filtered)
+        }
     }
 
     function handleShuffleMode (){
@@ -223,7 +250,7 @@ export function QueueProvider({children}) {
     }
 
     return(
-        <QueueContext.Provider value={{queue, addToQueue, addWithReset, getCurrentIndex, removeFromQueue, shuffleOnPlay, setShuffleOnPlay, handleShuffleMode, handleShuffleModeFromPlaylist, setQueueInitialState, addNext}}>
+        <QueueContext.Provider value={{queue, addToQueue, addWithReset, getCurrentIndex, removeFromQueue, removeSeveralFromQueue, shuffleOnPlay, setShuffleOnPlay, handleShuffleMode, handleShuffleModeFromPlaylist, setQueueInitialState, addNext}}>
             {children}
         </QueueContext.Provider>
     )

@@ -1,4 +1,5 @@
-import { createContext, ReactNode, useState } from 'react';
+import { createContext, ReactNode, useContext, useState } from 'react';
+import * as IDBSongs from '@services/IDB';
 import { Song } from 'src/types';
 
 // const LibraryContext = createContext<LibContext>({} as LibContext);
@@ -30,15 +31,21 @@ export function LibraryProvider({children}: Props){
         setLibrary(songs)
     }
 
-    function removeFromLibrary(song?: Song, songs?: Array<Song> ):void {
+    function removeFromLibrary(songs: Song | Array<Song> ):void {
         let newArray;
-        if(song){
-            newArray = library.filter(el => el.id !== song.id);
+        if(Array.isArray(songs) && songs.length > 0){
+            newArray = library.filter(el => {
+                const shouldBeReturned = !songs.some(track => track.id === el.id)
+                if(shouldBeReturned === false){
+                    IDBSongs.deleteSongFromUserMusic(el.id);
+                }
+                return shouldBeReturned
+            });
         }
-        else if(songs && songs?.length > 0){
-            newArray = library.filter(el => !songs?.some(track => track.id === el.id));
+        else if(!Array.isArray(songs)){
+            newArray = library.filter(el => el.id !== songs.id);
+            IDBSongs.deleteSongFromUserMusic(songs.id);
         }
-
         if(newArray){
             setLibrary(newArray)
         }
