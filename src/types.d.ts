@@ -69,3 +69,10 @@ export interface Option {
     inputRequire: boolean
     functionality: Function
 }
+
+// IndexedDB
+export interface IDBSong {
+    song: File | Blob
+    metadata: Metadata
+    id: string
+}

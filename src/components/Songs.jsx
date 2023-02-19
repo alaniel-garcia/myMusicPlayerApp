@@ -3,10 +3,55 @@ import SongsList from './SongsList';
 import UploadSongs from './UploadSongs';
 import AddWhenNoSongs from './AddWhenNoSongs';
 import useLibraryContext from '@hooks/useLibraryContext';
+import * as IDBSongs from '../services/IDB';
+import handleAudio from '../services/handleAudio';
+import { useEffect } from 'react';
+import defaultSongs from '../utils/defaultMusic';
+import handleFilesUpload from '../services/handleFilesUpload'
 
 export default function Songs({className}){
 
-    const {library} = useLibraryContext();
+    const {library, updateLibrary} = useLibraryContext();
+
+    useEffect(()=>{
+        if(library.length === 0 ){
+            async function handleIDBData(){
+                const IDBData = await IDBSongs.readDataFromUserMusic()
+
+                console.log(98)
+                if(IDBData && IDBData.length > 0){
+                    const result = await Promise.all(IDBData.map( async (song) => {
+                        return await handleAudio(song)
+                    }))
+
+                    updateLibrary(result)
+                }
+                else {
+                    const filtered = await Promise.all(defaultSongs.map( async (songURL) => {
+                        // return await new Promise((res, rej)=>{
+                        // const xml = new XMLHttpRequest();
+                        // xml.open('get', songURL)
+                        // xml.responseType = 'blob'
+                        // xml.onload = async (e) => {
+                        //     res(xml.response)
+                        // }
+                        // xml.send()
+                        // })
+
+                        return fetch(songURL)
+                            .then(res => res.blob())
+                            .then(blob => blob)
+                    }))
+                    const result = await handleFilesUpload(filtered, true);
+
+                    updateLibrary(result)
+                }
+                return
+            }
+
+            handleIDBData()
+        }
+    },[]);
 
     function renderSongsContent(){
         if(library.length > 0){

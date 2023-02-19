@@ -75,17 +75,15 @@ module.exports = ({mode}) => {
                 {
                     test: /\.(jpg|png)$/,
                     type: 'asset/resource'
-                }
-                /*
+                },
                 {
                     test: /\.(mp3|flac|opus|ogg|m4a)$/,
                     exclude: /node_modules/,
                     loader: 'file-loader',
-                    options: {
-                        name: '[name].[ext]'
+                    generator: {
+                        filename: 'assets/audio/[name][ext]'
                     }
                 }
-                */
             ]
         },
     }
