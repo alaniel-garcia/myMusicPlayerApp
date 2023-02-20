@@ -6,6 +6,7 @@ import { SectionProvider } from './context/SectionContext';
 import { SelectionProvider } from './context/SelectionContext';
 import { DeviceProvider } from './context/DeviceContext';
 import { OptionsProvider } from './context/OptionsContext';
+import { IDBProvider } from './context/IDBContext';
 
 const container = document.getElementById('root')
 const root = ReactDOM.createRoot(container)
@@ -15,11 +16,13 @@ root.render(
     <DeviceProvider>
         <VolumeProvider>
             <SectionProvider>
-                <SelectionProvider>
-                    <OptionsProvider>
-                        <App />
-                    </OptionsProvider>
-                </SelectionProvider>
+                <IDBProvider>
+                    <SelectionProvider>
+                        <OptionsProvider>
+                            <App />
+                        </OptionsProvider>
+                    </SelectionProvider>
+                </IDBProvider>
             </SectionProvider>
         </VolumeProvider>
     </DeviceProvider>

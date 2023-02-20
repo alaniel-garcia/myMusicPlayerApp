@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useState } from 'react';
+import { createContext, ReactNode, useState } from 'react';
 import * as IDBSongs from '@services/IDB';
 import { Song } from 'src/types';
 

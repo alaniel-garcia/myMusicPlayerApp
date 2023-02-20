@@ -1,24 +1,5 @@
 import { IDBSong } from 'src/types';
-
-const indexedDB = window.indexedDB;
-let musicDB:IDBDatabase;
-
-const dbInitialization = indexedDB.open('musicDB')
-
-dbInitialization.onsuccess = () => {
-    musicDB = dbInitialization.result;
-    console.log('Music DataBase open')
-}
-
-dbInitialization.onupgradeneeded = () => {
-    musicDB = dbInitialization.result;
-    const objectStorage = musicDB.createObjectStore('musicUser',{keyPath: 'id'})    
-    console.log('Music DataBase created')
-}
-
-dbInitialization.onerror = (err) => {
-    console.log('Error in Music indexedDB', err)
-}
+import { musicDB } from '../context/IDBContext';
 
 export function addDataToUserMusic (song: IDBSong) {
     const transactionUser = musicDB.transaction(['musicUser'], 'readwrite');
@@ -26,12 +7,11 @@ export function addDataToUserMusic (song: IDBSong) {
     const request = objectStore.add(song)
 }
 
-export function readDataFromUserMusic () {
-    const transactionUser = musicDB.transaction(['musicUser']);
+export async function readDataFromUserMusic () {
+    const transactionUser = musicDB.transaction(['musicUser'], 'readwrite');
     const objectStore = transactionUser.objectStore('musicUser')
     const request = objectStore.getAll()
-
-    return new Promise ((resolve, reject) =>{
+    return await new Promise ((resolve, reject) =>{
         request.onsuccess = (e: any) => {
             resolve(request.result)
         }
@@ -43,7 +23,7 @@ export async function getSongFromUserMusic (id: string){
     const objectStore = transactionUser.objectStore('musicUser');
     const idQuery = objectStore.get(id)
 
-    return new Promise((resolve, reject)=>{
+    return await new Promise((resolve, reject)=>{
         idQuery.onsuccess = () => {
             resolve(idQuery.result);
         }
