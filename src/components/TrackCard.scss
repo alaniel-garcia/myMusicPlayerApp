@@ -44,6 +44,7 @@ $icons-size-current: calc($icons-size - 1rem);
   }
   .TrackCard--left--current {
     display: flex;
+
     width: calc(100% - ($icons-size * 2.5) + 1.2rem) ;
   }
 
@@ -71,7 +72,8 @@ $icons-size-current: calc($icons-size - 1rem);
   margin-block: 0;
 
   background: idx.$background;
-  box-shadow: 0px -2px idx.$highlights;
+    box-shadow: 0px -2px idx.$highlights;
+    border-radius: 0;
 }
 
 .track-cover--default, .track-cover--queue, .track-cover--addPlaylist, .track-cover--playlist, .track-cover--search {
