@@ -11,7 +11,7 @@ import useOptionsContext from '@hooks/useOptionsContext';
 
 export default function TrackCard({ song, cardType, songsList, hidden, areAllSelected, ...props }) {
     
-    const {changeCurrent} = useContext(CurrentContext);
+    const {changeCurrent, toggleIsCurrentOpen} = useContext(CurrentContext);
     const {queue, addToQueue, addWithReset, removeFromQueue} = useContext(QueueContext);
     const [isSelected, setIsSelected] = useState(false);
     const { selected, updateSelected,removeSelected, resetSelected, selectMode, setSelectMode, onClickAvailable, setOnClickAvailable} = useSelectionContext();
@@ -182,6 +182,7 @@ export default function TrackCard({ song, cardType, songsList, hidden, areAllSel
                                 else{
                                     addWithReset(songsList)
                                 }
+                                toggleIsCurrentOpen()
                             }
                         }
                         else if(cardType === 'queue'){
@@ -197,6 +198,7 @@ export default function TrackCard({ song, cardType, songsList, hidden, areAllSel
                             else{
                                 changeCurrent(song, songsList)
                                 addWithReset([song])
+                                toggleIsCurrentOpen()
                             }
                         }
                         else{

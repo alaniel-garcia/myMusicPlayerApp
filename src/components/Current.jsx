@@ -11,10 +11,9 @@ import useHandleBooleanState from '../hooks/useHandleBooleanState';
 import QueueContext from '../context/QueueContext';
 
 export default function Current() {
-    const { current } = useContext(CurrentContext);
+    const { current, isCurrentOpen, toggleIsCurrentOpen } = useContext(CurrentContext);
     const [track, setTrack] = useState(null);
     const [isPaused, setIsPaused] = useState(true);
-    const [isOpen, setIsOpen] = useState(false);
     const {setShuffleOnPlay} = useContext(QueueContext);
     const {volume, sound, volumeOff} = useContext(VolumeContext);
     const [queueIsOpen, setQueueIsOpen] = useState(false);
@@ -52,7 +51,6 @@ export default function Current() {
         if (current.song && !track) {
             audioEl.current.src = current.song.url;
             setTrack(audioEl.current);
-            setIsOpen(true);
         } 
         //resetting states when changing to a new track
         else if (current.song && track) {
@@ -64,7 +62,6 @@ export default function Current() {
             //if track changes
             setTrack(null)
             setIsPaused(true);
-            setIsOpen(true);
         }
         //pause track in case queue has been emptied
         else if(!current.song && track){
@@ -95,7 +92,7 @@ export default function Current() {
     function loadCompleteViewBtnsProps() {
 
         const btnsPropsToLoad ={
-            minimize: useButtonProps('minimize', ()=> useHandleBooleanState(setIsOpen)),
+            minimize: useButtonProps('minimize', ()=> toggleIsCurrentOpen()),
             more: useButtonProps('more', ()=> 'not assigned yet'),
             repeat: useButtonProps('repeat', ()=> {
                 toggleReplayMode('repeat')
@@ -166,7 +163,7 @@ export default function Current() {
         if (current.song) {
             return (
                     <TrackCard
-                        onClick={() => setIsOpen(true)}
+                        onClick={() => toggleIsCurrentOpen()}
                         song={current.song}
                         cardType='current'
                         buttonsProps={[
@@ -179,10 +176,10 @@ export default function Current() {
     }
 
     function loadView() {
-        if(isOpen && current.song) {
+        if(isCurrentOpen && current.song) {
             return loadCompleteView()
         }
-        else if(!isOpen && current.song) {
+        else if(!isCurrentOpen && current.song) {
             return loadMinimizedView()
         }
     }
