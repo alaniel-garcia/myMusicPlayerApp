@@ -1,6 +1,13 @@
 @use '@assets/styles/index.scss' as idx;
 
 .SongsList {
-  height: 100%;
+  display: flex;
+    flex-direction: column;
+    row-gap: 1.4rem;
+
   overflow-y: scroll;
+
+  padding-inline-start: idx.$general-padding;
+  padding-block-end: 1.4rem;
+  margin-block-end: 1.4rem;
 }

@@ -6,7 +6,6 @@ interface Props {
     songs: Array<Song>
     cardType: string
     display?: Array<Song>
-    searchSection?: string
     areAllSelected?: boolean
 }
 
@@ -14,7 +13,6 @@ export default function SongsList({
     songs,
     cardType,
     display,
-    searchSection,
     areAllSelected
 }: Props) {
 
@@ -41,21 +39,19 @@ export default function SongsList({
     return (
         <>
             <div className='SongsList'>
-                <div className={searchSection ? `SongsList__container ${searchSection}` : 'SongsList__container'}>
-                    {songs &&
-                        songs.map((song, i) => {
-                            return (
-                                <TrackCard
-                                    key={i}
-                                    song={song}
-                                    songsList={songs}
-                                    cardType={cardType}
-                                    hidden={hiddenStatus(song.id)}
-                                    areAllSelected={areAllSelected}
-                                />
-                            );
-                        })}
-                </div>
+                {songs &&
+                    songs.map((song, i) => {
+                        return (
+                            <TrackCard
+                                key={i}
+                                song={song}
+                                songsList={songs}
+                                cardType={cardType}
+                                hidden={hiddenStatus(song.id)}
+                                areAllSelected={areAllSelected}
+                            />
+                        );
+                })}
             </div>
         </>
     );
