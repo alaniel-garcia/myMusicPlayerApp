@@ -14,7 +14,7 @@ export default function useOptions(){
     const {content} = useOptionsContext();
     const {removeFromLibrary} = useLibraryContext();
     const {closeOptions} = useOptionsContext();
-    const {addFavorites} = useFavoritesContext();
+    const {addFavorites, removeFavorites} = useFavoritesContext();
     const song = content.songType?.song;
     const playlist = content.playlistType?.playlist;
     const playlistContainer = content.playlistType?.container;
@@ -88,6 +88,22 @@ export default function useOptions(){
             }
             else if(content.contentType === 'selectedSongs'){
                 addFavorites(songs)
+                setSelectMode(false);
+            }
+            closeOptions()
+        }
+    }
+
+    const removeFromFavorites: Option = {
+        option: 'Remove from favorites',
+        inputRequire: false,
+        functionality: () => {
+            if(content.contentType === 'song'){
+                removeFavorites(song)
+            }
+            else if(content.contentType === 'selectedSongs'){
+                removeFavorites(songs)
+                setSelectMode(false);
             }
             closeOptions()
         }
@@ -111,6 +127,14 @@ export default function useOptions(){
                 setSelectMode(false);
             }
             closeOptions()
+        }
+    }
+
+    const removeFromPlaylist: Option = {
+        option: 'Remove from playlist',
+        inputRequire: false,
+        functionality: ()=>{
+
         }
     }
 
@@ -169,7 +193,9 @@ export default function useOptions(){
         addQueue,
         removeFromDevice,
         removePlaylist,
+        removeFromPlaylist,
         addToFavorites,
+        removeFromFavorites,
         rename
     }
 }

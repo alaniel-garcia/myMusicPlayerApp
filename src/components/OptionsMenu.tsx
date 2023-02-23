@@ -3,12 +3,14 @@ import ModalWindow from './miscellaneous/ModalWindow';
 import useOptions from '@hooks/useOptions';
 import useOptionsContext from '@hooks/useOptionsContext';
 import generateTimestamp from '@services/generateTimestamp';
+import SectionContext from '../context/SectionContext';
 import { Option } from 'src/types';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
 export default function OptionsMenu() {
     const {content, closeOptions, callOption} = useOptionsContext();
     const [openModal, setOpenModal] = useState(false);
+    const {section} = useContext(SectionContext)
     const song = content.songType?.song;
     const songs = content.selectedSongsType?.songs;
     const playlist = content.playlistType?.playlist;
@@ -19,6 +21,8 @@ export default function OptionsMenu() {
         addQueue,
         removeFromDevice,
         removePlaylist,
+        removeFromFavorites,
+        removeFromPlaylist,
         addToFavorites,
         rename } = useOptions();
 
@@ -29,10 +33,10 @@ export default function OptionsMenu() {
     ];
 
     const songMenu = [
-        addToFavorites,
         removeFromDevice
-
     ];
+
+    const songMenuBySection = defineSongMenuBySection();
 
     const playlistMenu = [
         rename,
@@ -42,6 +46,18 @@ export default function OptionsMenu() {
     const playlistMenuNoRename = [
         removePlaylist
     ];
+
+    function defineSongMenuBySection(){
+        if(section.favorites){
+            return [removeFromFavorites]
+        }
+        else if(section.playlists){
+            return [addToFavorites, removeFromPlaylist]
+        }
+        else {
+            return [addToFavorites]
+        }
+    }
 
     function generateOptionElements(type: string, menu:Array<Option>):Array<JSX.Element>{
         const optionElements = [];
@@ -78,7 +94,7 @@ export default function OptionsMenu() {
             elementsToPrint = generateOptionElements(type, defaultMenu)
         }
         else if(type === 'song' || type === 'selectedSongs'){
-            elementsToPrint = generateOptionElements(type, songMenu)
+            elementsToPrint = generateOptionElements(type, [...songMenuBySection,...songMenu])
         }
         else if(type === 'playlist'){
             elementsToPrint = generateOptionElements(type, playlistMenu)

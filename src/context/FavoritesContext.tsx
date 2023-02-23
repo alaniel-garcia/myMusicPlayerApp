@@ -8,6 +8,7 @@ interface FavContext {
     toggleFavorite: Function
     isInFavorites: Function
     addFavorites: Function
+    removeFavorites: Function
 }
 
 interface Props {
@@ -15,11 +16,11 @@ interface Props {
 }
 
 const FavoritesContext = createContext<FavContext | undefined>(undefined);
-const storageFavs = getStorageFavs() as Array<string>;
 
 export function FavoritesProvider({children}: Props){
     const [favorites, setFavorites] = useState<Array<Song>>([]);
     const {library} = useLibraryContext();
+    const storageFavs = getStorageFavs() as Array<string>;
 
     useEffect(()=>{
         if(storageFavs.length > 0 && library.length > 0){
@@ -80,8 +81,27 @@ export function FavoritesProvider({children}: Props){
         return
     }
 
+    function removeFavorites(elements: Song | Array<Song>){
+        if(Array.isArray(elements)){
+            const filtered = favorites.filter(fav => !elements.some(song => song.id === fav.id))
+            const filteredIds = filtered.map(song => song.id);
+
+            updateStorageFavs([...filteredIds])
+            setFavorites(filtered)
+        }
+        else{
+            const singleElement = elements as Song;
+
+            const filtered = favorites.filter(song => song.id !== elements.id);
+            const filteredIds = filtered.map(song => song.id);
+
+            updateStorageFavs([...filteredIds])
+            setFavorites(filtered)
+        }
+    }
+
     return(
-        <FavoritesContext.Provider value={{favorites, toggleFavorite, isInFavorites, addFavorites}}>
+        <FavoritesContext.Provider value={{favorites, toggleFavorite, isInFavorites, addFavorites, removeFavorites}}>
             {children}
         </FavoritesContext.Provider>
     )
