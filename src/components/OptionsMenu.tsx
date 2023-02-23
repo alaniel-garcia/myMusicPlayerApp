@@ -19,6 +19,7 @@ export default function OptionsMenu() {
         addQueue,
         removeFromDevice,
         removePlaylist,
+        addToFavorites,
         rename } = useOptions();
 
     const defaultMenu = [
@@ -28,7 +29,9 @@ export default function OptionsMenu() {
     ];
 
     const songMenu = [
+        addToFavorites,
         removeFromDevice
+
     ];
 
     const playlistMenu = [

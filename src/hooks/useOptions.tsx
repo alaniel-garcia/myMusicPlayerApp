@@ -5,6 +5,7 @@ import useOptionsContext from './useOptionsContext';
 import { Option, Song } from 'src/types';
 import useLibraryContext from './useLibraryContext';
 import useSelectionContext from './useSelectionContext';
+import useFavoritesContext from './useFavoritesContext';
 
 export default function useOptions(){
     const {changeCurrent} = useContext(CurrentContext);
@@ -13,6 +14,7 @@ export default function useOptions(){
     const {content} = useOptionsContext();
     const {removeFromLibrary} = useLibraryContext();
     const {closeOptions} = useOptionsContext();
+    const {addFavorites} = useFavoritesContext();
     const song = content.songType?.song;
     const playlist = content.playlistType?.playlist;
     const playlistContainer = content.playlistType?.container;
@@ -72,6 +74,20 @@ export default function useOptions(){
             }
             else if((content.contentType === 'playlist' || content.contentType === 'playlist-no-rename') && playlist?.songs){
                 addToQueue(playlist.songs)
+            }
+            closeOptions()
+        }
+    }
+
+    const addToFavorites: Option = {
+        option: 'Add to favorites',
+        inputRequire: false,
+        functionality: ()=> {
+            if(content.contentType === 'song'){
+                addFavorites(song)
+            }
+            else if(content.contentType === 'selectedSongs'){
+                addFavorites(songs)
             }
             closeOptions()
         }
@@ -153,6 +169,7 @@ export default function useOptions(){
         addQueue,
         removeFromDevice,
         removePlaylist,
+        addToFavorites,
         rename
     }
 }

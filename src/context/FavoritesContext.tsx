@@ -3,8 +3,9 @@ import { Song } from 'src/types';
 
 interface FavContext {
     favorites: Array<Song>
-    toggleFavorite: Function;
+    toggleFavorite: Function
     isInFavorites: Function
+    addFavorites: Function
 }
 
 interface Props {
@@ -35,8 +36,32 @@ export function FavoritesProvider({children}: Props){
         return isInFavs;
     }
 
+    function addFavorites(elements: Song | Array<Song>){
+        if(Array.isArray(elements)){
+            const filtered = elements.filter(song => !favorites.some(fav => fav.id === song.id))
+
+            if(filtered.length > 0){
+                setFavorites(prev => {
+                    return [...prev, ...filtered]
+                })
+            }
+        }
+        else{
+            const singleElement = elements as Song;
+            const isAlreadyInFavs = isInFavorites(singleElement.id)
+
+            if(!isAlreadyInFavs){
+                setFavorites(prev => {
+                    return [...prev, singleElement]
+                })
+            }
+        }
+
+        return
+    }
+
     return(
-        <FavoritesContext.Provider value={{favorites, toggleFavorite, isInFavorites}}>
+        <FavoritesContext.Provider value={{favorites, toggleFavorite, isInFavorites, addFavorites}}>
             {children}
         </FavoritesContext.Provider>
     )
