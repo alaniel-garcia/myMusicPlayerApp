@@ -13,7 +13,7 @@ export default function Favorites({className}: Props){
         <>
             <div className={className ? `Favorites ${className}` : 'Favorites'}>
                 <div className="Favorites__header">
-                    <h2>Favorites</h2>
+                    <h2>{favorites.length} Favorites</h2>
                 </div>
                 {
                     favorites.length > 0 
