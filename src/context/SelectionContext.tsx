@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useState } from 'react';
+import { createContext, ReactNode, useEffect, useState } from 'react';
 import { Song } from 'src/types';
 
 interface SelectContext {
@@ -24,6 +24,12 @@ export function SelectionProvider({children}: Props){
     const [selectMode, setSelectMode] = useState(false);
     const [onClickAvailable, setOnClickAvailable] = useState(true);
 
+    useEffect(()=>{
+        if(!selectMode){
+            resetSelected()
+        }
+    },[selectMode]);
+
     function updateSelected(selectedSong: Song):void{
         setSelected(prevState=>{
             return [...prevState, selectedSong]
@@ -45,14 +51,7 @@ export function SelectionProvider({children}: Props){
     }
 
     function isIncluded(songId: string): boolean{
-        let included = false;
-        for(let selection of selected){
-            if(selection.id === songId){
-                included = true;
-                break
-            }
-        }
-        return included;
+        return selected.some(song => song.id === songId)
     }
 
     return(

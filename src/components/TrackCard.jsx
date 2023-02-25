@@ -4,7 +4,6 @@ import CurrentContext from '../context/CurrentContext';
 import { useContext, useEffect, useRef, useState } from 'react';
 import useButtonProps from '@hooks/useButtonProps';
 import QueueContext from '../context/QueueContext';
-import useHandleBooleanState from '@hooks/useHandleBooleanState';
 import useSelectionContext from '@hooks/useSelectionContext';
 import useDeviceContext from '@hooks/useDeviceContext';
 import useOptionsContext from '@hooks/useOptionsContext';
@@ -14,9 +13,9 @@ export default function TrackCard({ song, cardType, songsList, hidden, areAllSel
     const {changeCurrent, toggleIsCurrentOpen} = useContext(CurrentContext);
     const {queue, addToQueue, addWithReset, removeFromQueue} = useContext(QueueContext);
     const [isSelected, setIsSelected] = useState(false);
-    const { selected, updateSelected,removeSelected, resetSelected, selectMode, setSelectMode, onClickAvailable, setOnClickAvailable} = useSelectionContext();
+    const { selected, updateSelected,removeSelected, selectMode, setSelectMode, onClickAvailable, setOnClickAvailable, isIncluded, resetSelected} = useSelectionContext();
     const {isTouch} = useDeviceContext();
-    const didmount = useRef(true);
+    const isMounted = useRef(true)
     const sharedCardTypeFunctionalities = cardType === 'default' || cardType === 'playlist' || cardType === 'playlist';
     const {openOptions, loadContent} = useOptionsContext();
     let selectTimer;
@@ -33,55 +32,35 @@ export default function TrackCard({ song, cardType, songsList, hidden, areAllSel
     });
     const delete_ = useButtonProps('delete', ()=> removeFromQueue(song.id));
     const drag = useButtonProps('drag',()=> {'function not assigned yet'});
-    const check = useButtonProps('check', ()=> handleClick());
+    const check = useButtonProps('check', ()=> handleToggleSelected());
 
     const selectedStyle = {
         background: '#4f4d57'
     };
 
     useEffect(()=>{
-        if(didmount.current){
-        }
-        else {
-            if(areAllSelected){
-                if(!isSelected){
-                    setIsSelected(true)
-                }
+            if(isIncluded(song.id)){
+                setIsSelected(true)
             }
-            else {
+            else{
                 if(isSelected){
                     setIsSelected(false)
                 }
             }
+    },[selected]);
 
+    useEffect(()=>{
+        if(isMounted.current){
+            isMounted.current = false
+        }
+        else {
+            if(areAllSelected){
+                if(!isIncluded(song.id)){
+                    updateSelected(song)
+                }
+            }
         }
     },[areAllSelected]);
-
-    useEffect(()=>{
-        if(didmount.current){
-            didmount.current = false;
-        }
-        else{
-            if(isSelected){
-                updateSelected(song)
-            }
-            else{
-                if(areAllSelected === false && cardType === 'addPlaylist'){
-                    resetSelected();
-                }
-                else{
-                    removeSelected(song.id);
-                }
-            }
-        }
-    },[isSelected]);
-
-    useEffect(()=>{
-        if(!didmount.current){
-            if((cardType === 'default' || cardType === 'search') && selected.length !== 0 && !selectMode){
-            }
-        }
-    },[isSelected]);
 
     useEffect(()=>{
         if(!selectMode && isSelected){
@@ -89,8 +68,13 @@ export default function TrackCard({ song, cardType, songsList, hidden, areAllSel
         }
     },[selectMode])
 
-    const handleClick = ()=>{
-        useHandleBooleanState(setIsSelected)
+    function handleToggleSelected(){
+        if(isIncluded(song.id)){
+            removeSelected(song.id)
+        }
+        else {
+            updateSelected(song)
+        }
     }
 
     function handleSelectTimer(){
@@ -141,7 +125,7 @@ export default function TrackCard({ song, cardType, songsList, hidden, areAllSel
                 onPointerDown={()=>{
                         if(sharedCardTypeFunctionalities){
                             selectTimer = setTimeout(()=>{
-                                useHandleBooleanState(setIsSelected);
+                                handleToggleSelected()
                                 if(!selectMode){
                                     setSelectMode(true)
                                 }
@@ -172,7 +156,7 @@ export default function TrackCard({ song, cardType, songsList, hidden, areAllSel
                     if(onClickAvailable){
                         if(cardType === 'default' || cardType === 'playlist'){
                             if(selectMode){
-                                useHandleBooleanState(setIsSelected)
+                                handleToggleSelected()
                             }
                             else{
                                 changeCurrent(song, songsList)
@@ -189,11 +173,11 @@ export default function TrackCard({ song, cardType, songsList, hidden, areAllSel
                             changeCurrent(song, songsList)
                         }
                         else if(cardType === 'addPlaylist'){
-                            handleClick()
+                            handleToggleSelected()
                         }
                         else if(cardType === 'search'){
                             if(selectMode){
-                                useHandleBooleanState(setIsSelected)
+                                handleToggleSelected()
                             }
                             else{
                                 changeCurrent(song, songsList)

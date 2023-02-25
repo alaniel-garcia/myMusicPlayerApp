@@ -12,7 +12,12 @@ export default function selectMode(){
     const options = useOptions();
     const didMount = useRef(true);
 
-    const close = useButtonProps('close', ()=> setSelectMode(false));
+    const close = useButtonProps('close', ()=> {
+        setSelectMode(false)
+        if(selected.length > 0){
+            resetSelected()
+        }
+    });
     const play = useButtonProps('play', ()=> {
         options.play.functionality();
     });
@@ -45,12 +50,6 @@ export default function selectMode(){
             })
         }
     }, [selected]);
-
-    useEffect(()=>{
-        return ()=>{
-            resetSelected()
-        }
-    },[]);
 
     return (
         <>

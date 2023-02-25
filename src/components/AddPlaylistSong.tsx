@@ -19,7 +19,9 @@ export default function AddPlaylistSong({ playlist, playlistsUpdater, closeHandl
 
     const handleClose = ()=> {
         useHandleBooleanState(closeHandler);
-        resetSelected();
+        if(selected.length > 0){
+            resetSelected();
+        }
     };
 
     const close = useButtonProps('close', handleClose);

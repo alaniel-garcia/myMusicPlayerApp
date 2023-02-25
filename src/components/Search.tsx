@@ -6,6 +6,7 @@ import SongsList from './SongsList';
 import Button from './miscellaneous/Button';
 import useButtonProps from '@hooks/useButtonProps';
 import useHandleBooleanState from '@hooks/useHandleBooleanState';
+import useSelectionContext from '@hooks/useSelectionContext';
 
 interface Props {
     section: string
@@ -14,10 +15,25 @@ interface Props {
 export default function Search({section}: Props){
     const [results, setResults] = useState<Array<Song>>([]);
     const [search, setSearch] = useState<string>('');
+    const {selected, resetSelected} = useSelectionContext();
     const {library} = useLibraryContext();
     const [selectAll, setSelectAll] = useState(false);
 
     const check = useButtonProps('check', handleClickSelectAll);
+
+    useEffect(()=>{
+        if(!selectAll){
+            if(selected.length > 0){
+                resetSelected()
+            }
+        }
+    },[selectAll]);
+
+    useEffect(()=>{
+        if(selectAll && selected.length === 0){
+            setSelectAll(false)
+        }
+    },[selected]);
 
     function handleSearchChange(event:React.ChangeEvent<HTMLInputElement>){
         setSearch(event.target.value)
