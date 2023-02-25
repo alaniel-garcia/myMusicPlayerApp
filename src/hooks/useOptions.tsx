@@ -47,15 +47,20 @@ export default function useOptions(){
         option: 'Play next',
         inputRequire: false,
         functionality: () => {
-            if(content.contentType === 'song'){
-                addNext(song);
+            if(queue.length > 0){
+                if(content.contentType === 'song'){
+                    addNext(song);
+                }
+                else if(content.contentType === 'selectedSongs' && songs){
+                    addNext(songs);
+                    setSelectMode(false);
+                }
+                else if(content.contentType === 'playlist' || content.contentType === 'playlist-no-rename'){
+                    addNext(playlist?.songs);
+                }
             }
-            else if(content.contentType === 'selectedSongs' && songs){
-                addNext(songs);
-                setSelectMode(false);
-            }
-            else if(content.contentType === 'playlist' || content.contentType === 'playlist-no-rename'){
-                addNext(playlist?.songs);
+            else {
+                play.functionality()
             }
             closeOptions()
         }
