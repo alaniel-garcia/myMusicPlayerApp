@@ -14,7 +14,7 @@ export default function useOptions(){
     const {content} = useOptionsContext();
     const {removeFromLibrary} = useLibraryContext();
     const {closeOptions} = useOptionsContext();
-    const {addFavorites, removeFavorites} = useFavoritesContext();
+    const {favorites, addFavorites, removeFavorites} = useFavoritesContext();
     const song = content.songType?.song;
     const playlist = content.playlistType?.playlist;
     const playlistContainer = content.playlistType?.container;
@@ -118,11 +118,17 @@ export default function useOptions(){
                 if(queue.some((el: Song) => el.id === song.id)){
                     removeFromQueue(song.id)
                 }
+                if(favorites && favorites.some(el => el.id === song.id)){
+                    removeFavorites(song)
+                }
             }
             else if(content.contentType === 'selectedSongs' && songs){
                 removeFromLibrary(songs)
                 if(queue.length > 0){
                     removeSeveralFromQueue(songs)
+                }
+                if(favorites.length > 0){
+                    removeFavorites(songs)
                 }
                 setSelectMode(false);
             }
