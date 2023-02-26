@@ -1,19 +1,21 @@
 import TrackCard from './TrackCard';
 import './SongsList.scss';
-import { Song } from 'src/types';
+import { Playlist, Song } from 'src/types';
 
 interface Props {
     songs: Array<Song>
     cardType: string
     display?: Array<Song>
     areAllSelected?: boolean
+    playlist?: Playlist
 }
 
 export default function SongsList({
     songs,
     cardType,
     display,
-    areAllSelected
+    areAllSelected,
+    playlist
 }: Props) {
 
     const isIncluded = (songId: string)=>{
@@ -49,6 +51,7 @@ export default function SongsList({
                                 cardType={cardType}
                                 hidden={hiddenStatus(song.id)}
                                 areAllSelected={areAllSelected}
+                                playlist={playlist}
                             />
                         );
                 })}

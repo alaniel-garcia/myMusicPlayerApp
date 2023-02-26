@@ -1,9 +1,9 @@
 import './PlaylistView.scss';
 import useButtonProps from '@hooks/useButtonProps';
-import { Playlist, OpenPlaylist } from 'src/types';
+import { Playlist, OpenPlaylist, Song } from 'src/types';
 import Button from './miscellaneous/Button';
 import SongsList from './SongsList';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import AddPlaylistSong from './AddPlaylistSong';
 import CurrentContext from '../context/CurrentContext';
 import QueueContext from '../context/QueueContext';
@@ -19,9 +19,28 @@ interface Props {
 
 export default function PlaylistView({playlist, openPlaylistHandler, playlistsUpdater, playlistContainer}: Props) {
     const [addSongsIsOpen, setAddSongsIsOpen] = useState<boolean>(false);
-    const {changeCurrent} = useContext(CurrentContext);
-    const {addWithReset, shuffleOnPlay, setShuffleOnPlay, handleShuffleModeFromPlaylist, addNext} = useContext(QueueContext);
+    const {changeCurrent, current} = useContext(CurrentContext);
+    const {loadPlaylistViewContent, resetPlaylistViewContent} = useOptionsContext();
+    const {queue, addWithReset, shuffleOnPlay, setShuffleOnPlay, handleShuffleModeFromPlaylist, removeFromQueue, removeSeveralFromQueue} = useContext(QueueContext);
     const {openOptions, loadContent} = useOptionsContext();
+
+    useEffect(()=>{
+        loadPlaylistViewContent(playlist, playlistsUpdater)
+        if(current.playlistName && current.playlistName === playlist.name){
+            const retrievedDeleted = queue.filter((song: Song) => !playlist.songs.some(plSong => plSong.id === song.id));
+            if(retrievedDeleted.length === 1){
+                removeFromQueue(retrievedDeleted[0].id)
+            }
+            else if (retrievedDeleted.length > 1){
+                removeSeveralFromQueue(retrievedDeleted)
+            } 
+        }
+
+        return ()=> {
+            resetPlaylistViewContent()
+        }
+
+    },[playlist]);
 
     const handlePlaylistClose = ()=> {
         openPlaylistHandler(prevState => {
@@ -38,7 +57,7 @@ export default function PlaylistView({playlist, openPlaylistHandler, playlistsUp
 
     const handlePlayAll= ()=>{
         if(playlist.songs.length > 0){
-            changeCurrent(playlist.songs[0], playlist)
+            changeCurrent(playlist.songs[0], playlist, playlist.name)
             addWithReset(playlist.songs)
             if(shuffleOnPlay){
                 setShuffleOnPlay(false)
@@ -67,7 +86,7 @@ export default function PlaylistView({playlist, openPlaylistHandler, playlistsUp
         }
 
         return(
-            <SongsList songs={playlist.songs} cardType={'playlist'} />
+            <SongsList songs={playlist.songs} playlist={playlist} cardType={'playlist'} />
         )
     }
 

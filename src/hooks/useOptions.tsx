@@ -11,7 +11,7 @@ export default function useOptions(){
     const {changeCurrent} = useContext(CurrentContext);
     const {setSelectMode} = useSelectionContext();
     const {queue, addWithReset, addNext, addToQueue, removeSeveralFromQueue, removeFromQueue} = useContext(QueueContext);
-    const {content} = useOptionsContext();
+    const {content, playlistViewContent} = useOptionsContext();
     const {removeFromLibrary} = useLibraryContext();
     const {closeOptions} = useOptionsContext();
     const {favorites, addFavorites, removeFavorites} = useFavoritesContext();
@@ -145,7 +145,41 @@ export default function useOptions(){
         option: 'Remove from playlist',
         inputRequire: false,
         functionality: ()=>{
+            if(content.contentType === 'song'){
+                playlistViewContent?.playlistUpdater(prev => {
+                    return prev.map(pl => {
+                        if(pl.name !== playlistViewContent.playlist.name){
+                            return pl
+                        }
+                        else {
+                            return {
+                                ...pl,
+                                ['songs']: pl.songs.filter(plSong => plSong.id !== song?.id)
+                            }
+                        }
+                    })
+                })
+            }
+            else if(content.contentType === 'selectedSongs' && songs){
+                playlistViewContent?.playlistUpdater(prev => {
+                    return prev.map(pl => {
+                        if(pl.name !== playlistViewContent.playlist.name){
+                            return pl
+                        }
+                        else {
+                            const songsFiltered = pl.songs.filter(plSong => !songs.some(song => song.id === plSong.id))
 
+                            return {
+                                ...pl,
+                                ['songs']: songsFiltered
+                            }
+                        }
+                    })
+                })
+            }
+
+            closeOptions()
+            setSelectMode(false)
         }
     }
 

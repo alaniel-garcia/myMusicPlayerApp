@@ -8,7 +8,7 @@ import useSelectionContext from '@hooks/useSelectionContext';
 import useDeviceContext from '@hooks/useDeviceContext';
 import useOptionsContext from '@hooks/useOptionsContext';
 
-export default function TrackCard({ song, cardType, songsList, hidden, areAllSelected, ...props }) {
+export default function TrackCard({ song, cardType, songsList, hidden, areAllSelected, playlist, ...props }) {
     
     const {changeCurrent, toggleIsCurrentOpen} = useContext(CurrentContext);
     const {queue, addToQueue, addWithReset, removeFromQueue} = useContext(QueueContext);
@@ -159,7 +159,13 @@ export default function TrackCard({ song, cardType, songsList, hidden, areAllSel
                                 handleToggleSelected()
                             }
                             else{
-                                changeCurrent(song, songsList)
+                                if(cardType === 'default'){
+                                    changeCurrent(song, songsList)
+                                }
+                                else if(cardType === 'playlist'){
+                                    changeCurrent(song, playlist.songs, playlist.name)
+                                }
+
                                 if(queue.length === 0){
                                     addToQueue(songsList)
                                 }

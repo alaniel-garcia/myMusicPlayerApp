@@ -93,6 +93,7 @@ export function QueueProvider({children}) {
 
     function removeFromQueue (songId){
         let currentIndex = getCurrentIndex(songId);
+        const currentPlaylist = current.playlistName ? current.playlistName : undefined;
 
         const filtered = queue.filter((song)=> {
             if(song.id !== songId){
@@ -101,13 +102,13 @@ export function QueueProvider({children}) {
         });
         if(songId === current.song.id){
             if(queue[currentIndex + 1]){
-                changeCurrent(queue[currentIndex + 1], queue)
+                changeCurrent(queue[currentIndex + 1], queue, currentPlaylist)
             }
             else if(queue[currentIndex - 1]){
-                changeCurrent(queue[currentIndex - 1], queue)
+                changeCurrent(queue[currentIndex - 1], queue, currentPlaylist)
             }
             else {
-                changeCurrent(null, queue)
+                changeCurrent(null, queue, currentPlaylist)
             }
         }
 
@@ -115,6 +116,7 @@ export function QueueProvider({children}) {
     }
 
     function removeSeveralFromQueue (array = []) {
+        const currentPlaylist = current.playlistName ? current.playlistName : undefined;
         let currentWasDeleted = [false, ''];
         let newCurrentIndex;
         let newCurrentId;
@@ -131,7 +133,7 @@ export function QueueProvider({children}) {
         if(currentWasDeleted[0] === true){
             if(filtered.length === 1){
                 setQueue([])
-                changeCurrent(null, queue)
+                changeCurrent(null, queue, currentPlaylist)
             }
             else {
                 filtered.map((song, i) => {
@@ -140,11 +142,11 @@ export function QueueProvider({children}) {
 
                 if(filtered[newCurrentIndex + 1]){
                     newCurrentId = filtered[newCurrentIndex + 1].id
-                    changeCurrent(queue.find(song => song.id === newCurrentId), queue)
+                    changeCurrent(queue.find(song => song.id === newCurrentId), queue, currentPlaylist)
                 }
                 else {
                     newCurrentId = filtered[newCurrentIndex - 1].id
-                    changeCurrent(queue.find(song => song.id === newCurrentId), queue)
+                    changeCurrent(queue.find(song => song.id === newCurrentId), queue, currentPlaylist)
                 }
 
                 // map for finally removing current index

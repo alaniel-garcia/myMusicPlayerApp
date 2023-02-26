@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useState } from 'react';
-import { OptionsContent } from 'src/types';
+import { OptionsContent, Playlist } from 'src/types';
 
 interface OptsContext {
     isOptionsOpen: boolean 
@@ -11,8 +11,15 @@ interface OptsContext {
     inputValue: any
     callOption: Function
     setValueForInput: Function
+    playlistViewContent: PlaylistHandler | undefined
+    loadPlaylistViewContent: Function
+    resetPlaylistViewContent: Function
 }
 
+interface PlaylistHandler {
+    playlist: Playlist,
+    playlistUpdater: React.Dispatch<React.SetStateAction<Playlist[]>>
+}
 
 interface Props {
     children: ReactNode
@@ -25,12 +32,25 @@ export function OptionsProvider ({children}: Props) {
     const [content, setContent] = useState<OptionsContent>({
         contentType: '',
     });
+    const [playlistViewContent, setPlaylistViewContent] = useState<PlaylistHandler | undefined>();
     const [optionCalled, setOptionCalled] = useState<string>('');
     const [inputValue, setInputValue] = useState();// not using it yet
 
     function openOptions(){
         setIsOptionsOpen(true);
     }
+
+    function loadPlaylistViewContent(pl: Playlist, updater: React.Dispatch<React.SetStateAction<Playlist[]>>){
+        setPlaylistViewContent({
+            playlist: pl,
+            playlistUpdater: updater
+        })
+    }
+
+    function resetPlaylistViewContent(){
+        setPlaylistViewContent(undefined)
+    }
+    
 
     function closeOptions(){
         setIsOptionsOpen(false);
@@ -49,7 +69,7 @@ export function OptionsProvider ({children}: Props) {
     }
 
     return (
-        <OptionsContext.Provider value={{isOptionsOpen,openOptions,closeOptions, content, loadContent, optionCalled, inputValue, callOption, setValueForInput}}>
+        <OptionsContext.Provider value={{isOptionsOpen,openOptions,closeOptions, content, loadContent, optionCalled, inputValue, callOption, setValueForInput, playlistViewContent, loadPlaylistViewContent, resetPlaylistViewContent}}>
             {children}
         </OptionsContext.Provider>
     )
