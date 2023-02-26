@@ -21,19 +21,26 @@ export default function PlaylistView({playlist, openPlaylistHandler, playlistsUp
     const [addSongsIsOpen, setAddSongsIsOpen] = useState<boolean>(false);
     const {changeCurrent, current} = useContext(CurrentContext);
     const {loadPlaylistViewContent, resetPlaylistViewContent} = useOptionsContext();
-    const {queue, addWithReset, shuffleOnPlay, setShuffleOnPlay, handleShuffleModeFromPlaylist, removeFromQueue, removeSeveralFromQueue} = useContext(QueueContext);
+    const {queue, addWithReset, addToQueue, shuffleOnPlay, setShuffleOnPlay, handleShuffleModeFromPlaylist, removeFromQueue, removeSeveralFromQueue} = useContext(QueueContext);
     const {openOptions, loadContent} = useOptionsContext();
 
     useEffect(()=>{
         loadPlaylistViewContent(playlist, playlistsUpdater)
         if(current.playlistName && current.playlistName === playlist.name){
-            const retrievedDeleted = queue.filter((song: Song) => !playlist.songs.some(plSong => plSong.id === song.id));
-            if(retrievedDeleted.length === 1){
-                removeFromQueue(retrievedDeleted[0].id)
+
+            if(queue.length >= playlist.songs.length){
+                const retrievedDeleted = queue.filter((song: Song) => !playlist.songs.some(plSong => plSong.id === song.id));
+                if(retrievedDeleted.length === 1){
+                    removeFromQueue(retrievedDeleted[0].id)
+                }
+                else if (retrievedDeleted.length > 1){
+                    removeSeveralFromQueue(retrievedDeleted)
+                } 
             }
-            else if (retrievedDeleted.length > 1){
-                removeSeveralFromQueue(retrievedDeleted)
-            } 
+            else if(queue.length < playlist.songs.length){
+                const retrievedAdded = playlist.songs.filter(plSong => !queue.some((song: Song) => song.id === plSong.id))
+                addToQueue(retrievedAdded)
+            }
         }
 
         return ()=> {
