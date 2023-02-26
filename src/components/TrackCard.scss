@@ -67,11 +67,16 @@ $icons-size-current: calc($icons-size - 1rem);
     z-index: 250;
 
   padding-block: .7rem;
+  padding-inline: idx.$general-padding;
   margin-block: 0;
 
   background: idx.$background;
     box-shadow: 0px -2px idx.$highlights;
     border-radius: 0;
+
+  .TrackCard__section {
+    column-gap: .2rem
+  }
 }
 
 .track-cover--default, .track-cover--queue, .track-cover--addPlaylist, .track-cover--playlist, .track-cover--search {

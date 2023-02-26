@@ -121,7 +121,7 @@ export default function TrackCard({ song, cardType, songsList, hidden, areAllSel
             <div 
                 className={isTouch ? `TrackCard TrackCard--${cardType}` : `TrackCard TrackCard--${cardType} TrackCard--${cardType}-hover`} 
                 hidden={hidden}
-                style={isSelected && selectMode ? selectedStyle : {}}
+                style={(isSelected && selectMode) && (cardType !== 'current') ? selectedStyle : {}}
                 onPointerDown={()=>{
                         if(sharedCardTypeFunctionalities){
                             selectTimer = setTimeout(()=>{
