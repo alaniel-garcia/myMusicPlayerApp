@@ -29,4 +29,19 @@ export function updateStorageFavs(updatedFavs = []) {
     storage.setItem('favorites', JSON.stringify({favs: updatedFavs}))
 }
 
+// Playlists
+
+if(!storage.getItem('playlists')){
+    storage.setItem('playlists', JSON.stringify({playlists: []}))
+}
+
+export function getStoragePlaylists(){
+    return JSON.parse(storage.getItem('playlists'))
+}
+
+export function updateStoragePlaylists(updatedPlaylists = []) {
+
+    storage.setItem('playlists', JSON.stringify({playlists: updatedPlaylists}))
+}
+
 export default storage;

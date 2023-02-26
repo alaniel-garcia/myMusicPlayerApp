@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Button from './miscellaneous/Button';
 import useButtonProps from '@hooks/useButtonProps';
 import './Playlists.scss';
@@ -10,9 +10,15 @@ import PlaylistsRender from './PlaylistsRender';
 import { Playlist, OpenPlaylist } from 'src/types';
 import PlaylistView from './PlaylistView';
 import useLibraryContext from '@hooks/useLibraryContext';
+import { getStoragePlaylists, updateStoragePlaylists } from '@utils/storage';
 
 interface Props {
     className : string
+}
+
+interface PlaylistStorage {
+    playlistName: string
+    playlistSongsIds: Array<string>
 }
 
 export default function Playlists({className} : Props){
@@ -23,8 +29,39 @@ export default function Playlists({className} : Props){
         isOpen: false
     });
     const {library} = useLibraryContext();
+    const storagePlaylists = getStoragePlaylists();
+    const isMounted = useRef(true);
 
     const add: Icon = useButtonProps('add',  () => useHandleBooleanState(setIsAddPlOpen));
+
+    useEffect(()=>{
+        if(library.length > 0 && storagePlaylists.playlists.length > 0 && playlists.length === 0){
+            setPlaylists(storagePlaylists.playlists.map((pl: PlaylistStorage) => {
+                const songs = library.filter(librarySong => pl.playlistSongsIds.some((songId: string) => songId === librarySong.id))
+                return {
+                    name: pl.playlistName,
+                    cover: defaultCover,
+                    songs: songs
+                }
+            }))
+        }
+    },[library]);
+
+    useEffect(()=>{
+        if(isMounted.current){
+            isMounted.current = false
+        }
+        else{
+            updateStoragePlaylists(
+                playlists.map(pl => {
+                const songsIds = pl.songs.map(plSong => plSong.id)
+                return {
+                    playlistName: pl.name,
+                    playlistSongsIds: songsIds
+                }
+            }))
+        }
+    },[playlists])
 
     useEffect(()=>{
         if(playlists.length > 0){
