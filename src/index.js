@@ -11,8 +11,13 @@ import { IDBProvider } from './context/IDBContext';
 const container = document.getElementById('root')
 const root = ReactDOM.createRoot(container)
 
-root.render(
+window.oncontextmenu = function(event) {
+     event.preventDefault();
+     event.stopPropagation();
+     return false;
+};
 
+root.render(
     <DeviceProvider>
         <VolumeProvider>
             <SectionProvider>

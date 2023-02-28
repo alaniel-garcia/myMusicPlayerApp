@@ -45,6 +45,7 @@
 $general-padding: 1.6rem;
 
 html {
+  -webkit-user-select: none;
   font-size: $font-size;
   min-height: 100%;
 }
