@@ -6,6 +6,8 @@ import Button from './miscellaneous/Button';
 
 export default function TrackVolume({ track }) {
     const { volume, onSetVolume, sound, onSetSound , volumeOff } = useContext(VolumeContext);
+    const [sliderBgPercent, setSliderBgPercent] = useState(0);
+    const rangeEl = useRef();
 
     const volume_props = useButtonProps('volume', () => {
         toggleSoundManually()
@@ -62,6 +64,7 @@ export default function TrackVolume({ track }) {
         else{
             track.volume = volume / 100;
         }
+        setSliderBgPercent(((rangeEl.current.value / rangeEl.current.max) * 100));
     },[sound,volume]);
 
     return (
@@ -71,11 +74,13 @@ export default function TrackVolume({ track }) {
                     {soundStatusButton}
                 </div>
                 <input
+                    ref={rangeEl}
                     onChange={handleVolumeChange}
                     type='range'
                     defaultValue={volume}
                     min={0}
                     max={100}
+                    style={{background: `linear-gradient(to right, #e67589 ${sliderBgPercent}%, white ${sliderBgPercent}%)`}}
                 />
             </div>
         </>

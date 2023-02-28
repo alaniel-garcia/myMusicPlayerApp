@@ -2,7 +2,7 @@ import './TrackView.scss';
 import Button from './miscellaneous/Button';
 import TrackTime from './TrackTime';
 import TrackVolume from './TrackVolume';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import useButtonProps from '@hooks/useButtonProps';
 import PopElement from './miscellaneous/PopElement';
 import { useContext } from 'react';
@@ -24,21 +24,15 @@ export default function TrackView({song, track, buttonsProps, ...props}) {
     const {shuffleOnPlay} = useContext(QueueContext)
     const {toggleFavorite, isInFavorites} = useFavoritesContext();
     const [bgColor, setBgColor] = useState('#33313b');
-    const coverRef = useRef();
     const fac = new FastAverageColor();
 
     useEffect(()=> {
-        if(coverRef.current ){
-            setTimeout(()=>{
-                const newColor = fac.getColor(coverRef.current).hex;
-                if(!newColor.includes('#')){
-                    setBgColor('#33313b')
-                }
-                else {
-                    setBgColor(newColor)
-                }
-            },0)
+        async function getAverageColor () {
+            const newColor = await fac.getColorAsync(song.cover)
+            setBgColor(newColor.hex)
         }
+
+        getAverageColor()
     },[song]);
 
     const volume = useButtonProps('volume',()=>{
@@ -79,7 +73,7 @@ export default function TrackView({song, track, buttonsProps, ...props}) {
                         </PopElement>
                     }
                     <div className='TrackView__main__img-container'>
-                        <img ref={coverRef} src={song.cover} alt="song cover" />
+                        <img src={song.cover} alt="song cover" />
                     </div>
                 </div>
                 <div className='TrackView__bottom'>

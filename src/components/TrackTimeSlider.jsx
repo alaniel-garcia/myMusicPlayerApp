@@ -3,6 +3,7 @@ import './TrackTimeSlider.scss';
 
 export default function TrackTimeSlider({ track, currentTime, max }) {
 
+    const [sliderBgPercent, setSliderBgPercent] = useState(0);
     const rangeEl = useRef();
 
     function manualTimeUpdate(event) {
@@ -12,6 +13,7 @@ export default function TrackTimeSlider({ track, currentTime, max }) {
 
     useEffect(() => {
         rangeEl.current.value = Math.floor(currentTime);
+        setSliderBgPercent(((rangeEl.current.value / rangeEl.current.max) * 100));
     }, [currentTime]);
 
     return (
@@ -20,9 +22,12 @@ export default function TrackTimeSlider({ track, currentTime, max }) {
                 ref={rangeEl}
                 type='range' 
                 defaultValue={0}
-                onChange={manualTimeUpdate}
+                onChange={(e)=>{
+                    manualTimeUpdate(e)
+                }}
                 min={0}
                 max={max}
+                style={{background: `linear-gradient(to right, #e67589 ${sliderBgPercent}%, white ${sliderBgPercent}%)`}}
             />
         </div>
     );

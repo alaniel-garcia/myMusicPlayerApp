@@ -59,6 +59,37 @@ body {
   background: $background;
 }
 
+input[type="range"] {
+  -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+
+  height: .5rem;
+
+  background: white;
+    border-radius: .5rem;
+
+  &::-webkit-slider-runnable-track {
+    height: .5rem;
+
+    border-radius: .5rem;
+  }
+
+  &::-webkit-slider-thumb {
+    position: relative;
+      top: - 0.5rem;
+
+    -webkit-appearance: none;
+
+    height: 1.6rem;
+      width: 1.6rem;
+
+    background: $highlights;
+      border-radius: 50%;
+      border: 1px solid white;
+  }
+}
+
 #root {
   min-height: 100vh;
 }

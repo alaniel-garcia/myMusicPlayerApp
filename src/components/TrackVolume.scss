@@ -2,6 +2,7 @@
  
 .TrackVolume {
   display: flex;
+    align-items: center;
     gap: .8rem;
     position: absolute;
     left: 0;
@@ -13,13 +14,11 @@
     padding-inline: 1.6rem;
     padding-block: .8rem;
 
-  background: white;
+  background: idx.$background;
     transform-origin: right bottom;
     border-radius: .4rem;
-
 }
 
 .TrackVolume__status {
-  background: idx.$background;
   border-radius: 50%;
 }
