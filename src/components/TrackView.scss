@@ -7,11 +7,6 @@
 }
 
 .TrackView {
-  // @extend %default-set-flex;
-  //   flex-flow: column;
-  //   position: fixed;
-  //   top: 0;
-
   display: grid;
     grid-template-columns: 100%;
     grid-template-rows: min-content 1fr min-content;
@@ -21,17 +16,33 @@
 
   width: 100%;
     min-height: 100vh;
-    padding: idx.$general-padding;
-
-  background: #544443;
 }
 
 .TrackView__top {
   @extend %default-set-flex;
+
+  padding: idx.$general-padding;
+
+  background: linear-gradient(to bottom, black -90%, 5%, transparent);
 }
 
 .TrackView__main {
+  display: grid;
+    place-content: center;
   position: relative;
+
+  padding-inline: idx.$general-padding;
+}
+
+.TrackView__main__img-container {
+  img {
+    max-width: 250px;
+    border-radius: .4rem;
+  }
+}
+
+.TrackView__bottom {
+  background: linear-gradient(to bottom, transparent, 55%, black);
 }
 
 .overview__general {
@@ -40,13 +51,15 @@
     align-items: center;
 
   margin-block-end: .5rem;
+    padding-inline: idx.$general-padding;
 }
 
 .overview__general__top {
   @extend %default-set-flex;
-    align-items: center;
+  justify-content: center;
 
   width: 100%;
+    padding-block-start: idx.$general-padding;
 }
 
 .overview__general__track-name {
@@ -65,12 +78,15 @@
 
 .overview__time {
   margin-block-end: 1rem;
+    padding-inline: idx.$general-padding;
 }
 
 .TrackView__controls {
   display: flex;
     flex-direction: column;
     gap: 1.5rem;
+
+  padding-inline: idx.$general-padding;
 }
 
 .Trackview__controls__main {
@@ -89,4 +105,6 @@
 .Trackview__controls__secondary {
   @extend %default-set-flex;
     align-items: center;
+
+  padding-block-end: idx.$general-padding;
 }

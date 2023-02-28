@@ -26,7 +26,7 @@ export default function Button({
 
     const inactiveStyle = {
         filter: 'invert(40%) sepia(0%) saturate(0%) hue-rotate(247deg) brightness(96%) contrast(94%)',
-        opacity: '0.6'
+        opacity: '0.85'
     }
 
     const selectedStyle = {

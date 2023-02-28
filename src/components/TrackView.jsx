@@ -2,16 +2,16 @@ import './TrackView.scss';
 import Button from './miscellaneous/Button';
 import TrackTime from './TrackTime';
 import TrackVolume from './TrackVolume';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import useButtonProps from '@hooks/useButtonProps';
 import PopElement from './miscellaneous/PopElement';
 import { useContext } from 'react';
 import QueueContext from '../context/QueueContext';
 import useFavoritesContext from '@hooks/useFavoritesContext';
+import { FastAverageColor } from 'fast-average-color';
 
 export default function TrackView({song, track, buttonsProps, ...props}) {
     const {minimize,
-        more,
         queue_props,
         repeat_mode,
         skip_prev,
@@ -23,6 +23,23 @@ export default function TrackView({song, track, buttonsProps, ...props}) {
     const [volumeOpen, setVolumeOpen] = useState(false);
     const {shuffleOnPlay} = useContext(QueueContext)
     const {toggleFavorite, isInFavorites} = useFavoritesContext();
+    const [bgColor, setBgColor] = useState('#33313b');
+    const coverRef = useRef();
+    const fac = new FastAverageColor();
+
+    useEffect(()=> {
+        if(coverRef.current ){
+            setTimeout(()=>{
+                const newColor = fac.getColor(coverRef.current).hex;
+                if(!newColor.includes('#')){
+                    setBgColor('#33313b')
+                }
+                else {
+                    setBgColor(newColor)
+                }
+            },0)
+        }
+    },[song]);
 
     const volume = useButtonProps('volume',()=>{
         setVolumeOpen(prevState => !prevState)
@@ -40,40 +57,39 @@ export default function TrackView({song, track, buttonsProps, ...props}) {
 
     return(
         <>
-            <div className='TrackView'>
+            <div className='TrackView' style={{background: bgColor}}>
                 <div className='TrackView__top'>
                     <Button className={'medium-button'} icon={minimize.icon} alt={minimize.alt} functionality={minimize.functionality}/>
+                    <div>
+                        {
+                            isInFavorites(song.id)
+                                ? <Button className={'medium-button'} icon={favorite.icon} alt={favorite.alt} functionality={favorite.functionality} />
+                                : <Button className={'medium-button'} icon={unfavorite.icon} alt={unfavorite.alt} functionality={unfavorite.functionality} />
+                        }
+                    </div>
                 </div>
                 <div className='TrackView__main'>
-                        {volumeOpen && 
-                            <PopElement 
-                                triggerState={volumeWillClose}
-                                showingTime={3500}
-                                showWhileInteracting={true}
-                                >
-                                <TrackVolume track={track} />
-                            </PopElement>
-                        }
+                    {volumeOpen && 
+                        <PopElement 
+                            triggerState={volumeWillClose}
+                            showingTime={3500}
+                            showWhileInteracting={true}
+                            >
+                            <TrackVolume track={track} />
+                        </PopElement>
+                    }
+                    <div className='TrackView__main__img-container'>
+                        <img ref={coverRef} src={song.cover} alt="song cover" />
+                    </div>
                 </div>
                 <div className='TrackView__bottom'>
                     <div className='TrackView__overview'>
                         <div className='overview__general'>
                             <div className='overview__general__top'>
                                 <div>
-                                    {/* <Button className={'medium-button'} icon={queue_props.icon} alt={queue_props.alt} functionality={queue_props.functionality}/> */}
-                                    {
-                                        isInFavorites(song.id)
-                                            ? <Button className={'medium-button'} icon={favorite.icon} alt={favorite.alt} functionality={favorite.functionality} />
-                                            : <Button className={'medium-button'} icon={unfavorite.icon} alt={unfavorite.alt} functionality={unfavorite.functionality} />
-                                    }
-                                </div>
-                                <div>
                                     <h1 className='overview__general__track-name'>
                                         {song.metadata.title}
                                     </h1>
-                                </div>
-                                <div>
-                                    <Button className={'medium-button'} icon={queue_props.icon} alt={queue_props.alt} functionality={queue_props.functionality}/>
                                 </div>
                             </div>
                             <div className='overview__general__bottom'>

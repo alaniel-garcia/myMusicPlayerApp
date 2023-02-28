@@ -7,8 +7,7 @@ $icons-size-current: calc($icons-size - 1rem);
   display: grid;
     place-content: center;
 
-  background-color: #121212;
-    border-radius: 50%;
+  border-radius: 50%;
 
   img {
     width: 3rem;
@@ -30,6 +29,7 @@ $icons-size-current: calc($icons-size - 1rem);
     justify-content: space-between;
 
   width: 100%;
+    max-height: 5.4rem;
 
   // outline: 2px solid red;
   cursor: pointer;
@@ -84,6 +84,14 @@ $icons-size-current: calc($icons-size - 1rem);
 
   width: $icons-size;
     height: $icons-size;
+}
+
+.TrackCard--queue {
+  padding-inline-end: idx.$general-padding;
+}
+
+.TrackCard--search {
+  width: 100%
 }
 
 .track-cover--current {

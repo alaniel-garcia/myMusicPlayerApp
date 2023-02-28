@@ -12,8 +12,8 @@ $small-icon: 2rem;
   width: $active-area;
     height: $active-area;
 
-  background: black;
-    border-radius: 50%;
+  // background: black;
+  border-radius: 50%;
 
   img {
     width: 3rem;
@@ -51,7 +51,7 @@ $small-icon: 2rem;
 
 @keyframes wave {
   0%{
-    background: black;
+    background: transparent;
   }
   100%{
     background: rgba(166, 166, 166, .5);

@@ -16,7 +16,7 @@ export default function TrackCard({ song, cardType, songsList, hidden, areAllSel
     const { selected, updateSelected,removeSelected, selectMode, setSelectMode, onClickAvailable, setOnClickAvailable, isIncluded, resetSelected} = useSelectionContext();
     const {isTouch} = useDeviceContext();
     const isMounted = useRef(true)
-    const sharedCardTypeFunctionalities = cardType === 'default' || cardType === 'playlist' || cardType === 'playlist';
+    const sharedCardTypeFunctionalities = cardType === 'default' || cardType === 'playlist' || cardType === 'playlist' || cardType === 'search';
     const {openOptions, loadContent} = useOptionsContext();
     let selectTimer;
 
@@ -31,7 +31,6 @@ export default function TrackCard({ song, cardType, songsList, hidden, areAllSel
         openOptions();
     });
     const delete_ = useButtonProps('delete', ()=> removeFromQueue(song.id));
-    const drag = useButtonProps('drag',()=> {'function not assigned yet'});
     const check = useButtonProps('check', ()=> handleToggleSelected());
 
     const selectedStyle = {
@@ -106,7 +105,6 @@ export default function TrackCard({ song, cardType, songsList, hidden, areAllSel
         else if(cardType === 'queue'){
             return <>
                 <Button className='medium-button' icon={delete_.icon} alt={delete_.alt} functionality={delete_.functionality} />
-                <Button className='medium-button' icon={drag.icon} alt={drag.alt} functionality={drag.functionality} />
             </>
         }
         else if(cardType === 'addPlaylist'){

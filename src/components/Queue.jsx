@@ -14,14 +14,12 @@ export default function Queue({openStateHandler}){
     const handleQueueIsOpenState = ()=> useHandleBooleanState(openStateHandler);
 
     const go_back = useButtonProps('go_back', handleQueueIsOpenState);
-    const more = useButtonProps('more', ()=> 'not assigned yet')
 
     return <>
         <div className='Queue'>
             <div className="Queue__header">
                 <div className='Queue__options'>
                     <Button className={'small-button'} icon={go_back.icon} alt={go_back.alt} functionality={go_back.functionality} />
-                    <Button className={'small-button'} icon={more.icon} alt={more.alt} functionality={more.functionality} />
                 </div>
                 <div className='Queue__title'>
                     <h1>Playing queue</h1>
