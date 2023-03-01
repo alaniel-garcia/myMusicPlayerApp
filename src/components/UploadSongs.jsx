@@ -4,9 +4,11 @@ import noRepeatSongsHandler from '@services/noRepeatSongsHandler';
 import useButtonProps from '@hooks/useButtonProps';
 import Button from './miscellaneous/Button';
 import useLibraryContext from '@hooks/useLibraryContext';
+import { useRef } from 'react';
 
 export default function UploadSongs({ anySong = false}){
     const { library, updateLibrary} = useLibraryContext();
+    const inputRef = useRef();
 
     async function onInputCapture (event){
         const tracks = await handleFilesUpload(event);
@@ -18,6 +20,8 @@ export default function UploadSongs({ anySong = false}){
         else{
             return
         }
+
+        inputRef.current.value = null;
     }
 
     const add = useButtonProps('add', false)
@@ -29,6 +33,7 @@ export default function UploadSongs({ anySong = false}){
             <div className='UploadSongs' >
                 <input
                     onInputCapture={(event) => onInputCapture(event)}
+                    ref={inputRef}
                     multiple
                     type='file'
                     name='add song'
