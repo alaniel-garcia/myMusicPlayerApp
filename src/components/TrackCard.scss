@@ -55,12 +55,12 @@ $icons-size-current: calc($icons-size - 1rem);
   }
 }
 
-.TrackCard--default-hover, .TrackCard--playlist-hover, .TrackCard--search-hover {
+// .TrackCard--default-hover, .TrackCard--playlist-hover, .TrackCard--search-hover {
 
-  &:hover {
-    background: idx.$contrast-hl;
-  }
-}
+//   &:hover {
+//     background: idx.$contrast-hl;
+//   }
+// }
 
 .TrackCard--current {
   position: relative;

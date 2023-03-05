@@ -7,16 +7,16 @@ export function CurrentProvider({children}) {
     const [current, setCurrent] = useState({
         song: null,
         container: [],
-        playlistName: ''
+        containerName: '',
     });
     const [isCurrentOpen, setIsCurrentOpen] = useState(false);
 
-    function changeCurrent(song, container, playlistName){
-        if(playlistName){
+    function changeCurrent(song, container, containerName){
+        if(containerName){
             setCurrent({
                 song,
                 container,
-                playlistName
+                containerName
             })
         }
         else{

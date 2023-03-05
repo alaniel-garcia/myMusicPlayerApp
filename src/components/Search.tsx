@@ -83,7 +83,7 @@ export default function Search({section}: Props){
                     </div>
                 }
                 <div className={section === 'playlist' ? 'Search__results--playlist' : 'Search__results'}>
-                    <SongsList songs={library} display={results} cardType={handleSectionCardType()} areAllSelected={selectAll}/>
+                    <SongsList songs={library} display={results} cardType={handleSectionCardType()} areAllSelected={selectAll} containerName={'search'}/>
                 </div>
             </div>
         </>

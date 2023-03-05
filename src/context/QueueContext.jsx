@@ -1,27 +1,53 @@
+import useFavoritesContext from '@hooks/useFavoritesContext';
+import useLibraryContext from '@hooks/useLibraryContext';
 import { createContext, useContext, useEffect, useState } from 'react';
 import CurrentContext from './CurrentContext';
 
 const QueueContext = createContext();
 
 export function QueueProvider({children}) {
-    const { current, changeCurrent } = useContext(CurrentContext);
     const [queue, setQueue] = useState([]);
-    const [queueInitialState, setQueueInitialState] = useState([]); 
+    const { current, changeCurrent } = useContext(CurrentContext);
+    const {library} = useLibraryContext();
     const [shuffleOnPlay, setShuffleOnPlay] = useState(false);
     const [playlistView, setPlaylistView] = useState(false);
+    const {favorites} = useFavoritesContext();
     const currentIndex = getCurrentIndex(current?.song?.id);
-
-    useEffect(()=>{
-        if(shuffleOnPlay || playlistView){
-            changeCurrent(queue[0], queue)
-        }
-    },[queue]);
 
     useEffect(()=>{
         if(!playlistView){
             handleShuffleMode()
         }
+        if(current.containerName === 'library'){
+            if(!shuffleOnPlay) addWithReset(library)
+        }
     },[shuffleOnPlay]);
+
+    useEffect(()=>{
+        const container = current.containerName;
+            if(shuffleOnPlay){
+                let shuffled;
+
+                if(container === 'library'){
+                    shuffled = shuffleArray([...library]);
+                }
+                else if(container === 'favorites'){
+                    shuffled = shuffleArray([...favorites]);
+                }
+
+                onShuffleSwapCurrentToTop(shuffled);
+
+                addWithReset(shuffled)
+            }
+            else{
+                if(container === 'library'){
+                    addWithReset(library)
+                }
+                else if(container === 'favorites'){
+                    addWithReset(favorites)
+                }
+            }
+    },[library, favorites]);
 
     useEffect(()=>{
         if(playlistView){
@@ -93,7 +119,7 @@ export function QueueProvider({children}) {
 
     function removeFromQueue (songId){
         let currentIndex = getCurrentIndex(songId);
-        const currentPlaylist = current.playlistName ? current.playlistName : undefined;
+        const currentPlaylist = current.containerName ? current.containerName : undefined;
 
         const filtered = queue.filter((song)=> {
             if(song.id !== songId){
@@ -116,7 +142,7 @@ export function QueueProvider({children}) {
     }
 
     function removeSeveralFromQueue (array = []) {
-        const currentPlaylist = current.playlistName ? current.playlistName : undefined;
+        const currentPlaylist = current.containerName ? current.containerName : undefined;
         let currentWasDeleted = [false, ''];
         let newCurrentIndex;
         let newCurrentId;
@@ -160,8 +186,6 @@ export function QueueProvider({children}) {
 
     function handleShuffleMode (){
         if(shuffleOnPlay){
-            setQueueInitialState([...queue]);
-
             const shuffled = shuffleArray([...queue]);
 
             onShuffleSwapCurrentToTop(shuffled);
@@ -169,14 +193,19 @@ export function QueueProvider({children}) {
             addWithReset(shuffled);
         }
         else{
-            addWithReset([...queueInitialState])
-            // setQueueInitialState([])
+            const container = current.container;
+            if(container && container.name){
+                addWithReset([...container.songs])
+            }
+            else{
+                addWithReset([...container])
+            }
         }
     }
 
-    function handleShuffleModeFromPlaylist(songs){
-        setQueueInitialState([...songs])
-        const shuffled = shuffleArray([...songs]);
+    function handleShuffleModeFromPlaylist(playlist){
+        const shuffled = shuffleArray([...playlist.songs]);
+        changeCurrent(shuffled[0], playlist, playlist.name)
         addWithReset(shuffled);
         setPlaylistView(true)
     }
@@ -252,7 +281,7 @@ export function QueueProvider({children}) {
     }
 
     return(
-        <QueueContext.Provider value={{queue, addToQueue, addWithReset, getCurrentIndex, removeFromQueue, removeSeveralFromQueue, shuffleOnPlay, setShuffleOnPlay, handleShuffleMode, handleShuffleModeFromPlaylist, setQueueInitialState, addNext}}>
+        <QueueContext.Provider value={{queue, addToQueue, addWithReset, getCurrentIndex, removeFromQueue, removeSeveralFromQueue, shuffleOnPlay, setShuffleOnPlay, handleShuffleMode, handleShuffleModeFromPlaylist, addNext}}>
             {children}
         </QueueContext.Provider>
     )

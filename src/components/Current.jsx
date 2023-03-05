@@ -93,7 +93,6 @@ export default function Current() {
 
         const btnsPropsToLoad ={
             minimize: useButtonProps('minimize', ()=> toggleIsCurrentOpen()),
-            more: useButtonProps('more', ()=> 'not assigned yet'),
             repeat: useButtonProps('repeat', ()=> {
                 toggleReplayMode('repeat')
             }),
@@ -115,7 +114,6 @@ export default function Current() {
     function loadCompleteView() {
         const {
             minimize,
-            more,
             repeat,
             repeat_one,
             no_repeat,
@@ -146,7 +144,6 @@ export default function Current() {
                     track= {track}
                     buttonsProps={{
                         minimize, 
-                        more,
                         queue_props,
                         play_pause: isPaused ? play_props : pause_props,
                         repeat_mode: loadReplayModeButton(),

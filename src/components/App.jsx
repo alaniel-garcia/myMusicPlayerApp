@@ -39,8 +39,8 @@ export default function App() {
                 <div className='App'>
                     <LibraryProvider>
                         <CurrentProvider>
-                            <QueueProvider>
-                                <FavoritesProvider>
+                            <FavoritesProvider>
+                                <QueueProvider>
                                     {
                                         selectMode && 
                                         <SelectMode />
@@ -56,8 +56,8 @@ export default function App() {
                                         {isOptionsOpen && <OptionsMenu />}
                                     </main>
                                     <Current />
-                                </FavoritesProvider>
-                            </QueueProvider>
+                                </QueueProvider>
+                            </FavoritesProvider>
                         </CurrentProvider>
                     </LibraryProvider>
                </div>

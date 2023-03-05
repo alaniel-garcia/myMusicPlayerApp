@@ -26,7 +26,7 @@ export default function PlaylistView({playlist, openPlaylistHandler, playlistsUp
 
     useEffect(()=>{
         loadPlaylistViewContent(playlist, playlistsUpdater)
-        if(current.playlistName && current.playlistName === playlist.name){
+        if(current.containerName && current.containerName === playlist.name){
 
             if(queue.length >= playlist.songs.length){
                 const retrievedDeleted = queue.filter((song: Song) => !playlist.songs.some(plSong => plSong.id === song.id));
@@ -74,7 +74,7 @@ export default function PlaylistView({playlist, openPlaylistHandler, playlistsUp
 
     const handleShuffle = ()=>{
         if(playlist.songs.length > 0){
-            handleShuffleModeFromPlaylist(playlist.songs)
+            handleShuffleModeFromPlaylist(playlist)
         }
     }
 
@@ -93,7 +93,7 @@ export default function PlaylistView({playlist, openPlaylistHandler, playlistsUp
         }
 
         return(
-            <SongsList songs={playlist.songs} playlist={playlist} cardType={'playlist'} />
+            <SongsList songs={playlist.songs} playlist={playlist} cardType={'playlist'} containerName={playlist.name}/>
         )
     }
 

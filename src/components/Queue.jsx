@@ -32,7 +32,7 @@ export default function Queue({openStateHandler}){
                     </div>
                 </div>
             </div>
-            <SongsList songs={queue} cardType='queue' />
+            <SongsList songs={queue} cardType='queue'/>
         </div>
     </>
 }

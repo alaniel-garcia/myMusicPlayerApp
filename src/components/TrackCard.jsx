@@ -8,12 +8,12 @@ import useSelectionContext from '@hooks/useSelectionContext';
 import useDeviceContext from '@hooks/useDeviceContext';
 import useOptionsContext from '@hooks/useOptionsContext';
 
-export default function TrackCard({ song, cardType, songsList, hidden, areAllSelected, playlist, ...props }) {
+export default function TrackCard({ song, cardType, songsList, hidden, areAllSelected, playlist, containerName, ...props }) {
     
-    const {changeCurrent, toggleIsCurrentOpen} = useContext(CurrentContext);
-    const {queue, addToQueue, addWithReset, removeFromQueue} = useContext(QueueContext);
+    const {current, changeCurrent, toggleIsCurrentOpen} = useContext(CurrentContext);
+    const {queue, addToQueue, addWithReset, removeFromQueue, shuffleOnPlay, setShuffleOnPlay} = useContext(QueueContext);
     const [isSelected, setIsSelected] = useState(false);
-    const { selected, updateSelected,removeSelected, selectMode, setSelectMode, onClickAvailable, setOnClickAvailable, isIncluded, resetSelected} = useSelectionContext();
+    const { selected, updateSelected,removeSelected, selectMode, setSelectMode, onClickAvailable, setOnClickAvailable, isIncluded} = useSelectionContext();
     const {isTouch} = useDeviceContext();
     const isMounted = useRef(true)
     const sharedCardTypeFunctionalities = cardType === 'default' || cardType === 'playlist' || cardType === 'playlist' || cardType === 'search';
@@ -30,6 +30,7 @@ export default function TrackCard({ song, cardType, songsList, hidden, areAllSel
         });
         openOptions();
     });
+
     const delete_ = useButtonProps('delete', ()=> removeFromQueue(song.id));
     const check = useButtonProps('check', ()=> handleToggleSelected());
 
@@ -153,12 +154,15 @@ export default function TrackCard({ song, cardType, songsList, hidden, areAllSel
                     event.stopPropagation();
                     if(onClickAvailable){
                         if(cardType === 'default' || cardType === 'playlist'){
+                            if(shuffleOnPlay && !selectMode){
+                                setShuffleOnPlay(false)
+                            }
                             if(selectMode){
                                 handleToggleSelected()
                             }
                             else{
                                 if(cardType === 'default'){
-                                    changeCurrent(song, songsList)
+                                    changeCurrent(song, songsList, containerName)
                                 }
                                 else if(cardType === 'playlist'){
                                     changeCurrent(song, playlist.songs, playlist.name)
@@ -174,7 +178,7 @@ export default function TrackCard({ song, cardType, songsList, hidden, areAllSel
                             }
                         }
                         else if(cardType === 'queue'){
-                            changeCurrent(song, songsList)
+                            changeCurrent(song, songsList, current.containerName)
                         }
                         else if(cardType === 'addPlaylist'){
                             handleToggleSelected()
@@ -184,7 +188,7 @@ export default function TrackCard({ song, cardType, songsList, hidden, areAllSel
                                 handleToggleSelected()
                             }
                             else{
-                                changeCurrent(song, songsList)
+                                changeCurrent(song, songsList, containerName)
                                 addWithReset([song])
                                 toggleIsCurrentOpen()
                             }

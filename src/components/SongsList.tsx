@@ -8,6 +8,7 @@ interface Props {
     display?: Array<Song>
     areAllSelected?: boolean
     playlist?: Playlist
+    containerName?: string
 }
 
 export default function SongsList({
@@ -15,7 +16,8 @@ export default function SongsList({
     cardType,
     display,
     areAllSelected,
-    playlist
+    playlist,
+    containerName
 }: Props) {
 
     const isIncluded = (songId: string)=>{
@@ -52,6 +54,7 @@ export default function SongsList({
                                 hidden={hiddenStatus(song.id)}
                                 areAllSelected={areAllSelected}
                                 playlist={playlist}
+                                containerName={containerName}
                             />
                         );
                 })}

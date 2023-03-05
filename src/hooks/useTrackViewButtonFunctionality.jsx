@@ -29,20 +29,20 @@ export default function useTrackViewButtonFunctionality({
 
     //basic functionalities
     function playFirstInQueue(){
-        changeCurrent(queue[0], queue)
+        changeCurrent(queue[0], queue, current.containerName)
     }
 
     function playLastInQueue(){
         const lastTrackindex = queue.length - 1;
-        changeCurrent(queue[lastTrackindex], queue)
+        changeCurrent(queue[lastTrackindex], queue, current.containerName)
     }
 
     function playNext(){
-        changeCurrent(queue[currentIndex + 1], queue)
+        changeCurrent(queue[currentIndex + 1], queue, current.containerName)
     }
 
     function playPrev(){
-        changeCurrent(queue[currentIndex - 1], queue)
+        changeCurrent(queue[currentIndex - 1], queue, current.containerName)
     }
 
     function autoPlay() {

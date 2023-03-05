@@ -103,11 +103,17 @@ export default function useOptions(){
         option: 'Remove from favorites',
         inputRequire: false,
         functionality: () => {
-            if(content.contentType === 'song'){
+            if(content.contentType === 'song' && song){
                 removeFavorites(song)
+                if(queue.some((el: Song) => el.id === song.id)){
+                    removeFromQueue(song.id)
+                }
             }
             else if(content.contentType === 'selectedSongs'){
                 removeFavorites(songs)
+                if(queue.length > 0){
+                    removeSeveralFromQueue(songs)
+                }
                 setSelectMode(false);
             }
             closeOptions()

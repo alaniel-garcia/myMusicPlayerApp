@@ -68,7 +68,7 @@ export default function Songs({className}){
 
     function renderSongsContent(){
         if(library.length > 0){
-            return <SongsList songs={library} cardType='default'/>
+            return <SongsList songs={library} cardType='default' containerName='library'/>
         }
         else{
             if(isLoading){

@@ -17,7 +17,7 @@ export default function Favorites({className}: Props){
                 </div>
                 {
                     favorites.length > 0 
-                        ? <SongsList songs={favorites} cardType={'default'} />
+                        ? <SongsList songs={favorites} cardType={'default'} containerName={'favorites'}/>
                         : <div className='Favorites__no-favorites'>
                             <h2>No favorites</h2>
                         </div>
