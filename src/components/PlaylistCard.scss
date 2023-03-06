@@ -4,26 +4,29 @@
   display: flex;
     justify-content: space-between; 
 
-  // outline: 2px solid red;
+  width: 100%;
+
   cursor: pointer;
     border-radius: .4rem;
 }
 
-// .PlaylistCard--hover {
-//   &:hover {
-//     background: idx.$contrast-hl;
-//   }
-// }
-
 .PlaylistCard__left {
   display: flex;
+    flex-grow: 1;
     column-gap: .8rem;
+    overflow: hidden;
 }
 
 .PlaylistCard__info {
+  flex-grow: 1;
 
+  width: calc(100% - 5.8rem);
   h1 {
     font-size: 1.6rem;
+
+    white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
   }
 
   h2 {

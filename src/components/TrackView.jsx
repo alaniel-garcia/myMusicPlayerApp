@@ -20,6 +20,7 @@ export default function TrackView({song, track, buttonsProps, ...props}) {
         shuffle
     } = buttonsProps;
 
+    const {queue, getCurrentIndex} = useContext(QueueContext);
     const [volumeOpen, setVolumeOpen] = useState(false);
     const {shuffleOnPlay} = useContext(QueueContext)
     const {toggleFavorite, isInFavorites} = useFavoritesContext();
@@ -116,7 +117,7 @@ export default function TrackView({song, track, buttonsProps, ...props}) {
                             </div>
                             <div className='controls__secondary__center'>
                                 <h3 className='Trackview__position'>
-                                    1/2
+                                    {(getCurrentIndex(song.id) + 1) || 0}/{queue.length}
                                 </h3>
                             </div>
                             <div className='controls__secondary__right'>

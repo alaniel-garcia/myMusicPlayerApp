@@ -57,7 +57,13 @@
 }
 
 .banner__info {
+
   margin-inline-start: 1.2rem;
+
+  h1 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
   h2 {
     margin-block-start: .4rem;

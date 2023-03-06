@@ -56,17 +56,19 @@
 
 .overview__general__top {
   @extend %default-set-flex;
-  justify-content: center;
+  display: flex;
+    justify-content: center;
+
+  overflow: hidden;
 
   width: 100%;
     padding-block-start: idx.$general-padding;
 }
 
 .overview__general__track-name {
-  display: block;
-
-  overflow: hidden;
-    text-overflow: ellipsis;
+    width: 100%;
+  // overflow: hidden;
+    // text-overflow: ellipsis;
     white-space: nowrap;
 
   margin-block-end: .4rem;
@@ -108,3 +110,5 @@
 
   padding-block-end: idx.$general-padding;
 }
+
+@keyframes carousel {}

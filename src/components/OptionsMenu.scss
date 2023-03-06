@@ -58,7 +58,9 @@ $maring-padding: 1.2rem;
 
       font-size: 1.3rem;
 
-      white-space: nowrap;
+      overflow-x: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
     }
 
     h3 {

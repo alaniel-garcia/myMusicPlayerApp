@@ -136,7 +136,7 @@ export default function Playlists({className} : Props){
 
                 <div className="Playlists__header">
                     <h2>Playlists</h2>
-                    <Button className={'medium-button'} icon={add.icon} alt={add.alt} functionality={add.functionality} />
+                    <Button icon={add.icon} alt={add.alt} functionality={add.functionality} />
                 </div>
                 {isAddPlOpen && <AddPlaylist addPlaylist={addPlaylist} onClose={setIsAddPlOpen}/>}
                 <PlaylistsRender playlists={playlists} openPlaylistHandler={setOpenPlaylist} playlistUpdater={setPlaylists} />

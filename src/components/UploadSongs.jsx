@@ -26,7 +26,7 @@ export default function UploadSongs({ anySong = false}){
 
     const add = useButtonProps('add', false)
 
-    const addButton = <Button className={'medium-button'} icon={add.icon} alt={add.alt} />;
+    const addButton = <Button icon={add.icon} alt={add.alt} />;
 
     return (
         <>

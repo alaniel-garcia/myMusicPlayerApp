@@ -97,7 +97,7 @@ export default function Songs({className}){
 
     return (
         <>
-            <div className={className ? `Songs ${className}` : 'Songs'}>
+            <div className={className ? `Songs ${className}` : 'Songs'} style={{height: (isLoading || library.length === 0) ? '100%' : 'max-content'}}>
                 <div className='Songs__header'>
                     <div className="Songs__header-info">
                         <h2>

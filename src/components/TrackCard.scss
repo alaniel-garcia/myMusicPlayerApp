@@ -37,11 +37,13 @@ $icons-size-current: calc($icons-size - 1rem);
 
   .TrackCard--left--default, .TrackCard--left--queue, .TrackCard--left--addPlaylist, .TrackCard--left--playlist, .TrackCard--left--search {
     display: flex;
+    flex-grow: 1;
 
     width: calc(100% - ($icons-size * 2) + 1.2rem) ;
   }
   .TrackCard--left--current {
     display: flex;
+    flex-grow: .5;
 
     width: calc(100% - ($icons-size * 2.5) + 1.2rem) ;
   }
@@ -54,13 +56,6 @@ $icons-size-current: calc($icons-size - 1rem);
     }
   }
 }
-
-// .TrackCard--default-hover, .TrackCard--playlist-hover, .TrackCard--search-hover {
-
-//   &:hover {
-//     background: idx.$contrast-hl;
-//   }
-// }
 
 .TrackCard--current {
   position: relative;
@@ -108,6 +103,8 @@ $icons-size-current: calc($icons-size - 1rem);
 }
 
 .TrackCard__section__info {
+  flex-grow: 1;
+
   margin-inline-start: 1.2rem;
 
   overflow: hidden;
