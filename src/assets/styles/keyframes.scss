@@ -1,0 +1,17 @@
+@keyframes viewInfiniteScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100%{                   //from container.  // from white space element
+    transform: translateX(calc((-50%) - (107.46px / 2)));
+  }
+}
+
+@keyframes cardInfiniteScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100%{                   //from container.  // from white space element
+    transform: translateX(calc((-50%) - (87.96px / 2)));
+  }
+}

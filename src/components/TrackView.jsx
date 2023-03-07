@@ -2,7 +2,7 @@ import './TrackView.scss';
 import Button from './miscellaneous/Button';
 import TrackTime from './TrackTime';
 import TrackVolume from './TrackVolume';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import useButtonProps from '@hooks/useButtonProps';
 import PopElement from './miscellaneous/PopElement';
 import { useContext } from 'react';
@@ -21,11 +21,14 @@ export default function TrackView({song, track, buttonsProps, ...props}) {
     } = buttonsProps;
 
     const {queue, getCurrentIndex} = useContext(QueueContext);
+    const [infiniteScroll, setInfiniteScroll] = useState(false);
     const [volumeOpen, setVolumeOpen] = useState(false);
     const {shuffleOnPlay} = useContext(QueueContext)
     const {toggleFavorite, isInFavorites} = useFavoritesContext();
     const [bgColor, setBgColor] = useState('#33313b');
     const fac = new FastAverageColor();
+    const titleRef = useRef();
+    const titleContainerRef = useRef();
 
     useEffect(()=> {
         async function getAverageColor () {
@@ -34,6 +37,13 @@ export default function TrackView({song, track, buttonsProps, ...props}) {
         }
 
         getAverageColor()
+
+        if(titleRef.current){
+            const titleWidth = titleRef.current.offsetWidth;
+            const containerWidth = titleContainerRef.current.offsetWidth
+            titleWidth > containerWidth ? setInfiniteScroll(true) : setInfiniteScroll(false)
+        
+        }
     },[song]);
 
     const volume = useButtonProps('volume',()=>{
@@ -48,6 +58,24 @@ export default function TrackView({song, track, buttonsProps, ...props}) {
 
     function volumeWillClose(value){
         setVolumeOpen(value)
+    }
+
+    function loadTitle(){
+        if(infiniteScroll){
+            return <h1 
+                        className={infiniteScroll ? 'overview__general__track-name infinite-scroll' : 'overview__general__track-name'} 
+                        ref={titleRef}
+                        >
+                <span>{song.metadata.title}</span>
+                <span className='space-in-infinite-scroll'>HowYourNot</span>
+                <span>{song.metadata.title}</span>
+            </h1>
+        }
+        else{
+            return <h1 className='overview__general__track-name' ref={titleRef}>
+                {song.metadata.title}
+            </h1>
+        }
     }
 
     return(
@@ -80,12 +108,8 @@ export default function TrackView({song, track, buttonsProps, ...props}) {
                 <div className='TrackView__bottom'>
                     <div className='TrackView__overview'>
                         <div className='overview__general'>
-                            <div className='overview__general__top'>
-                                <div>
-                                    <h1 className='overview__general__track-name'>
-                                        {song.metadata.title}
-                                    </h1>
-                                </div>
+                            <div className='overview__general__top' ref={titleContainerRef} style={{justifyContent: infiniteScroll ? 'start' : 'center'}}>
+                                {loadTitle()}
                             </div>
                             <div className='overview__general__bottom'>
                                 <h3 className='overview__general__track-artist'>

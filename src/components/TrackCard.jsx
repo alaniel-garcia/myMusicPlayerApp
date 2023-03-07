@@ -19,6 +19,9 @@ export default function TrackCard({ song, cardType, songsList, hidden, areAllSel
     const sharedCardTypeFunctionalities = cardType === 'default' || cardType === 'playlist' || cardType === 'playlist' || cardType === 'search';
     const {openOptions, loadContent} = useOptionsContext();
     let selectTimer;
+    const [infiniteScroll, setInfiniteScroll] = useState(false);
+    const titleRef = useRef();
+    const titleContainerRef = useRef();
 
     const more =  useButtonProps('more',()=>{
         loadContent({
@@ -37,6 +40,15 @@ export default function TrackCard({ song, cardType, songsList, hidden, areAllSel
     const selectedStyle = {
         background: '#4f4d57'
     };
+
+    useEffect(()=>{
+        if(titleRef.current && cardType === 'current'){
+            const titleWidth = titleRef.current.offsetWidth;
+            const containerWidth = titleContainerRef.current.offsetWidth
+            titleWidth > containerWidth ? setInfiniteScroll(true) : setInfiniteScroll(false)
+        
+        }
+    },[song]);
 
     useEffect(()=>{
             if(isIncluded(song.id)){
@@ -112,6 +124,19 @@ export default function TrackCard({ song, cardType, songsList, hidden, areAllSel
             return <>
                 <Button className='medium-button' icon={check.icon} alt={check.alt} functionality={check.functionality} selectedMode= {true} selectedState={isSelected} />
             </>
+        }
+    }
+
+    function loadTitle() {
+        if(infiniteScroll){
+            return <h2 ref={titleRef} className='track-name infinite-scroll-card'>
+                <span>{song.metadata.title}</span>
+                <span className='space-in-infinite-scroll'>HowNotMate</span>
+                <span>{song.metadata.title}</span>
+                </h2>
+        }
+        else{
+            return <h2 ref={titleRef} className='track-name'>{song.metadata.title}</h2>
         }
     }
 
@@ -204,8 +229,8 @@ export default function TrackCard({ song, cardType, songsList, hidden, areAllSel
                             <img src={song.cover} /*alt="song´s album cover"*/ />
                         </div>
                     </div>
-                    <div className='TrackCard__section TrackCard__section__info'>
-                        <h2 className='track-name'>{song.metadata.title}</h2>
+                    <div ref={titleContainerRef} className='TrackCard__section TrackCard__section__info'>
+                        {loadTitle()}
                         <h3 className='track-artist'>{song.metadata.artist}</h3>
                     </div>
                 </div>

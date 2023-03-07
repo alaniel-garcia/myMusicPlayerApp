@@ -72,6 +72,18 @@ $icons-size-current: calc($icons-size - 1rem);
   .TrackCard__section {
     column-gap: .2rem
   }
+
+  .TrackCard__section__info {
+    overflow: hidden;
+  }
+
+  .track-name {
+    display: flex;
+    overflow: initial;
+    text-overflow: initial;
+
+    width: max-content;
+  }
 }
 
 .track-cover--default, .track-cover--queue, .track-cover--addPlaylist, .track-cover--playlist, .track-cover--search {

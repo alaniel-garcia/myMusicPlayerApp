@@ -1,4 +1,5 @@
 @use './normalize.css';
+@use './keyframes.scss';
 
 
 //Fonts
@@ -39,6 +40,17 @@
   $highlights: #e67589;
   $contrast-hl: #53525A;
   $white: #FFFFFF;
+
+
+//Animations
+  .infinite-scroll {
+    animation: viewInfiniteScroll 15s infinite linear;
+  }
+
+  .infinite-scroll-card {
+    animation: cardInfiniteScroll 15s infinite linear;
+  }
+
 
 //general styles
 

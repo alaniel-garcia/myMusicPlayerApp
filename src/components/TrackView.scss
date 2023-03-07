@@ -57,7 +57,6 @@
 .overview__general__top {
   @extend %default-set-flex;
   display: flex;
-    justify-content: center;
 
   overflow: hidden;
 
@@ -66,12 +65,14 @@
 }
 
 .overview__general__track-name {
-    width: 100%;
-  // overflow: hidden;
-    // text-overflow: ellipsis;
-    white-space: nowrap;
+  display: flex;
 
-  margin-block-end: .4rem;
+  white-space: nowrap;
+  box-sizing: initial;
+}
+
+.space-in-infinite-scroll {
+  opacity: 0;
 }
 
 .overview__general__track-artist {
@@ -110,5 +111,3 @@
 
   padding-block-end: idx.$general-padding;
 }
-
-@keyframes carousel {}
