@@ -52,6 +52,7 @@
     justify-content: space-between;
     align-items: center;
 
-  margin-inline-start: idx.$general-padding;
+  padding-inline: idx.$general-padding;
+
   margin-block-end: 1.6rem;
 }
