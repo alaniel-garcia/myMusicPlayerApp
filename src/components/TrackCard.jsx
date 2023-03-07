@@ -156,7 +156,7 @@ export default function TrackCard({ song, cardType, songsList, hidden, areAllSel
                                 if(!isTouch){
                                     setOnClickAvailable(false)
                                 }
-                            },2000);
+                            },1200);
                         }
                         else{
                             return

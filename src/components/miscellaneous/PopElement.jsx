@@ -52,7 +52,7 @@ export default function PopElement({ triggerState, showingTime, showWhileInterac
         closeTimeoutManager(true)
         if(showWhileInteracting){
             if(isTouch){
-                ChildrenValidationEvent('touchstart')
+                ChildrenValidationEvent('touchmove')
             }
             else{
                 ChildrenValidationEvent('mousemove')
