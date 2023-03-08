@@ -3,6 +3,7 @@ import useButtonProps from '@hooks/useButtonProps';
 import Button from './miscellaneous/Button';
 import { useState } from 'react';
 import SearchSongs from './SearchSongs';
+import { AnimatePresence } from 'framer-motion';
 
 export default function Navbar() {
     const search = useButtonProps('search', ()=>{setSearchIsOpen(true)});
@@ -26,9 +27,11 @@ export default function Navbar() {
                     </div>
                 </div>
             </nav>
-            {
-                searchIsOpen && <SearchSongs handleClose={handleSearchClose} />
-            }
+            <AnimatePresence>
+                {
+                    searchIsOpen && <SearchSongs handleClose={handleSearchClose} />
+                }
+            </AnimatePresence>
         </>
     );
 }

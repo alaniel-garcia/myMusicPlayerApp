@@ -14,10 +14,15 @@
   min-width: 100vw;
 
   background: idx.$background;
+  box-shadow: -15px 0px 5px 0px rgba(0,0,0,0.4);;
 }
 
 .Queue__header {
-  margin: idx.$general-padding
+  margin: idx.$general-padding;
+
+  .Button {
+    transform: rotate(180deg);
+  }
 }
 
 .Queue__options {

@@ -7,6 +7,7 @@ import QueueContext from '../context/QueueContext';
 import useSelectionContext from '@hooks/useSelectionContext';
 import useDeviceContext from '@hooks/useDeviceContext';
 import useOptionsContext from '@hooks/useOptionsContext';
+import { motion } from 'framer-motion';
 
 export default function TrackCard({ song, cardType, songsList, hidden, areAllSelected, playlist, containerName, ...props }) {
     
@@ -19,9 +20,6 @@ export default function TrackCard({ song, cardType, songsList, hidden, areAllSel
     const sharedCardTypeFunctionalities = cardType === 'default' || cardType === 'playlist' || cardType === 'playlist' || cardType === 'search';
     const {openOptions, loadContent} = useOptionsContext();
     let selectTimer;
-    const [infiniteScroll, setInfiniteScroll] = useState(false);
-    const titleRef = useRef();
-    const titleContainerRef = useRef();
 
     const more =  useButtonProps('more',()=>{
         loadContent({
@@ -41,14 +39,20 @@ export default function TrackCard({ song, cardType, songsList, hidden, areAllSel
         background: '#4f4d57'
     };
 
-    useEffect(()=>{
-        if(titleRef.current && cardType === 'current'){
-            const titleWidth = titleRef.current.offsetWidth;
-            const containerWidth = titleContainerRef.current.offsetWidth
-            titleWidth > containerWidth ? setInfiniteScroll(true) : setInfiniteScroll(false)
-        
+    const variants = {
+        initial: {
+            opacity: 0,
+            transition: {
+                duration: 3
+            }
+        },
+        in: {
+            opacity: 1,
+            transition: {
+                duration: 3
+            }
         }
-    },[song]);
+    };
 
     useEffect(()=>{
             if(isIncluded(song.id)){
@@ -127,22 +131,12 @@ export default function TrackCard({ song, cardType, songsList, hidden, areAllSel
         }
     }
 
-    function loadTitle() {
-        if(infiniteScroll){
-            return <h2 ref={titleRef} className='track-name infinite-scroll-card'>
-                <span>{song.metadata.title}</span>
-                <span className='space-in-infinite-scroll'>HowNotMate</span>
-                <span>{song.metadata.title}</span>
-                </h2>
-        }
-        else{
-            return <h2 ref={titleRef} className='track-name'>{song.metadata.title}</h2>
-        }
-    }
-
     return (
         <>
-            <div 
+            <motion.div 
+                initial={cardType === 'current' ? 'initial' : ''}
+                animate={cardType === 'current' ? 'in' : ''}
+                variants={variants}
                 className={isTouch ? `TrackCard TrackCard--${cardType}` : `TrackCard TrackCard--${cardType} TrackCard--${cardType}-hover`} 
                 hidden={hidden}
                 style={(isSelected && selectMode) && (cardType !== 'current') ? selectedStyle : {}}
@@ -229,8 +223,8 @@ export default function TrackCard({ song, cardType, songsList, hidden, areAllSel
                             <img src={song.cover} /*alt="song´s album cover"*/ />
                         </div>
                     </div>
-                    <div ref={titleContainerRef} className='TrackCard__section TrackCard__section__info'>
-                        {loadTitle()}
+                    <div className='TrackCard__section TrackCard__section__info'>
+                        <h2 className='track-name' >{song.metadata.title}</h2>
                         <h3 className='track-artist'>{song.metadata.artist}</h3>
                     </div>
                 </div>
@@ -239,7 +233,7 @@ export default function TrackCard({ song, cardType, songsList, hidden, areAllSel
                         {loadCardButtons()}
                     </div>
                 </div>
-            </div>
+            </motion.div>
         </>
     );
 }

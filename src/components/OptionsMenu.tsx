@@ -6,6 +6,7 @@ import generateTimestamp from '@services/generateTimestamp';
 import SectionContext from '../context/SectionContext';
 import { Option } from 'src/types';
 import { useContext, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function OptionsMenu() {
     const {content, closeOptions, callOption} = useOptionsContext();
@@ -164,15 +165,24 @@ export default function OptionsMenu() {
     return (
         <>
             <div className='OptionsMenu'>
-                <div 
+                <motion.div 
+                    initial={{opacity: 0}}
+                    transition={{duration: .5}}
+                    animate={{opacity: .5}}
+                    exit={{opacity: 0}}
                     className='OptionsMenu__background' 
                     onClick={(event)=> {
                         event.preventDefault();
                         event.bubbles = false;
                         closeOptions()
                     }}>
-                </div>
-                <div className='OptionsMenu__content'>
+                </motion.div>
+                <motion.div
+                    initial={{y: '100%', opacity: 0}} 
+                    transition={{duration: .5,ease: 'linear'}}
+                    animate={{y: 0, opacity: 1, }} 
+                    exit={{y: '100%', opacity: 0 }} 
+                    className='OptionsMenu__content'>
                     <div className='OptionsMenu__header'>
                         <div className='header__content'>
                             {loadHeader()}
@@ -184,7 +194,7 @@ export default function OptionsMenu() {
                         <div className='OptionsMenu__divider'></div>
                         {loadOptions(content.contentType)}
                     </div>
-                </div>
+                </motion.div>
             </div>
             {
                 openModal && <ModalWindow closeModal={() => { setOpenModal(false) }}/>

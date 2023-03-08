@@ -78,11 +78,8 @@ $icons-size-current: calc($icons-size - 1rem);
   }
 
   .track-name {
-    display: flex;
-    overflow: initial;
-    text-overflow: initial;
-
-    width: max-content;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 
@@ -91,10 +88,6 @@ $icons-size-current: calc($icons-size - 1rem);
 
   width: $icons-size;
     height: $icons-size;
-}
-
-.TrackCard--queue {
-  padding-inline-end: idx.$general-padding;
 }
 
 .TrackCard--search {

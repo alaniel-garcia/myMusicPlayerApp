@@ -6,6 +6,7 @@ import CurrentContext from '../context/CurrentContext';
 import { useContext } from 'react';
 import useHandleBooleanState from '../hooks/useHandleBooleanState';
 import SongsList from './SongsList';
+import { motion } from 'framer-motion';
 
 export default function Queue({openStateHandler}){
     const {queue, getCurrentIndex} = useContext(QueueContext);
@@ -16,7 +17,12 @@ export default function Queue({openStateHandler}){
     const go_back = useButtonProps('go_back', handleQueueIsOpenState);
 
     return <>
-        <div className='Queue'>
+        <motion.div
+        initial={{x: 'calc(100% + 15px)'}}
+        animate={{x: 0}}
+        transition={{duration: .8}}
+        exit={{x: 'calc(100% + 15px)'}}
+        className='Queue'>
             <div className="Queue__header">
                 <div className='Queue__options'>
                     <Button className={'small-button'} icon={go_back.icon} alt={go_back.alt} functionality={go_back.functionality} />
@@ -33,6 +39,6 @@ export default function Queue({openStateHandler}){
                 </div>
             </div>
             <SongsList songs={queue} cardType='queue'/>
-        </div>
+        </motion.div>
     </>
 }

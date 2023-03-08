@@ -4,7 +4,7 @@ import Current from './Current';
 import VolumeContext from '../context/VolumeContext';
 import { CurrentProvider } from '../context/CurrentContext';
 import { QueueProvider } from '../context/QueueContext'; 
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Songs from './Songs';
 import Sections from './Sections';
 import SectionContext from '../context/SectionContext';
@@ -16,12 +16,23 @@ import SelectMode from './SelectMode';
 import { FavoritesProvider } from '../context/FavoritesContext';
 import OptionsMenu from './OptionsMenu';
 import useOptionsContext from '@hooks/useOptionsContext';
+import { AnimatePresence, motion } from 'framer-motion';
 
 export default function App() {
     const {volume, onSetVolume} = useContext(VolumeContext);
     const {section} = useContext(SectionContext);
     const {selectMode} = useSelectionContext();
     const {isOptionsOpen} = useOptionsContext();
+
+    const variants = {
+        initial: {
+            opacity: 0
+        },
+        in: {
+            opacity: 1,
+            transition: {duration: .3}
+        },
+    }
 
     useEffect(()=>{
         window.addEventListener('beforeunload', ()=>{
@@ -50,10 +61,27 @@ export default function App() {
                                         <Sections />
                                     </header>
                                     <main>
-                                        <Songs className={!section.songs ? 'hidden': ''} />
-                                        <Playlists className={!section.playlists ? 'hidden': ''} />
-                                        <Favorites className={!section.favorites ? 'hidden' : ''} />
-                                        {isOptionsOpen && <OptionsMenu />}
+                                        <motion.div 
+                                        initial={'initial'}
+                                        animate={section.songs ? 'in' : ''}
+                                        variants={variants}>
+                                            <Songs className={!section.songs ? 'hidden': ''} />
+                                        </motion.div>
+                                        <motion.div
+                                        initial={'initial'}
+                                        animate={section.playlists ? 'in' : ''}
+                                        variants={variants}>
+                                            <Playlists className={!section.playlists ? 'hidden': ''} />
+                                        </motion.div>
+                                        <motion.div
+                                        initial={'initial'}
+                                        animate={section.favorites ? 'in' : ''}
+                                        variants={variants}>
+                                            <Favorites className={!section.favorites ? 'hidden' : ''} />
+                                        </motion.div>
+                                        <AnimatePresence>
+                                            {isOptionsOpen && <OptionsMenu />}
+                                        </AnimatePresence>
                                     </main>
                                     <Current />
                                 </QueueProvider>

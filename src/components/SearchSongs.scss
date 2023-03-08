@@ -10,12 +10,17 @@
     max-height: 100vh;
 
   background: idx.$background;
+  box-shadow: -15px 0px 5px 0px rgba(0,0,0,0.4);;
 }
 
 .SearchSongs__header{
   display: flex;
     align-items: center;
     column-gap: idx.$general-padding;
+
+  .Button {
+    transform: rotate(180deg);
+  }
 
   padding-inline: idx.$general-padding;
   padding-block-start: idx.$general-padding;

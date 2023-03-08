@@ -11,6 +11,7 @@ import { Playlist, OpenPlaylist } from 'src/types';
 import PlaylistView from './PlaylistView';
 import useLibraryContext from '@hooks/useLibraryContext';
 import { getStoragePlaylists, updateStoragePlaylists } from '@utils/storage';
+import { AnimatePresence } from 'framer-motion';
 
 interface Props {
     className : string
@@ -140,11 +141,13 @@ export default function Playlists({className} : Props){
                 </div>
                 {isAddPlOpen && <AddPlaylist addPlaylist={addPlaylist} onClose={setIsAddPlOpen}/>}
                 <PlaylistsRender playlists={playlists} openPlaylistHandler={setOpenPlaylist} playlistUpdater={setPlaylists} />
-                {
-                    openPlaylist.isOpen 
-                    && openPlaylist.playlist 
-                    && <PlaylistView playlist={openPlaylistProvider()} openPlaylistHandler={setOpenPlaylist} playlistsUpdater={setPlaylists} playlistContainer={playlists} />
-                }
+                <AnimatePresence>
+                    {
+                        openPlaylist.isOpen 
+                        && openPlaylist.playlist 
+                        && <PlaylistView playlist={openPlaylistProvider()} openPlaylistHandler={setOpenPlaylist} playlistsUpdater={setPlaylists} playlistContainer={playlists} />
+                    }
+                </AnimatePresence>
             </div>
         </>
     )

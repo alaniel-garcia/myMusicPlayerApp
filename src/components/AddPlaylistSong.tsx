@@ -7,6 +7,7 @@ import './AddPlaylistSong.scss';
 import AddSelectedSongsButton from './AddSelectedSongsButton';
 import Button from './miscellaneous/Button';
 import Search from './Search';
+import { motion } from 'framer-motion';
 
 interface Props {
     playlist: Playlist
@@ -47,7 +48,12 @@ export default function AddPlaylistSong({ playlist, playlistsUpdater, closeHandl
 
     return(
         <>
-            <div className='AddPlaylistSong'>
+            <motion.div 
+            initial={{x: 'calc(100% + 15px)'}}
+            animate={{x: 0}}
+            transition={{duration: .8}}
+            exit={{x: 'calc(100% + 15px)'}}
+            className='AddPlaylistSong'>
                 <div className="AddPlaylistSong__header">
                     <Button className='small-button' icon={close.icon} alt={close.alt} functionality={close.functionality} />
                     <h1>Choose tracks</h1>
@@ -56,7 +62,7 @@ export default function AddPlaylistSong({ playlist, playlistsUpdater, closeHandl
                 {
                     selected.length > 0 && <AddSelectedSongsButton onClick={handlePlaylistUpdate} selected={selected}/>
                 }
-            </div>
+            </motion.div>
         </>
     )
 }

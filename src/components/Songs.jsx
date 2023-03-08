@@ -5,7 +5,7 @@ import AddWhenNoSongs from './AddWhenNoSongs';
 import useLibraryContext from '@hooks/useLibraryContext';
 import * as IDBSongs from '../services/IDB';
 import handleAudio from '../services/handleAudio';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import defaultSongs from '../utils/defaultMusic';
 import handleFilesUpload from '../services/handleFilesUpload';
 import useIDBContext from '../hooks/useIDBContext';
@@ -97,7 +97,9 @@ export default function Songs({className}){
 
     return (
         <>
-            <div className={className ? `Songs ${className}` : 'Songs'} style={{height: (isLoading || library.length === 0) ? '100%' : 'max-content'}}>
+            <div 
+            className={className ? `Songs ${className}` : 'Songs'} 
+            style={{height: (isLoading || library.length === 0) ? '100%' : 'max-content'}}>
                 <div className='Songs__header'>
                     <div className="Songs__header-info">
                         <h2>

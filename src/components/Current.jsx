@@ -9,6 +9,7 @@ import useButtonProps from '@hooks/useButtonProps';
 import useTrackViewButtonFunctionality from '@hooks/useTrackViewButtonFunctionality';
 import useHandleBooleanState from '../hooks/useHandleBooleanState';
 import QueueContext from '../context/QueueContext';
+import { AnimatePresence } from 'framer-motion';
 
 export default function Current() {
     const { current, isCurrentOpen, toggleIsCurrentOpen } = useContext(CurrentContext);
@@ -138,7 +139,7 @@ export default function Current() {
         }
 
         if(current.song){
-            return(
+            return (
                 <TrackView 
                     song={current.song} 
                     track= {track}
@@ -152,42 +153,34 @@ export default function Current() {
                         shuffle,
                     }}
                 />
-            )
-        }
-    }
-
-    function loadMinimizedView() {
-        if (current.song) {
-            return (
-                    <TrackCard
-                        onClick={() => toggleIsCurrentOpen()}
-                        song={current.song}
-                        cardType='current'
-                        buttonsProps={[
-                            isPaused ? play_props : pause_props,
-                            queue_props
-                        ]}
-                    />
-            );
-        }
-    }
-
-    function loadView() {
-        if(isCurrentOpen && current.song) {
-            return loadCompleteView()
-        }
-        else if(!isCurrentOpen && current.song) {
-            return loadMinimizedView()
-        }
+        )}
     }
 
     return (
         <>
             <audio ref={audioEl} hidden={true} onEnded={handleTrackEnded}></audio>
-            <div className='Current'>{
-                loadView()
-            }</div>
-            {queueIsOpen && <Queue openStateHandler={setQueueIsOpen} />}
+            <div className='Current'>
+                <AnimatePresence>
+                    {
+                        isCurrentOpen && current.song && loadCompleteView()
+                    }
+                </AnimatePresence>
+                    {
+                        current.song && 
+                        <TrackCard
+                            onClick={() => toggleIsCurrentOpen()}
+                            song={current.song}
+                            cardType='current'
+                            buttonsProps={[
+                                isPaused ? play_props : pause_props,
+                                queue_props
+                            ]}
+                        />
+                    }
+            </div>
+            <AnimatePresence>
+                {queueIsOpen && <Queue openStateHandler={setQueueIsOpen} />}
+            </AnimatePresence>
         </>
     );
 }

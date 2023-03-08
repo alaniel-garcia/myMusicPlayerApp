@@ -9,6 +9,7 @@ import CurrentContext from '../context/CurrentContext';
 import QueueContext from '../context/QueueContext';
 import AddWhenNoSongs from './AddWhenNoSongs';
 import useOptionsContext from '@hooks/useOptionsContext';
+import { AnimatePresence, motion } from 'framer-motion';
 
 interface Props {
     playlist: Playlist
@@ -114,7 +115,11 @@ export default function PlaylistView({playlist, openPlaylistHandler, playlistsUp
 
     return(
         <>
-            <div className='PlaylistView'>
+            <motion.div 
+            initial={{opacity: 0}}
+            animate={{opacity: 1}}
+            exit={{opacity: 0}}
+            className='PlaylistView'>
                 <div className='PlaylistView__header'>
                     <div className='PlaylistView__header__left'>
                         <Button className='small-button' icon={go_back.icon} alt={go_back.alt} functionality={go_back.functionality} />
@@ -152,10 +157,12 @@ export default function PlaylistView({playlist, openPlaylistHandler, playlistsUp
                 {
                     renderPlaylistContent()
                 }
-            </div>
-            {
-                addSongsIsOpen && <AddPlaylistSong playlist={playlist} closeHandler={setAddSongsIsOpen} playlistsUpdater={playlistsUpdater}/>
-            }
+            </motion.div>
+            <AnimatePresence>
+                {
+                    addSongsIsOpen && <AddPlaylistSong playlist={playlist} closeHandler={setAddSongsIsOpen} playlistsUpdater={playlistsUpdater}/>
+                }
+            </AnimatePresence>
         </>
     )
 }

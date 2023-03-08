@@ -9,6 +9,7 @@ import { useContext } from 'react';
 import QueueContext from '../context/QueueContext';
 import useFavoritesContext from '@hooks/useFavoritesContext';
 import { FastAverageColor } from 'fast-average-color';
+import { motion } from 'framer-motion';
 
 export default function TrackView({song, track, buttonsProps, ...props}) {
     const {minimize,
@@ -80,7 +81,12 @@ export default function TrackView({song, track, buttonsProps, ...props}) {
 
     return(
         <>
-            <div className='TrackView' style={{background: bgColor}}>
+            <motion.div 
+            initial={{y: '100%'}} 
+            animate={{y: 0 , background: bgColor}} 
+            transition={{duration: .8}} 
+            exit={{y: '100%'}} 
+            className='TrackView' style={{background: bgColor}}>
                 <div className='TrackView__top'>
                     <Button className={'medium-button'} icon={minimize.icon} alt={minimize.alt} functionality={minimize.functionality}/>
                     <div>
@@ -150,7 +156,7 @@ export default function TrackView({song, track, buttonsProps, ...props}) {
                         </div>
                     </div>
                 </div>
-            </div>
+            </motion.div>
         </>
     )
 }
