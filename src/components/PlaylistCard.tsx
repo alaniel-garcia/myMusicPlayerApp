@@ -4,6 +4,8 @@ import Button from './miscellaneous/Button';
 import useButtonProps from '@hooks/useButtonProps';
 import useDeviceContext from '@hooks/useDeviceContext';
 import useOptionsContext from '@hooks/useOptionsContext';
+import { useEffect } from 'react';
+import defaultCover from '@assets/images/defaultCover.png';
 
 interface Props {
     playlist: Playlist
@@ -15,6 +17,32 @@ interface Props {
 export default function PlaylistCard({playlist, openPlaylistHandler, playlistContainer, playlistUpdater}: Props){
     const {isTouch} = useDeviceContext();
     const {loadContent,openOptions} = useOptionsContext();
+
+    useEffect(()=>{
+        if(playlist.cover === defaultCover && playlist.songs.length > 0){
+            let validCover:string;
+            playlist.songs.some((song) => {
+                if(song.cover !== defaultCover){
+                    validCover = song.cover
+                    return true
+                }
+                else {
+                    validCover = defaultCover
+                }
+            })
+            playlistUpdater(prevState => {
+                const updatedPlaylistsCover = prevState.map(pl => {
+                    if(pl.name === playlist.name){
+                        return {...pl,['cover']: validCover}
+                    }
+                    else{
+                        return {...pl}
+                    }
+                })
+                return [...updatedPlaylistsCover]
+            })
+        }
+    },[playlist.songs]);
 
     const handlePlaylistOpen = ()=> {
         openPlaylistHandler({
