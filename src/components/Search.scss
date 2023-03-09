@@ -27,23 +27,42 @@
 }
 
 .Search__input {
+  display: flex;
 
   width: 100%;
     margin-block: idx.$general-padding;
     padding-inline-start: idx.$general-padding;
+    height: 4rem;
 
   input {
-    width: 100%;
+    flex-grow: 1;
 
-    height: 2.5rem;
+    height: 100%;
       padding-inline-start: .8rem;
       padding-block: 2rem;
-      border-radius: .4rem;
+      border-bottom-left-radius: .4rem;
+      border-top-left-radius: .4rem;
 
     background: rgba(#68676b, .5);
       outline: none;
       border: none;
       color: white;
+  }
+  .Search__input__clear-button {
+    display: flex;
+      justify-content: center;
+      align-items: center;
+    width: 4rem;
+      height: 4rem;
+
+    background: rgba(#68676b, .5);
+      border-bottom-right-radius: .4rem;
+      border-top-right-radius: .4rem;
+
+    img {
+      width: 2.5rem;
+      height: 2.5rem;
+    }
   }
 }
 

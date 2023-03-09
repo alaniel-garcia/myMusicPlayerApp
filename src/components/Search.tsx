@@ -1,5 +1,5 @@
 import './Search.scss';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Song } from 'src/types';
 import useLibraryContext from '@hooks/useLibraryContext';
 import SongsList from './SongsList';
@@ -7,6 +7,7 @@ import Button from './miscellaneous/Button';
 import useButtonProps from '@hooks/useButtonProps';
 import useHandleBooleanState from '@hooks/useHandleBooleanState';
 import useSelectionContext from '@hooks/useSelectionContext';
+import clearIcon from '@assets/icons/close_wght500.svg'
 
 interface Props {
     section: string
@@ -18,8 +19,17 @@ export default function Search({section}: Props){
     const {selected, resetSelected} = useSelectionContext();
     const {library} = useLibraryContext();
     const [selectAll, setSelectAll] = useState(false);
+    const searchInputRef = useRef<HTMLInputElement>(null);
 
     const check = useButtonProps('check', handleClickSelectAll);
+
+    useEffect(()=>{
+        if(searchInputRef.current){
+            setTimeout(()=>{
+                searchInputRef.current?.focus();
+            },1000)
+        }
+    },[]);
 
     useEffect(()=>{
         if(!selectAll){
@@ -65,6 +75,14 @@ export default function Search({section}: Props){
         else return ''
     }
 
+    function clearSearch(){
+        setSearch('');
+        if(searchInputRef.current){
+            searchInputRef.current.value = '';
+            searchInputRef.current?.focus();
+        }
+    }
+
     useEffect(()=>{
         setResults(searchSong(search))
     },[search]);
@@ -73,7 +91,10 @@ export default function Search({section}: Props){
         <>
             <div className={section === 'navbar' ? 'Search Search--navbar' : 'Search'}>
                 <div className='Search__input'>
-                    <input type='text' onChange={(e)=>handleSearchChange(e)} placeholder='Search' />
+                    <input ref={searchInputRef} type='text' onChange={(e)=>handleSearchChange(e)} placeholder='Search' />
+                    <div onClick={clearSearch} className='Search__input__clear-button'>
+                        <img src={clearIcon} alt="Clear search button" />
+                    </div>
                 </div>
                 {
                     section === 'playlist' &&
