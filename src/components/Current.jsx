@@ -12,7 +12,7 @@ import QueueContext from '../context/QueueContext';
 import { AnimatePresence } from 'framer-motion';
 
 export default function Current() {
-    const { current, isCurrentOpen, toggleIsCurrentOpen } = useContext(CurrentContext);
+    const { current, isCurrentOpen, openCurrent, closeCurrent } = useContext(CurrentContext);
     const [track, setTrack] = useState(null);
     const [isPaused, setIsPaused] = useState(true);
     const {setShuffleOnPlay} = useContext(QueueContext);
@@ -93,7 +93,7 @@ export default function Current() {
     function loadCompleteViewBtnsProps() {
 
         const btnsPropsToLoad ={
-            minimize: useButtonProps('minimize', ()=> toggleIsCurrentOpen()),
+            minimize: useButtonProps('minimize', ()=> closeCurrent()),
             repeat: useButtonProps('repeat', ()=> {
                 toggleReplayMode('repeat')
             }),
@@ -168,7 +168,7 @@ export default function Current() {
                     {
                         current.song && 
                         <TrackCard
-                            onClick={() => toggleIsCurrentOpen()}
+                            onClick={() => openCurrent()}
                             song={current.song}
                             cardType='current'
                             buttonsProps={[

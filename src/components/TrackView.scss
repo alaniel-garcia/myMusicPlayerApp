@@ -42,7 +42,20 @@
 }
 
 .TrackView__bottom {
+  display: flex;
+    flex-direction: column;
+    align-items: center;
+
   background: linear-gradient(to bottom, transparent, 55%, black);
+
+  :nth-child(n) {
+      max-width: 450px;
+  }
+}
+
+
+.TrackView__overview {
+    width: 100%;
 }
 
 .overview__general {
@@ -89,6 +102,8 @@
     flex-direction: column;
     gap: 1.5rem;
 
+  width: 100%;
+
   padding-inline: idx.$general-padding;
 }
 
@@ -110,4 +125,8 @@
     align-items: center;
 
   padding-block-end: idx.$general-padding;
+}
+
+
+@media (min-width: 550px){
 }

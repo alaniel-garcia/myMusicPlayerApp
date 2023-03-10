@@ -27,12 +27,15 @@ export function CurrentProvider({children}) {
         }
     }
 
-    function toggleIsCurrentOpen(){
-        useHandleBooleanState(setIsCurrentOpen)
+    function openCurrent(){
+        setIsCurrentOpen(true)
+    }
+    function closeCurrent(){
+        setIsCurrentOpen(false)
     }
 
     return(
-        <CurrentContext.Provider value={{current, isCurrentOpen, toggleIsCurrentOpen, changeCurrent}}>
+        <CurrentContext.Provider value={{current, isCurrentOpen, openCurrent, closeCurrent, changeCurrent}}>
             {children}
         </CurrentContext.Provider>
     )

@@ -11,7 +11,7 @@ import { motion } from 'framer-motion';
 
 export default function TrackCard({ song, cardType, songsList, hidden, areAllSelected, playlist, containerName, ...props }) {
     
-    const {current, changeCurrent, toggleIsCurrentOpen} = useContext(CurrentContext);
+    const {current, changeCurrent, openCurrent} = useContext(CurrentContext);
     const {queue, addToQueue, addWithReset, removeFromQueue, shuffleOnPlay, setShuffleOnPlay} = useContext(QueueContext);
     const [isSelected, setIsSelected] = useState(false);
     const { selected, updateSelected,removeSelected, selectMode, setSelectMode, onClickAvailable, setOnClickAvailable, isIncluded} = useSelectionContext();
@@ -193,7 +193,7 @@ export default function TrackCard({ song, cardType, songsList, hidden, areAllSel
                                 else{
                                     addWithReset(songsList)
                                 }
-                                toggleIsCurrentOpen()
+                                openCurrent()
                             }
                         }
                         else if(cardType === 'queue'){
@@ -209,7 +209,6 @@ export default function TrackCard({ song, cardType, songsList, hidden, areAllSel
                             else{
                                 changeCurrent(song, songsList, containerName)
                                 addWithReset([song])
-                                toggleIsCurrentOpen()
                             }
                         }
                         else{
