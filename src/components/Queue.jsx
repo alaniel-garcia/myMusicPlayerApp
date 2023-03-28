@@ -35,10 +35,10 @@ export default function Queue({openStateHandler}){
 
     return <>
         <motion.div
-        initial={{x: 'calc(-100% + 15px)'}}
+        initial={{x: 'calc(-100% - 100px)'}}
         animate={{x: 0}}
-        transition={{duration: .1}}
-        exit={{x: 'calc(-100% + 15px)'}}
+        transition={{duration: .3}}
+        exit={{x: 'calc(-100% - 100px)'}}
         className='Queue'
         style={style}>
             <div className="Queue__header">

@@ -18,10 +18,6 @@
     align-items: center;
     column-gap: idx.$general-padding;
 
-  .Button {
-    transform: rotate(180deg);
-  }
-
   padding-inline: idx.$general-padding;
   padding-block-start: idx.$general-padding;
 }

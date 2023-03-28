@@ -1,18 +1,25 @@
 @use '@assets/styles/index.scss' as idx;
 
 .Queue {
-  position: fixed;
+  position: absolute;
     top: 0;
     z-index: 1000;
+    overflow-y: scroll;
 
   display: flex;
     flex-direction: column;
 
-  height: 100vh;
+  min-height: 100vh;
+  height: max-content;
+
   width: 100vw;
 
   background: idx.$background;
   box-shadow: -15px 0px 5px 0px rgba(0,0,0,0.4);;
+
+  .SongsList {
+    height: max-content;
+  }
 }
 
 .Queue__header {

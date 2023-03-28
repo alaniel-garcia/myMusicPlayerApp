@@ -146,7 +146,7 @@ h3 {
   }
 
   //general
-  .PlaylistCard, .TrackCard--default, .TrackCard--search, .TrackCard--playlist{
+  .PlaylistCard, .TrackCard--default, .TrackCard--search, .TrackCard--playlist, .TrackCard--queue{
     &:hover{
     background-color: $contrast-hl;
     }

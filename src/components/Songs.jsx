@@ -14,7 +14,7 @@ export default function Songs({className}){
 
     const {library, updateLibrary} = useLibraryContext();
     const {IDB} = useIDBContext();
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(()=>{
         if(library.length > 0 && isLoading){
@@ -98,8 +98,7 @@ export default function Songs({className}){
     return (
         <>
             <div 
-            className={className ? `Songs ${className}` : 'Songs'} 
-            style={{height: (isLoading || library.length === 0) ? '100%' : 'max-content'}}>
+            className={className ? `Songs ${className}` : 'Songs'}>
                 <div className='Songs__header'>
                     <div className="Songs__header-info">
                         <h2>

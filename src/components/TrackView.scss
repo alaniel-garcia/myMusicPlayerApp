@@ -15,7 +15,7 @@
     top: 0;
 
   width: 100%;
-    min-height: 100vh;
+   height: 100vh;
 }
 
 .TrackView__top {
@@ -29,14 +29,28 @@
 .TrackView__main {
   display: grid;
     place-content: center;
-  position: relative;
+    position: relative;
 
   padding-inline: idx.$general-padding;
+    height: calc(100vh - 6.7rem - 21.74rem);
+
+    // width: calc(50vw);
 }
 
 .TrackView__main__img-container {
+  justify-self: center;
+    align-self: center;
+
+  width: calc(100vh - 6.7rem - 21.74rem);
+    min-width: 35px;
+    max-width: fit-content;
+    height: 100%;
+
   img {
-    max-width: 250px;
+    width: 100%;
+      min-width: 35px;
+      max-width: 350px;
+
     border-radius: .4rem;
   }
 }
@@ -128,5 +142,13 @@
 }
 
 
-@media (min-width: 550px){
+@media (min-width: idx.$first-bp){
+  .TrackView {
+    grid-template-columns: 50%;
+  }
+}
+@media screen and (orientation: landscape) {
+  .TrackView {
+    grid-template-columns: 50%;
+  }
 }

@@ -2,14 +2,13 @@
 
 .Songs {
   position: relative;
+  height: calc(100vh - 11.3rem);
 }
 
 .Songs__header {
-  position: sticky;
-    top: 0;
-    z-index: 1;
-
-  border-top: 1px solid white;
+  // position: sticky;
+  //   top: 0;
+  //   z-index: 1;
 }
 
 .Songs__header-info {
@@ -25,11 +24,10 @@
 }
 
 .Songs__loading {
-  display: grid;
-    position: relative;
+  position: relative;
 
   width: 100%;
-    height: calc(100% - 6.7rem);
+    height: calc(100vh - 11.3rem - 8.3rem);
 }
 
 .Songs__loading-info {

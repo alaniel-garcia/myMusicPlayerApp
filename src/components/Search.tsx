@@ -28,7 +28,7 @@ export default function Search({section, style}: Props){
         if(searchInputRef.current){
             setTimeout(()=>{
                 searchInputRef.current?.focus();
-            },1000)
+            },100)
         }
     },[]);
 

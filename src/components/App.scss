@@ -27,10 +27,21 @@ main{
     }
     .Current {
         grid-area: current;
+    }
 
-        .TrackView {
-            position: relative;
-        }
+}
+
+@media screen and (orientation: landscape) {
+    header {
+        grid-area: header;
+    }
+    main {
+        grid-area: main;
+        // height: calc(100% - 9.0%);
+        height: 100%;
+    }
+    .Current {
+        grid-area: current;
     }
 
 }

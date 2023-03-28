@@ -24,7 +24,10 @@ export function SizeProvider({children}: Props){
 
   function handleResize(){
     const actualSize = window.innerWidth;
-    if(actualSize < 768){
+    if(actualSize > window.innerHeight){
+      setSize('firstBp')
+    }
+    else if(actualSize < 768){
       setSize('initial')
     }
     else if(actualSize >= 768){

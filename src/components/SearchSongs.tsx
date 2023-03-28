@@ -29,10 +29,10 @@ export default function SearchSongs({handleClose}:Props){
     return(
         <>
             <motion.div 
-            initial={{x: 'calc(100% + 15px)'}}
+            initial={{x: 'calc(-100% -100px)'}}
             animate={{x: 0}}
             transition={{duration: .1}}
-            exit={{x: 'calc(100% + 15px)'}}
+            exit={{x: 'calc(-100% - 100px)'}}
             className='SearchSongs'
             style={style}>
                 <div className="SearchSongs__header">

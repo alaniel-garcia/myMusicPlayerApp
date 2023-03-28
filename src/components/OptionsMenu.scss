@@ -28,9 +28,10 @@ $maring-padding: 1.2rem;
 
   display: flex;
     flex-direction: column;
+    overflow-y: scroll;
 
   width: 100%;
-    height: 70%;
+    height: 65%;
     padding-inline: $maring-padding;
     padding-block-start: $maring-padding;
 

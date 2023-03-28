@@ -127,7 +127,7 @@ export default function useOptions(){
     }
 
     const removeFromDevice: Option = {
-        option: 'Remove from device',
+        option: 'Remove from application',
         inputRequire: false,
         functionality: () => {
             if(content.contentType === 'song' && song){
