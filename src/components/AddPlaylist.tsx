@@ -1,7 +1,9 @@
 import './AddPlaylist.scss';
 import defaultCover from '@assets/images/defaultCover.png';
 import useHandleBooleanState from '@hooks/useHandleBooleanState';
-import { useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
+import useSizeContext from '@hooks/useSizeContext';
+import CurrentContext from '../context/CurrentContext';
 
 interface Props {
     addPlaylist: Function
@@ -9,8 +11,20 @@ interface Props {
 }
 
 export default function AddPlaylist({ addPlaylist, onClose }: Props) {
+    const {current} = useContext(CurrentContext);
     const playlistName = useRef<HTMLInputElement>(null);
     const containerNoValidArea = useRef<HTMLInputElement>(null);
+    const {size} = useSizeContext();
+    const [style, setStyle] = useState({});
+
+    useEffect(()=>{
+        if(size === 'firstBp' && current.song !== null) {
+            setStyle({width: '50%'})
+        }
+        else {
+            setStyle({})
+        }
+    },[size, current]);
 
     useEffect(()=>{
         playlistName.current?.focus();
@@ -55,7 +69,11 @@ export default function AddPlaylist({ addPlaylist, onClose }: Props) {
 
     return (
         <>
-            <div className='AddPlaylist' ref={containerNoValidArea} onClick={(e)=>handleClickOutside(e)}>
+            <div 
+                className='AddPlaylist' 
+                ref={containerNoValidArea} 
+                onClick={(e)=>handleClickOutside(e)}
+                style={style}>
                 <div className='AddPlaylist__form'>
                     <div className='form__content'>
                         <div className='form__content__title'>

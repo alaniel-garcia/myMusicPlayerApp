@@ -6,9 +6,10 @@ import { Option, Song } from 'src/types';
 import useLibraryContext from './useLibraryContext';
 import useSelectionContext from './useSelectionContext';
 import useFavoritesContext from './useFavoritesContext';
+import useSizeContext from './useSizeContext';
 
 export default function useOptions(){
-    const {changeCurrent} = useContext(CurrentContext);
+    const {changeCurrent, openCurrent} = useContext(CurrentContext);
     const {setSelectMode} = useSelectionContext();
     const {queue, addWithReset, addNext, addToQueue, removeSeveralFromQueue, removeFromQueue} = useContext(QueueContext);
     const {content, playlistViewContent} = useOptionsContext();
@@ -19,6 +20,7 @@ export default function useOptions(){
     const playlist = content.playlistType?.playlist;
     const playlistContainer = content.playlistType?.container;
     const songs = content.selectedSongsType?.songs;
+    const {size} = useSizeContext();
 
     const play: Option = {
         option: 'Play',
@@ -38,6 +40,10 @@ export default function useOptions(){
                     changeCurrent(playlist.songs[0], playlist);
                     addWithReset(playlist.songs);
                 }
+            }
+
+            if(size === 'firstBp'){
+                openCurrent()
             }
             closeOptions()
         }

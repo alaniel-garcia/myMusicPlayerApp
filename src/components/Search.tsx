@@ -11,9 +11,10 @@ import clearIcon from '@assets/icons/close_wght500.svg'
 
 interface Props {
     section: string
+    style?: object
 }
 
-export default function Search({section}: Props){
+export default function Search({section, style}: Props){
     const [results, setResults] = useState<Array<Song>>([]);
     const [search, setSearch] = useState<string>('');
     const {selected, resetSelected} = useSelectionContext();
@@ -89,7 +90,7 @@ export default function Search({section}: Props){
 
     return(
         <>
-            <div className={section === 'navbar' ? 'Search Search--navbar' : 'Search'}>
+            <div className={section === 'navbar' ? 'Search Search--navbar' : 'Search'} style={style ? style : {}}>
                 <div className='Search__input'>
                     <input ref={searchInputRef} type='text' onChange={(e)=>handleSearchChange(e)} placeholder='Search' />
                     <div onClick={clearSearch} className='Search__input__clear-button'>

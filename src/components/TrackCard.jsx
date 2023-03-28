@@ -43,13 +43,13 @@ export default function TrackCard({ song, cardType, songsList, hidden, areAllSel
         initial: {
             opacity: 0,
             transition: {
-                duration: 3
+                duration: .1
             }
         },
         in: {
             opacity: 1,
             transition: {
-                duration: 3
+                duration: .1
             }
         }
     };

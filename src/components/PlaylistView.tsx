@@ -10,6 +10,7 @@ import QueueContext from '../context/QueueContext';
 import AddWhenNoSongs from './AddWhenNoSongs';
 import useOptionsContext from '@hooks/useOptionsContext';
 import { AnimatePresence, motion } from 'framer-motion';
+import useSizeContext from '@hooks/useSizeContext';
 
 interface Props {
     playlist: Playlist
@@ -20,10 +21,21 @@ interface Props {
 
 export default function PlaylistView({playlist, openPlaylistHandler, playlistsUpdater, playlistContainer}: Props) {
     const [addSongsIsOpen, setAddSongsIsOpen] = useState<boolean>(false);
-    const {changeCurrent, current} = useContext(CurrentContext);
+    const {changeCurrent, current, openCurrent} = useContext(CurrentContext);
     const {loadPlaylistViewContent, resetPlaylistViewContent} = useOptionsContext();
     const {queue, addWithReset, addToQueue, shuffleOnPlay, setShuffleOnPlay, handleShuffleModeFromPlaylist, removeFromQueue, removeSeveralFromQueue} = useContext(QueueContext);
     const {openOptions, loadContent} = useOptionsContext();
+    const {size} = useSizeContext();
+    const [style, setStyle] = useState({});
+
+    useEffect(()=>{
+        if(size === 'firstBp' && current.song !== null) {
+            setStyle({width: '50%'})
+        }
+        else {
+            setStyle({})
+        }
+    },[size, current]);
 
     useEffect(()=>{
         loadPlaylistViewContent(playlist, playlistsUpdater)
@@ -67,6 +79,7 @@ export default function PlaylistView({playlist, openPlaylistHandler, playlistsUp
         if(playlist.songs.length > 0){
             changeCurrent(playlist.songs[0], playlist, playlist.name)
             addWithReset(playlist.songs)
+            openCurrent()
             if(shuffleOnPlay){
                 setShuffleOnPlay(false)
             }
@@ -98,7 +111,7 @@ export default function PlaylistView({playlist, openPlaylistHandler, playlistsUp
         )
     }
 
-    const go_back = useButtonProps('go_back', handlePlaylistClose);
+    const close = useButtonProps('close', handlePlaylistClose);
     const add = useButtonProps('add', handlePlaylistOpen);
     const more = useButtonProps('more', ()=>{
         loadContent({
@@ -119,10 +132,11 @@ export default function PlaylistView({playlist, openPlaylistHandler, playlistsUp
             initial={{opacity: 0}}
             animate={{opacity: 1}}
             exit={{opacity: 0}}
-            className='PlaylistView'>
+            className='PlaylistView' 
+            style={style}>
                 <div className='PlaylistView__header'>
                     <div className='PlaylistView__header__left'>
-                        <Button className='small-button' icon={go_back.icon} alt={go_back.alt} functionality={go_back.functionality} />
+                        <Button className='small-button' icon={close.icon} alt={close.alt} functionality={close.functionality} />
                     </div>
                     <div className='PlaylistView__header__right'>
                         <Button className='small-button' icon={add.icon} alt={add.alt} functionality={add.functionality} />

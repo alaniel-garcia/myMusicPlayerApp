@@ -7,6 +7,8 @@ import { SelectionProvider } from './context/SelectionContext';
 import { DeviceProvider } from './context/DeviceContext';
 import { OptionsProvider } from './context/OptionsContext';
 import { IDBProvider } from './context/IDBContext';
+import { SizeProvider } from './context/SizeContext';
+import { CurrentProvider } from './context/CurrentContext';
 
 const container = document.getElementById('root')
 const root = ReactDOM.createRoot(container)
@@ -24,7 +26,11 @@ root.render(
                 <IDBProvider>
                     <SelectionProvider>
                         <OptionsProvider>
-                            <App />
+                            <SizeProvider>
+                                <CurrentProvider>
+                                    <App />
+                                </CurrentProvider>
+                            </SizeProvider>
                         </OptionsProvider>
                     </SelectionProvider>
                 </IDBProvider>

@@ -2,15 +2,42 @@ import './SelectMode.scss';
 import useSelectionContext from '@hooks/useSelectionContext';
 import useButtonProps from '@hooks/useButtonProps';
 import Button from './miscellaneous/Button';
-import { useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import useOptionsContext from '@hooks/useOptionsContext';
 import useOptions from '@hooks/useOptions';
+import useSizeContext from '@hooks/useSizeContext';
+import CurrentContext from '../context/CurrentContext';
+import SectionContext from '../context/SectionContext';
 
 export default function selectMode(){
-    const {setSelectMode, selected, resetSelected} = useSelectionContext();
+    const {setSelectMode, selectMode, selected, resetSelected} = useSelectionContext();
+    const {section} = useContext(SectionContext);
+    const {current} = useContext(CurrentContext);
     const {openOptions,loadContent} = useOptionsContext();
     const options = useOptions();
     const didMount = useRef(true);
+    const {size} = useSizeContext();
+    const [style, setStyle] = useState({});
+
+    useEffect(()=>{
+        if(size === 'firstBp' && current.song !== null) {
+            setStyle({width: '50%'})
+        }
+        else {
+            setStyle({})
+        }
+    },[size, current]);
+
+    useEffect(()=>{
+        if(didMount.current){
+            didMount.current = false;
+        }
+        else{
+            if(selectMode){
+                resetSelected()
+            }
+        }
+    },[section]);
 
     const close = useButtonProps('close', ()=> {
         setSelectMode(false)
@@ -53,7 +80,7 @@ export default function selectMode(){
 
     return (
         <>
-            <div className='SelectMode'>
+            <div className='SelectMode' style={style}>
                 <div className="SelectMode__left">
                     <Button className='small-button' icon={close.icon} alt={close.alt} functionality={close.functionality} />
                     <h1>

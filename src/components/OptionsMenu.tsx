@@ -5,8 +5,10 @@ import useOptionsContext from '@hooks/useOptionsContext';
 import generateTimestamp from '@services/generateTimestamp';
 import SectionContext from '../context/SectionContext';
 import { Option } from 'src/types';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import useSizeContext from '@hooks/useSizeContext';
+import CurrentContext from '../context/CurrentContext';
 
 export default function OptionsMenu() {
     const {content, closeOptions, callOption} = useOptionsContext();
@@ -15,6 +17,30 @@ export default function OptionsMenu() {
     const song = content.songType?.song;
     const songs = content.selectedSongsType?.songs;
     const playlist = content.playlistType?.playlist;
+    const {size} = useSizeContext();
+    const {current} = useContext(CurrentContext)
+    const [style, setStyle] = useState({});
+    const [styleContent, setStyleContent] = useState({});
+
+    useEffect(()=>{
+        if(size === 'firstBp' && current.song !== null ){
+            setStyle({width: '50%'})
+            setStyleContent({})
+        }
+        else if(size === 'firstBp' && current.song === null ){
+            setStyle({
+                display: 'flex',
+                justifyContent: 'center'
+            })
+            setStyleContent({
+                maxWidth: '768px'
+            })
+        }
+        else {
+            setStyle({})
+            setStyleContent({})
+        }
+    },[size, current]);
 
     const { 
         play,
@@ -164,10 +190,10 @@ export default function OptionsMenu() {
 
     return (
         <>
-            <div className='OptionsMenu'>
+            <div className='OptionsMenu' style={style}>
                 <motion.div 
                     initial={{opacity: 0}}
-                    transition={{duration: .5}}
+                    transition={{duration: .1}}
                     animate={{opacity: .5}}
                     exit={{opacity: 0}}
                     className='OptionsMenu__background' 
@@ -179,10 +205,11 @@ export default function OptionsMenu() {
                 </motion.div>
                 <motion.div
                     initial={{y: '100%', opacity: 0}} 
-                    transition={{duration: .5,ease: 'linear'}}
+                    transition={{duration: .1,ease: 'linear'}}
                     animate={{y: 0, opacity: 1, }} 
                     exit={{y: '100%', opacity: 0 }} 
-                    className='OptionsMenu__content'>
+                    className='OptionsMenu__content'
+                    style={styleContent}>
                     <div className='OptionsMenu__header'>
                         <div className='header__content'>
                             {loadHeader()}

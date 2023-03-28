@@ -3,13 +3,13 @@
 .AddPlaylistSong {
   display: grid;
     grid-template-columns: 100vw;
-    grid-template-rows: min-content calc(100% - 3.5rem);
+    grid-template-rows: min-content calc(100% - 3.5rem - 3.5rem);
 
   position: fixed;
     top: 0;
     z-index: 300;
 
-    height: 100vh;
+    height: 100%;
 
   background: idx.$background;
   box-shadow: -15px 0px 5px 0px rgba(0,0,0,0.4);;
@@ -20,13 +20,13 @@
     column-gap: idx.$general-padding;
     align-items: center;
 
-  margin: idx.$general-padding;
+  padding: idx.$general-padding;
+
+  .Button {
+    transform: rotate(180deg);
+  }
 }
 
 .AddPlaylistSong__search{
-  // display: grid;
-  //   grid-template-columns: 100%;
-  //   grid-auto-rows: 100%;
-
   margin-inline: idx.$general-padding;
 }

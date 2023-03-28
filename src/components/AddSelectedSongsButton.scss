@@ -1,7 +1,7 @@
 @use '@assets/styles/index.scss' as idx;
 
 .AddSelectedSongsButton {
-  position: fixed;
+  position: absolute;
     bottom: idx.$general-padding;
     left: 0;
     right: 0;
@@ -12,6 +12,7 @@
     align-items: center;
 
   width: 90%;
+    max-width: 400px;
     height: 5rem;
 
   background: idx.$highlights;

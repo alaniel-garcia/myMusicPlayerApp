@@ -10,6 +10,7 @@ import QueueContext from '../context/QueueContext';
 import useFavoritesContext from '@hooks/useFavoritesContext';
 import { FastAverageColor } from 'fast-average-color';
 import { motion } from 'framer-motion';
+import useSizeContext from '@hooks/useSizeContext';
 
 export default function TrackView({song, track, buttonsProps, ...props}) {
     const {minimize,
@@ -30,6 +31,17 @@ export default function TrackView({song, track, buttonsProps, ...props}) {
     const fac = new FastAverageColor();
     const titleRef = useRef();
     const titleContainerRef = useRef();
+    const {size} = useSizeContext();
+    const [transitionDuration, setTransitionDuration] = useState(.3);
+
+    useEffect(()=>{
+        if(size === 'initial'){
+            setTransitionDuration(.3)
+        }
+        if(size === 'firstBp'){
+            setTransitionDuration(.1)
+        }
+    },[size]);
 
     useEffect(()=> {
         async function getAverageColor () {
@@ -84,7 +96,7 @@ export default function TrackView({song, track, buttonsProps, ...props}) {
             <motion.div 
             initial={{y: '100%'}} 
             animate={{y: 0 , background: bgColor}} 
-            transition={{duration: .8}} 
+            transition={{duration: transitionDuration}} 
             exit={{y: '100%'}} 
             className='TrackView' style={{background: bgColor}}>
                 <div className='TrackView__top'>

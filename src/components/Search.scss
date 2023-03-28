@@ -9,16 +9,14 @@
 
 .Search--navbar {
   margin-inline: 0;
-  .Search__input {
-    padding-inline: idx.$general-padding; 
-  }
 }
 
 .Search__results--playlist {
   height: calc(100% - 14.2rem);
   overflow-y: scroll;
   .SongsList {
-        padding-block-end: 7.8rem;
+        // padding-block-end: 7.8rem;
+         padding-block-end: 5rem;
   }
 }
 
@@ -31,7 +29,7 @@
 
   width: 100%;
     margin-block: idx.$general-padding;
-    padding-inline-start: idx.$general-padding;
+    padding-inline: idx.$general-padding;
     height: 4rem;
 
   input {
@@ -74,4 +72,10 @@
   padding-inline: idx.$general-padding;
 
   margin-block-end: 1.6rem;
+}
+
+@media (pointer: fine) {
+  .Search__select-all {
+    padding-inline-end: calc(idx.$general-padding * 2) !important;
+  }
 }

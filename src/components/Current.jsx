@@ -10,13 +10,17 @@ import useTrackViewButtonFunctionality from '@hooks/useTrackViewButtonFunctional
 import useHandleBooleanState from '../hooks/useHandleBooleanState';
 import QueueContext from '../context/QueueContext';
 import { AnimatePresence } from 'framer-motion';
+import useSizeContext from '@hooks/useSizeContext';
 
 export default function Current() {
-    const { current, isCurrentOpen, openCurrent, closeCurrent } = useContext(CurrentContext);
+    const { current, isCurrentOpen, openCurrent, closeCurrent, resetCurrent } = useContext(CurrentContext);
+    const { resetQueue } = useContext(QueueContext);
     const [track, setTrack] = useState(null);
     const [isPaused, setIsPaused] = useState(true);
     const {setShuffleOnPlay} = useContext(QueueContext);
     const {volume, sound, volumeOff} = useContext(VolumeContext);
+    const {size} = useSizeContext();
+    const [buttonToLoad, setButtonToLoad] = useState('minimize');
     const [queueIsOpen, setQueueIsOpen] = useState(false);
     const [replayMode, setReplayMode] = useState({
         repeat : true,
@@ -25,6 +29,15 @@ export default function Current() {
     });
     const isMounted = useRef(true);
     const audioEl = useRef();
+
+    useEffect(()=>{
+        if(size === 'initial'){
+            setButtonToLoad('minimize')
+        }
+        if(size === 'firstBp'){
+            setButtonToLoad('close')
+        }
+    },[size])
 
     //Calling buttons's functions
     const { 
@@ -93,7 +106,18 @@ export default function Current() {
     function loadCompleteViewBtnsProps() {
 
         const btnsPropsToLoad ={
-            minimize: useButtonProps('minimize', ()=> closeCurrent()),
+            minimize: useButtonProps(buttonToLoad, ()=> {
+                if(buttonToLoad === 'minimize'){
+                    closeCurrent()
+                }
+                if(buttonToLoad === 'close'){
+                    closeCurrent()
+                    setTimeout(() => {
+                        resetCurrent()
+                    }, 100);
+                    resetQueue();
+                }
+            }),
             repeat: useButtonProps('repeat', ()=> {
                 toggleReplayMode('repeat')
             }),
@@ -166,7 +190,7 @@ export default function Current() {
                     }
                 </AnimatePresence>
                     {
-                        current.song && 
+                        current.song && size === 'initial' &&
                         <TrackCard
                             onClick={() => openCurrent()}
                             song={current.song}

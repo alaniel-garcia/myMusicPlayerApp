@@ -2,7 +2,7 @@
 
 .PlaylistView {
   display: grid;
-    grid-template-columns: 100vw;
+    grid-template-columns: 1fr;
     grid-template-rows: repeat(3, min-content) 1fr;
     grid-template-areas: 
       "header"

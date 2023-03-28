@@ -1,15 +1,30 @@
-import { createContext, useState } from 'react';
-import useHandleBooleanState from '@hooks/useHandleBooleanState';
+import { createContext, useEffect, useState } from 'react';
+import useSizeContext from '@hooks/useSizeContext'
 
 const CurrentContext = createContext();
 
 export function CurrentProvider({children}) {
+    const {size} = useSizeContext();
     const [current, setCurrent] = useState({
         song: null,
         container: [],
         containerName: '',
     });
     const [isCurrentOpen, setIsCurrentOpen] = useState(false);
+
+    useEffect(()=>{
+        if(current.song !== null && !isCurrentOpen){
+            setIsCurrentOpen(true)
+        }
+    },[size]);
+
+    function resetCurrent(){
+        setCurrent({
+            song: null,
+            container: [],
+            containerName: '',
+        })
+    }
 
     function changeCurrent(song, container, containerName){
         if(containerName){
@@ -35,7 +50,7 @@ export function CurrentProvider({children}) {
     }
 
     return(
-        <CurrentContext.Provider value={{current, isCurrentOpen, openCurrent, closeCurrent, changeCurrent}}>
+        <CurrentContext.Provider value={{current, isCurrentOpen, openCurrent, closeCurrent, changeCurrent, resetCurrent}}>
             {children}
         </CurrentContext.Provider>
     )

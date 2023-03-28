@@ -1,3 +1,5 @@
+@use '@assets/styles/index.scss' as idx;
+
 .App {
     display: flex;
      flex-direction: column;
@@ -13,4 +15,22 @@ main{
 
 .hidden {
     display: none;
+}
+
+@media (min-width: idx.$first-bp){
+    header {
+        grid-area: header;
+    }
+    main {
+        grid-area: main;
+        height: 100%;
+    }
+    .Current {
+        grid-area: current;
+
+        .TrackView {
+            position: relative;
+        }
+    }
+
 }

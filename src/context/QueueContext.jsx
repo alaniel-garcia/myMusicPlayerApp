@@ -7,7 +7,7 @@ const QueueContext = createContext();
 
 export function QueueProvider({children}) {
     const [queue, setQueue] = useState([]);
-    const { current, changeCurrent } = useContext(CurrentContext);
+    const { current, changeCurrent, openCurrent} = useContext(CurrentContext);
     const {library} = useLibraryContext();
     const [shuffleOnPlay, setShuffleOnPlay] = useState(false);
     const [playlistView, setPlaylistView] = useState(false);
@@ -57,6 +57,10 @@ export function QueueProvider({children}) {
             },0)
         }
     },[playlistView]);
+
+    function resetQueue(){
+        setQueue([])
+    }
 
     function addToQueue(newAddition){
         if(Array.isArray(newAddition)){
@@ -206,6 +210,7 @@ export function QueueProvider({children}) {
     function handleShuffleModeFromPlaylist(playlist){
         const shuffled = shuffleArray([...playlist.songs]);
         changeCurrent(shuffled[0], playlist, playlist.name)
+        openCurrent()
         addWithReset(shuffled);
         setPlaylistView(true)
     }
@@ -281,7 +286,7 @@ export function QueueProvider({children}) {
     }
 
     return(
-        <QueueContext.Provider value={{queue, addToQueue, addWithReset, getCurrentIndex, removeFromQueue, removeSeveralFromQueue, shuffleOnPlay, setShuffleOnPlay, handleShuffleMode, handleShuffleModeFromPlaylist, addNext}}>
+        <QueueContext.Provider value={{queue, addToQueue, addWithReset, getCurrentIndex, removeFromQueue, removeSeveralFromQueue, shuffleOnPlay, setShuffleOnPlay, handleShuffleMode, handleShuffleModeFromPlaylist, addNext, resetQueue}}>
             {children}
         </QueueContext.Provider>
     )
