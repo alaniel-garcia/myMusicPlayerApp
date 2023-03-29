@@ -25,7 +25,7 @@ export function QueueProvider({children}) {
 
     useEffect(()=>{
         const container = current.containerName;
-            if(shuffleOnPlay){
+            if(shuffleOnPlay && (container === 'library' || container === 'favorites')){
                 let shuffled;
 
                 if(container === 'library'){
